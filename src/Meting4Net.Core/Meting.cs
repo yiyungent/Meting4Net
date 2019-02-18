@@ -324,6 +324,34 @@ namespace Meting4Net.Core
         }
         #endregion
 
+        #region 根据歌单ID获取
+        public string Playlist(long id)
+        {
+            Music_api api = null;
+            switch (this.Server)
+            {
+                case "netease":
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://music.163.com/api/v3/playlist/detail",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            s = "0",
+                            id = id,
+                            n = "1000",
+                            t = "0"
+                        }),
+                        encode = Netease_AESCBC,
+                        format = "playlist.tracks"
+                    };
+                    break;
+            }
+
+            return this.Exec(api);
+        }
+        #endregion
+
         #region 网易云音乐API加密
         private static Music_api Netease_AESCBC(Music_api api)
         {
