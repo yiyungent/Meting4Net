@@ -127,7 +127,7 @@ namespace Meting4Net.Core
                 //arr[1] = api.decode.ToString()[0].ToString().ToUpperInvariant() + api.decode.ToString().Substring(1);
                 //this.Data = PhpCommon.Call_user_func_array(arr, this.Data).ToString();
 
-                this.Data = Common.Obj2JsonStr(api.decode(this.Data));
+                this.Data = api.decode(this.Data).ToJsonStr();
             }
             if (api.format != null && !string.IsNullOrEmpty(api.format.ToString()))
             {
@@ -210,6 +210,7 @@ namespace Meting4Net.Core
             return result;
         }
 
+        #region 根据音乐ID获取音乐链接
         public dynamic Url(string id, int br = 320)
         {
             //dynamic api = new JObject();
@@ -249,7 +250,9 @@ namespace Meting4Net.Core
 
             return this.Exec(api);
         }
+        #endregion
 
+        #region 网易云音乐API加密
         public static Music_api Netease_AESCBC(Music_api api)
         {
             //string body = Common.Obj2JsonStr(api.body);
@@ -281,7 +284,14 @@ namespace Meting4Net.Core
 
             return api;
         }
+        #endregion
 
+        #region 对搜索到的(单首)网易云音乐数据进行格式化
+        /// <summary>
+        /// 对搜索到的(单首)网易云音乐数据进行格式化
+        /// </summary>
+        /// <param name="data">(单首)网易云音乐json数据</param>
+        /// <returns></returns>
         public static Music_search_item Format_netease(dynamic data)
         {
             //dynamic result = new
@@ -321,7 +331,13 @@ namespace Meting4Net.Core
 
             return result;
         }
+        #endregion
 
+        #region 设置请求头
+        /// <summary>
+        /// 设置请求头
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, string> CurlSet()
         {
             Dictionary<string, string> header = new Dictionary<string, string>();
@@ -346,15 +362,17 @@ namespace Meting4Net.Core
 
             return header;
         }
+        #endregion
 
-        public static Music_url Netease_url(dynamic result)
+        #region 提取(解析)网易云音乐链接
+        public static Music_decode_url Netease_url(dynamic result)
         {
             string jsonStr = result.ToString();
             Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);
-            Music_url url = null;
+            Music_decode_url url = null;
             if (!string.IsNullOrEmpty(data.data[0].url))
             {
-                url = new Music_url
+                url = new Music_decode_url
                 {
                     url = data.data[0].url,
                     size = data.data[0].size,
@@ -363,7 +381,7 @@ namespace Meting4Net.Core
             }
             else
             {
-                url = new Music_url
+                url = new Music_decode_url
                 {
                     url = "",
                     size = 0,
@@ -373,5 +391,6 @@ namespace Meting4Net.Core
             //url = Common.Obj2JsonStr(url);
             return url;
         }
+        #endregion
     }
 }
