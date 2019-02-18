@@ -257,10 +257,17 @@ namespace Meting4Net.Core
                     {
                         method = "POST",
                         url = "http://music.163.com/api/song/enhance/player/url",
-                        body = new
+                        #region 废弃
+                        //body = new
+                        //{
+                        //    data = "{\"ids\": \"[" + id + "]\", \"br\": \"" + br * 1000 + "\"}",
+                        //}, 
+                        #endregion
+                        body = Common.Dynamic2JObject(new
                         {
-                            data = "{\"ids\": \"[" + id + "]\", \"br\": \"" + br * 1000 + "\"}",
-                        },
+                            ids = "[" + id + "]",
+                            br = br * 1000
+                        }),
                         encode = Netease_AESCBC,
                         decode = Netease_url
                     };
@@ -289,10 +296,16 @@ namespace Meting4Net.Core
                     {
                         method = "POST",
                         url = "http://music.163.com/api/v3/song/detail/",
-                        body = new
+                        #region 废弃
+                        //body = new
+                        //{
+                        //    data = "{\"c\":\"[{\\\"id\\\":" + id + ",\\\"v\\\":0}]\"}"
+                        //}, 
+                        #endregion
+                        body = Common.Dynamic2JObject(new
                         {
-                            data = "{\"c\":\"[{\\\"id\\\":" + id + ",\\\"v\\\":0}]\"}"
-                        },
+                            c = "[{\"id\":" + id + ",\"v\":0}]"
+                        }),
                         encode = Netease_AESCBC,
                         format = "songs"
                     };
@@ -314,18 +327,29 @@ namespace Meting4Net.Core
                     {
                         method = "POST",
                         url = "http://music.163.com/api/v1/album/" + id,
-                        body = new
+                        #region 废弃
+                        //body = new
+                        //{
+                        //    data = Common.Obj2JsonStr(new
+                        //    {
+                        //        total = "true",
+                        //        offset = "0",
+                        //        id = id,
+                        //        limit = "1000",
+                        //        ext = "true",
+                        //        private_cloud = "true"
+                        //    })
+                        //}, 
+                        #endregion
+                        body = Common.Dynamic2JObject(new
                         {
-                            data = Common.Obj2JsonStr(new
-                            {
-                                total = "true",
-                                offset = "0",
-                                id = id,
-                                limit = "1000",
-                                ext = "true",
-                                private_cloud = "true"
-                            })
-                        },
+                            total = "true",
+                            offset = "0",
+                            id = id,
+                            limit = "1000",
+                            ext = "true",
+                            private_cloud = "true"
+                        }),
                         encode = Netease_AESCBC,
                         format = "songs"
                     };
@@ -347,16 +371,25 @@ namespace Meting4Net.Core
                     {
                         method = "POST",
                         url = "http://music.163.com/api/v1/artist/" + id,
-                        body = new
+                        #region 废弃
+                        //body = new
+                        //{
+                        //    data = Common.Obj2JsonStr(new
+                        //    {
+                        //        ext = "true",
+                        //        private_cloud = "true",
+                        //        top = limit,
+                        //        id = id
+                        //    }),
+                        //}, 
+                        #endregion
+                        body = Common.Dynamic2JObject(new
                         {
-                            data = Common.Obj2JsonStr(new
-                            {
-                                ext = "true",
-                                private_cloud = "true",
-                                top = limit,
-                                id = id
-                            }),
-                        },
+                            ext = "true",
+                            private_cloud = "true",
+                            top = limit,
+                            id = id
+                        }),
                         encode = Netease_AESCBC,
                         format = "hotSongs"
                     };
@@ -376,8 +409,11 @@ namespace Meting4Net.Core
             //string br = api.body.br.ToString();
             //string body = "{\"ids\": \"" + ids + "\", \"br\": \"" + br + "\"}"; 
             #endregion
-
-            string encryptBody = Encrypt.EncryptedRequest(api.body.data.ToString());
+            #region 废弃
+            //string bodyJsonStr = api.body.data.ToString(); 
+            #endregion
+            string bodyJsonStr = Common.Obj2JsonStr(api.body);
+            string encryptBody = Encrypt.EncryptedRequest(bodyJsonStr);
             // [0] params  [1] encSecKey
             string[] encryptParms = encryptBody.Split('\n');
 
@@ -397,11 +433,16 @@ namespace Meting4Net.Core
             #endregion
 
             api.url = api.url.Replace("/api/", "/weapi/");
-            api.body = new
+            //api.body = new
+            //{
+            //    @params = encryptParms[0],
+            //    encSecKey = encryptParms[1]
+            //};
+            api.body = Common.Dynamic2JObject(new
             {
                 @params = encryptParms[0],
                 encSecKey = encryptParms[1]
-            };
+            });
 
             return api;
         }

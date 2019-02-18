@@ -20,7 +20,7 @@ namespace Meting4Net.Core
             return JsonConvert.SerializeObject(jsonObj);
         }
 
-        public static JObject Dynamic2JOject(dynamic jsonObj)
+        public static JObject Dynamic2JObject(dynamic jsonObj)
         {
             string jsonStr = Obj2JsonStr(jsonObj);
             JObject jObject = JsonConvert.DeserializeObject<JObject>(jsonStr);
