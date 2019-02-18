@@ -15,7 +15,9 @@ namespace SimpleDemo.Controllers
         {
             Meting api = new Meting("netease");
             //string jsonStr = api.FormatMethod(true).Url(35847388);
-            string jsonStr = api.FormatMethod(true).Song(35847388);
+            //string jsonStr = api.FormatMethod(true).Song(35847388);
+            //string jsonStr = api.FormatMethod(true).Album(73927024);
+            string jsonStr = api.Album(73927024);
 
             return Content(jsonStr, "application/json");
         }

@@ -229,7 +229,7 @@ namespace Meting4Net.Core
         #region 根据音乐ID获取音乐链接
         public string Url(long id, int br = 320)
         {
-            Music_api api = new Music_api();
+            Music_api api = null;
             switch (this.Server)
             {
                 case "netease":
@@ -287,6 +287,39 @@ namespace Meting4Net.Core
                         body = new
                         {
                             data = "{\"c\":\"[{\\\"id\\\":" + id + ",\\\"v\\\":0}]\"}"
+                        },
+                        encode = Netease_AESCBC,
+                        format = "songs"
+                    };
+                    break;
+            }
+
+            return this.Exec(api);
+        }
+        #endregion
+
+        #region 根据专辑ID获取
+        public string Album(long id)
+        {
+            Music_api api = null;
+            switch (this.Server)
+            {
+                case "netease":
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://music.163.com/api/v1/album/" + id,
+                        body = new
+                        {
+                            data = Common.Obj2JsonStr(new
+                            {
+                                total = "true",
+                                offset = "0",
+                                id = id,
+                                limit = "1000",
+                                ext = "true",
+                                private_cloud = "true"
+                            })
                         },
                         encode = Netease_AESCBC,
                         format = "songs"
