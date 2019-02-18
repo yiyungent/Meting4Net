@@ -15,6 +15,8 @@ using System.Text;
 using System.Net;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using Meting4Net.Core.Models.Standard;
 
 namespace Meting4Net.Core
 {
@@ -79,34 +81,30 @@ namespace Meting4Net.Core
             return this;
         }
 
-        private dynamic Exec(dynamic api)
+        private dynamic Exec(Music_api api)
         {
-            if (Common.IsPropertyExist(api, "encode") && !string.IsNullOrEmpty(api.encode.ToString()))
+            if (api.encode != null)
             {
-                string[] fullTypeNameAndMethodName = new string[2];
-                fullTypeNameAndMethodName[0] = this.ToString();
-                fullTypeNameAndMethodName[1] = api.encode.ToString().ToUpperInvariant()[0] + api.encode.ToString().Substring(1);
+                //string[] fullTypeNameAndMethodName = new string[2];
+                //fullTypeNameAndMethodName[0] = this.ToString();
+                //fullTypeNameAndMethodName[1] = api.encode.ToString().ToUpperInvariant()[0] + api.encode.ToString().Substring(1);
+                //api = PhpCommon.Call_user_func_array(fullTypeNameAndMethodName, api);
 
-                api = PhpCommon.Call_user_func_array(fullTypeNameAndMethodName, api);
+                api = api.encode(api);
             }
 
             // GET:url?后参数，POST: POST body内容----均为 key1=value1&key2=value2
             Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict = Common.Dyn2Dict(api.body);
+            dict = Common.Dynamic2Dict(api.body);
             string parmsData = PhpCommon.Http_build_query(dict);
-            string url = api.url.ToString();
-            if (api.method.ToString() == "GET")
+            string url = api.url;
+            if (api.method == "GET")
             {
-                if (Common.IsPropertyExist(api, "body") && !string.IsNullOrEmpty(api.body.ToString()))
+                if (api.body != null && !string.IsNullOrEmpty(api.body.ToString()))
                 {
-                    url = api.url.ToString() + "?" + parmsData;
-                    //api.body = null;
+                    url = api.url + "?" + parmsData;
                     parmsData = null;
                 }
-            }
-            else if (api.method.ToString() == "POST")
-            {
-                //api.body = parmsData;
             }
 
             //this.Curl(url: api.url.ToString(), payload: api.body.ToString());
@@ -121,17 +119,19 @@ namespace Meting4Net.Core
             // 进行格式化，不过先将原始数据保存到 Data
             this.Data = this.Raw;
 
-            if (Common.IsPropertyExist(api, "decode") && !string.IsNullOrEmpty(api.decode.ToString()))
+            if (api.decode != null)
             {
-                // [0]完全限定类名，[1]方法名
-                string[] arr = new string[2];
-                arr[0] = this.ToString();
-                arr[1] = api.decode.ToString();
-                this.Data = PhpCommon.Call_user_func_array(arr, this.Data).ToString();
+                //// [0]完全限定类名，[1]方法名
+                //string[] arr = new string[2];
+                //arr[0] = this.ToString();
+                //arr[1] = api.decode.ToString()[0].ToString().ToUpperInvariant() + api.decode.ToString().Substring(1);
+                //this.Data = PhpCommon.Call_user_func_array(arr, this.Data).ToString();
+
+                this.Data = Common.Obj2JsonStr(api.decode(this.Data));
             }
-            if (Common.IsPropertyExist(api, "format") && !string.IsNullOrEmpty(api.format.ToString()))
+            if (api.format != null && !string.IsNullOrEmpty(api.format.ToString()))
             {
-                this.Data = this.Clean(this.Data, api.format.ToString());
+                this.Data = this.Clean(this.Data, api.format);
             }
 
             return this.Data;
@@ -157,8 +157,6 @@ namespace Meting4Net.Core
             StringBuilder responseHeadersSb = new StringBuilder();
             if (payload != null)
             {
-
-
                 postDataStr = payload;
                 responseData = HttpAide.HttpPost(url: url, postDataStr: postDataStr, responseHeadersSb: responseHeadersSb, headers: headers.ToArray());
             }
@@ -214,11 +212,24 @@ namespace Meting4Net.Core
 
         public dynamic Url(string id, int br = 320)
         {
-            dynamic api = new JObject();
+            //dynamic api = new JObject();
+            Music_api api = new Music_api();
             switch (this.Server)
             {
                 case "netease":
-                    api = new
+                    //api = new
+                    //{
+                    //    method = "POST",
+                    //    url = "http://music.163.com/api/song/enhance/player/url",
+                    //    body = new
+                    //    {
+                    //        ids = "[" + id + "]",
+                    //        br = br * 1000
+                    //    },
+                    //    encode = "netease_AESCBC",
+                    //    decode = "netease_url"
+                    //};
+                    api = new Music_api
                     {
                         method = "POST",
                         url = "http://music.163.com/api/song/enhance/player/url",
@@ -227,19 +238,19 @@ namespace Meting4Net.Core
                             ids = "[" + id + "]",
                             br = br * 1000
                         },
-                        encode = "netease_AESCBC",
-                        decode = "netease_url"
+                        encode = Netease_AESCBC,
+                        decode = Netease_url
                     };
                     break;
                 case "tencent":
-                    api = new { };
+                    api = new Music_api { };
                     break;
             }
 
             return this.Exec(api);
         }
 
-        public static dynamic Netease_AESCBC(dynamic api)
+        public static Music_api Netease_AESCBC(Music_api api)
         {
             //string body = Common.Obj2JsonStr(api.body);
             string ids = api.body.ids.ToString();
@@ -249,29 +260,46 @@ namespace Meting4Net.Core
             // [0] params  [1] encSecKey
             string[] encryptParms = encryptBody.Split('\n');
 
-            dynamic newApi = new
+            //Music_api newApi = new Music_api
+            //{
+            //    method = api.method,
+            //    url = api.url.ToString().Replace("/api/", "/weapi/"),
+            //    body = new
+            //    {
+            //        @params = encryptParms[0],
+            //        encSecKey = encryptParms[1]
+            //    },
+            //    encode = api.encode,
+            //    decode = api.decode
+            //};
+            api.url = api.url.Replace("/api/", "/weapi/");
+            api.body = new
             {
-                method = api.method,
-                url = api.url.ToString().Replace("/api/", "/weapi/"),
-                body = new
-                {
-                    @params = encryptParms[0],
-                    encSecKey = encryptParms[1]
-                },
-                encode = api.encode,
-                decode = api.decode
+                @params = encryptParms[0],
+                encSecKey = encryptParms[1]
             };
 
-            return newApi;
+            return api;
         }
 
-        private dynamic Format_netease(dynamic data)
+        public static Music_search_item Format_netease(dynamic data)
         {
-            dynamic result = new
+            //dynamic result = new
+            //{
+            //    id = data.id.ToString(),
+            //    name = data.name.ToString(),
+            //    artist = new Object(),
+            //    album = data.al.name.ToString(),
+            //    pic_id = Common.IsPropertyExist(data.al, "pic_str") ? data.al.pic_str.ToString() : data.al.pic.ToString(),
+            //    url_id = data.id.ToString(),
+            //    lyric_id = data.id.ToString(),
+            //    source = "netease"
+            //};
+            Music_search_item result = new Music_search_item
             {
                 id = data.id.ToString(),
                 name = data.name.ToString(),
-                artist = new Object(),
+                artist = null,
                 album = data.al.name.ToString(),
                 pic_id = Common.IsPropertyExist(data.al, "pic_str") ? data.al.pic_str.ToString() : data.al.pic.ToString(),
                 url_id = data.id.ToString(),
@@ -284,12 +312,12 @@ namespace Meting4Net.Core
                 match = Regex.Match(data.al.picUrl.ToString(), @"\/(\d+)\.");
                 result.pic_id = match.Groups[1].Value;
             }
-            int index = 0;
+            List<string> artistList = new List<string>();
             foreach (dynamic vo in data.ar)
             {
-                result.artist.Add(index.ToString(), vo.name);
-                index++;
+                artistList.Add(vo.name.ToString());
             }
+            result.artist = artistList.ToArray();
 
             return result;
         }
@@ -305,7 +333,7 @@ namespace Meting4Net.Core
                         { "Referer", "https://music.163.com/" },
                         { "Cookie", "appver=1.5.9; os=osx; __remember_me=true; osver=%E7%89%88%E6%9C%AC%2010.13.5%EF%BC%88%E7%89%88%E5%8F%B7%2017F77%EF%BC%89;" },
                         { "User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/605.1.15 (KHTML, like Gecko)" },
-                        { "X-Real-IP", Common.LongToIp((new Random()).Next(1884815360, 1884890111).ToString()) },
+                        { "X-Real-IP", Common.Long2Ip((new Random()).Next(1884815360, 1884890111).ToString()) },
                         { "Accept", "*/*" },
                         { "Accept-Language", "zh-CN,zh;q=0.8,gl;q=0.6,zh-TW;q=0.4" },
                         { "Connection", "keep-alive" },
@@ -319,6 +347,31 @@ namespace Meting4Net.Core
             return header;
         }
 
-
+        public static Music_url Netease_url(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);
+            Music_url url = null;
+            if (!string.IsNullOrEmpty(data.data[0].url))
+            {
+                url = new Music_url
+                {
+                    url = data.data[0].url,
+                    size = data.data[0].size,
+                    br = data.data[0].br / 1000
+                };
+            }
+            else
+            {
+                url = new Music_url
+                {
+                    url = "",
+                    size = 0,
+                    br = -1
+                };
+            }
+            //url = Common.Obj2JsonStr(url);
+            return url;
+        }
     }
 }

@@ -11,11 +11,12 @@ namespace SimpleDemo.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        public JsonResult Index()
+        public ContentResult Index()
         {
             Meting api = new Meting("netease");
-            dynamic json = api.FormatMethod(true).Url("35847388");
-            return Json(json);
+            string jsonStr = api.FormatMethod(true).Url("35847388");
+
+            return Content(jsonStr, "application/json");
         }
     }
 }

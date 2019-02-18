@@ -90,7 +90,6 @@ namespace Meting4Net.Core
         }
         #endregion
 
-
         #region Http Post
         public static string HttpPost(string url, string postDataStr = "", StringBuilder responseHeadersSb = null, string[] headers = null)
         {

@@ -20,6 +20,14 @@ namespace Meting4Net.Core
             return JsonConvert.SerializeObject(jsonObj);
         }
 
+        public static JObject Dynamic2JOject(dynamic jsonObj)
+        {
+            string jsonStr = Obj2JsonStr(jsonObj);
+            JObject jObject = JsonConvert.DeserializeObject<JObject>(jsonStr);
+
+            return jObject;
+        }
+
         public static bool IsPropertyExist(dynamic data, string propertyname)
         {
             if (data is JObject)
@@ -50,7 +58,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="ip">ip地址</param>
         /// <returns></returns>
-        public static string IpToLong(string ip)
+        public static string Ip2Long(string ip)
         {
             long IntIp = 0;
             string[] ips = ip.Split('.');
@@ -63,7 +71,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="ip">ip地址</param>
         /// <returns></returns>
-        public static string LongToIp(string ip)
+        public static string Long2Ip(string ip)
         {
             long IntIp = long.Parse(ip);
             StringBuilder sb = new StringBuilder();
@@ -74,7 +82,7 @@ namespace Meting4Net.Core
             return sb.ToString();
         }
 
-        public static Dictionary<String, Object> Dyn2Dict(dynamic dynObj)
+        public static Dictionary<String, Object> Dynamic2Dict(dynamic dynObj)
         {
             var dictionary = new Dictionary<string, object>();
             foreach (PropertyDescriptor propertyDescriptor in TypeDescriptor.GetProperties(dynObj))
