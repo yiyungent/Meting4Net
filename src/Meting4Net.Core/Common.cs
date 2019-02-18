@@ -28,6 +28,14 @@ namespace Meting4Net.Core
             return jObject;
         }
 
+        public static JArray Dynamic2JArray(dynamic jsonObj)
+        {
+            string jsonStr = Obj2JsonStr(jsonObj);
+            JArray jArray = JsonConvert.DeserializeObject<JArray>(jsonStr);
+
+            return jArray;
+        }
+
         public static bool IsPropertyExist(dynamic data, string propertyname)
         {
             if (data is JObject)

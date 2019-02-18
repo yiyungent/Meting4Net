@@ -65,7 +65,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region MyRegion
-        public static dynamic Array_map(string[] fullTypeNameAndMethodName, dynamic array)
+        public static dynamic Array_map(string[] fullTypeNameAndMethodName, JArray array)
         {
             string fullTypeName = fullTypeNameAndMethodName[0];
             // 动态加载
@@ -76,8 +76,8 @@ namespace Meting4Net.Core
             string methodName = fullTypeNameAndMethodName[1];
 
             // 将数组中的每个都应用此方法
-            JObject jObject = (JObject)array;
-            JEnumerable<JToken> jTokens = jObject.Children();
+            JArray jArray = array;
+            JEnumerable<JToken> jTokens = jArray.Children();
             JObject result = new JObject();
             foreach (JToken item in jTokens)
             {

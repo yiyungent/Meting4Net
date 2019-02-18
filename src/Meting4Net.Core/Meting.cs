@@ -81,6 +81,7 @@ namespace Meting4Net.Core
             return this;
         }
 
+        #region 执行，返回数据
         private dynamic Exec(Music_api api)
         {
             if (api.encode != null)
@@ -131,12 +132,14 @@ namespace Meting4Net.Core
             }
             if (api.format != null && !string.IsNullOrEmpty(api.format.ToString()))
             {
-                this.Data = this.Clean(this.Data, api.format);
+                this.Data = Common.Obj2JsonStr(this.Clean(this.Data, api.format));
             }
 
             return this.Data;
         }
+        #endregion
 
+        #region 发起HTTP请求
         /// <summary>
         /// 
         /// </summary>
@@ -172,7 +175,9 @@ namespace Meting4Net.Core
 
             return this;
         }
+        #endregion
 
+        #region 根据规则检索
         /// <summary>
         /// 按照规则深入查询json, 例如 result.songs 则将查询json第一层的result再进入songs，抓取songs下的所有
         /// </summary>
@@ -184,7 +189,7 @@ namespace Meting4Net.Core
             string[] t = rule.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string vo in t)
             {
-                if (!Common.IsPropertyExist(array, vo.ToString()) || string.IsNullOrEmpty(array[vo]))
+                if (!Common.IsPropertyExist(array, vo.ToString()) || string.IsNullOrEmpty(array[vo].ToString()))
                 {
                     return null;
                 }
@@ -193,25 +198,31 @@ namespace Meting4Net.Core
 
             return array;
         }
+        #endregion
 
-        private dynamic Clean(dynamic raw, string rule)
+        #region 对原始json进行清理(格式化)
+        private Music_search_item[] Clean(dynamic raw, string rule)
         {
             raw = Common.JsonStr2Obj(raw.ToString());
             if (!string.IsNullOrEmpty(rule))
             {
                 raw = this.PickUp(raw, rule);
             }
-            string[] temp = new string[2];
-            temp[0] = this.ToString();
-            temp[1] = "Format_" + this.Server;
+            //string[] temp = new string[2];
+            //temp[0] = this.ToString();
+            //temp[1] = "Format_" + this.Server;
 
-            dynamic result = PhpCommon.Array_map(temp, raw);
+            //raw = Common.Dynamic2JArray(raw);
+            //dynamic result = PhpCommon.Array_map(temp, raw);
+
+            Music_search_item[] result = Format_select(raw);
 
             return result;
         }
+        #endregion
 
         #region 根据音乐ID获取音乐链接
-        public dynamic Url(string id, int br = 320)
+        public dynamic Url(long id, int br = 320)
         {
             //dynamic api = new JObject();
             Music_api api = new Music_api();
@@ -236,8 +247,7 @@ namespace Meting4Net.Core
                         url = "http://music.163.com/api/song/enhance/player/url",
                         body = new
                         {
-                            ids = "[" + id + "]",
-                            br = br * 1000
+                            data = "{\"ids\": \"" + id + "\", \"br\": \"" + br * 1000 + "\"}",
                         },
                         encode = Netease_AESCBC,
                         decode = Netease_url
@@ -252,14 +262,43 @@ namespace Meting4Net.Core
         }
         #endregion
 
+        #region 搜索
+
+        #endregion
+
+        #region 根据歌曲ID获取
+        public dynamic Song(long id)
+        {
+            Music_api api = null;
+            switch (this.Server)
+            {
+                case "netease":
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://music.163.com/api/v3/song/detail/",
+                        body = new
+                        {
+                            data = "{\"c\":\"[{\\\"id\\\":" + id + ",\\\"v\\\":0}]\"}"
+                        },
+                        encode = Netease_AESCBC,
+                        format = "songs"
+                    };
+                    break;
+            }
+
+            return this.Exec(api);
+        }
+        #endregion
+
         #region 网易云音乐API加密
-        public static Music_api Netease_AESCBC(Music_api api)
+        private static Music_api Netease_AESCBC(Music_api api)
         {
             //string body = Common.Obj2JsonStr(api.body);
-            string ids = api.body.ids.ToString();
-            string br = api.body.br.ToString();
-            string body = "{\"ids\": \"" + ids + "\", \"br\": \"" + br + "\"}";
-            string encryptBody = Encrypt.EncryptedRequest(body);
+            //string ids = api.body.ids.ToString();
+            //string br = api.body.br.ToString();
+            //string body = "{\"ids\": \"" + ids + "\", \"br\": \"" + br + "\"}";
+            string encryptBody = Encrypt.EncryptedRequest(api.body.data.ToString());
             // [0] params  [1] encSecKey
             string[] encryptParms = encryptBody.Split('\n');
 
@@ -286,13 +325,35 @@ namespace Meting4Net.Core
         }
         #endregion
 
+        #region 格式化选择
+        private Music_search_item[] Format_select(JArray rawArray)
+        {
+            Del_music_item_format del_Music_Item = null;
+            switch (this.Server)
+            {
+                case "netease":
+                    del_Music_Item = Format_netease;
+                    break;
+            }
+            List<Music_search_item> list = new List<Music_search_item>();
+            JEnumerable<JToken> jTokens = rawArray.Children();
+            foreach (JToken item in jTokens)
+            {
+                Music_search_item songItem = del_Music_Item(item);
+                list.Add(songItem);
+            }
+            Music_search_item[] result = list.ToArray();
+            return result;
+        }
+        #endregion
+
         #region 对搜索到的(单首)网易云音乐数据进行格式化
         /// <summary>
         /// 对搜索到的(单首)网易云音乐数据进行格式化
         /// </summary>
-        /// <param name="data">(单首)网易云音乐json数据</param>
+        /// <param name="songItem">(单首)网易云音乐json数据</param>
         /// <returns></returns>
-        public static Music_search_item Format_netease(dynamic data)
+        public static Music_search_item Format_netease(dynamic songItem)
         {
             //dynamic result = new
             //{
@@ -307,23 +368,23 @@ namespace Meting4Net.Core
             //};
             Music_search_item result = new Music_search_item
             {
-                id = data.id.ToString(),
-                name = data.name.ToString(),
+                id = songItem.id,
+                name = songItem.name.ToString(),
                 artist = null,
-                album = data.al.name.ToString(),
-                pic_id = Common.IsPropertyExist(data.al, "pic_str") ? data.al.pic_str.ToString() : data.al.pic.ToString(),
-                url_id = data.id.ToString(),
-                lyric_id = data.id.ToString(),
+                album = songItem.al.name.ToString(),
+                pic_id = Common.IsPropertyExist(songItem.al, "pic_str") ? songItem.al.pic_str.ToString() : songItem.al.pic.ToString(),
+                url_id = songItem.id,
+                lyric_id = songItem.id,
                 source = "netease"
             };
             Match match;
-            if (Common.IsPropertyExist(data.al, "picUrl"))
+            if (Common.IsPropertyExist(songItem.al, "picUrl"))
             {
-                match = Regex.Match(data.al.picUrl.ToString(), @"\/(\d+)\.");
+                match = Regex.Match(songItem.al.picUrl.ToString(), @"\/(\d+)\.");
                 result.pic_id = match.Groups[1].Value;
             }
             List<string> artistList = new List<string>();
-            foreach (dynamic vo in data.ar)
+            foreach (dynamic vo in songItem.ar)
             {
                 artistList.Add(vo.name.ToString());
             }
@@ -338,7 +399,7 @@ namespace Meting4Net.Core
         /// 设置请求头
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, string> CurlSet()
+        private Dictionary<string, string> CurlSet()
         {
             Dictionary<string, string> header = new Dictionary<string, string>();
             switch (this.Server)
@@ -365,7 +426,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)网易云音乐链接
-        public static Music_decode_url Netease_url(dynamic result)
+        private static Music_decode_url Netease_url(dynamic result)
         {
             string jsonStr = result.ToString();
             Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);

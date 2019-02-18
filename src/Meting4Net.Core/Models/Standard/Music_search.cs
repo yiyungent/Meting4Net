@@ -25,4 +25,6 @@ namespace Meting4Net.Core.Models.Standard
         public int lyric_id { get; set; }
         public string source { get; set; }
     }
+
+    public delegate Music_search_item Del_music_item_format(dynamic songItem);
 }
