@@ -25,13 +25,13 @@ namespace Meting4Net.Core
         public const string VERSION = "0.1.0";
 
         private string _raw;
-        private dynamic _data;
+        private string _data;
         private string _info;
         private string _error;
         private string _status;
 
         public string Raw { get { return _raw; } set { _raw = value; } }
-        public dynamic Data { get { return _data; } set { _data = value; } }
+        public string Data { get { return _data; } set { _data = value; } }
         public string Info { get { return _info; } set { _info = value; } }
         public string Error { get { return _error; } set { _error = value; } }
         public string Status { get { return _status; } set { _status = value; } }
@@ -82,14 +82,16 @@ namespace Meting4Net.Core
         }
 
         #region 执行，返回数据
-        private dynamic Exec(Music_api api)
+        private string Exec(Music_api api)
         {
             if (api.encode != null)
             {
+                #region 废弃
                 //string[] fullTypeNameAndMethodName = new string[2];
                 //fullTypeNameAndMethodName[0] = this.ToString();
                 //fullTypeNameAndMethodName[1] = api.encode.ToString().ToUpperInvariant()[0] + api.encode.ToString().Substring(1);
-                //api = PhpCommon.Call_user_func_array(fullTypeNameAndMethodName, api);
+                //api = PhpCommon.Call_user_func_array(fullTypeNameAndMethodName, api); 
+                #endregion
 
                 api = api.encode(api);
             }
@@ -108,7 +110,6 @@ namespace Meting4Net.Core
                 }
             }
 
-            //this.Curl(url: api.url.ToString(), payload: api.body.ToString());
             this.Curl(url: url, payload: parmsData);
 
             // 若不进行格式化，则直接返回原始数据
@@ -122,11 +123,13 @@ namespace Meting4Net.Core
 
             if (api.decode != null)
             {
+                #region 废弃
                 //// [0]完全限定类名，[1]方法名
                 //string[] arr = new string[2];
                 //arr[0] = this.ToString();
                 //arr[1] = api.decode.ToString()[0].ToString().ToUpperInvariant() + api.decode.ToString().Substring(1);
-                //this.Data = PhpCommon.Call_user_func_array(arr, this.Data).ToString();
+                //this.Data = PhpCommon.Call_user_func_array(arr, this.Data).ToString(); 
+                #endregion
 
                 this.Data = api.decode(this.Data).ToJsonStr();
             }
@@ -208,12 +211,14 @@ namespace Meting4Net.Core
             {
                 raw = this.PickUp(raw, rule);
             }
+            #region 废弃
             //string[] temp = new string[2];
             //temp[0] = this.ToString();
             //temp[1] = "Format_" + this.Server;
 
             //raw = Common.Dynamic2JArray(raw);
-            //dynamic result = PhpCommon.Array_map(temp, raw);
+            //dynamic result = PhpCommon.Array_map(temp, raw); 
+            #endregion
 
             Music_search_item[] result = Format_select(raw);
 
@@ -222,13 +227,13 @@ namespace Meting4Net.Core
         #endregion
 
         #region 根据音乐ID获取音乐链接
-        public dynamic Url(long id, int br = 320)
+        public string Url(long id, int br = 320)
         {
-            //dynamic api = new JObject();
             Music_api api = new Music_api();
             switch (this.Server)
             {
                 case "netease":
+                    #region 废弃
                     //api = new
                     //{
                     //    method = "POST",
@@ -240,14 +245,16 @@ namespace Meting4Net.Core
                     //    },
                     //    encode = "netease_AESCBC",
                     //    decode = "netease_url"
-                    //};
+                    //}; 
+                    #endregion
+
                     api = new Music_api
                     {
                         method = "POST",
                         url = "http://music.163.com/api/song/enhance/player/url",
                         body = new
                         {
-                            data = "{\"ids\": \"" + id + "\", \"br\": \"" + br * 1000 + "\"}",
+                            data = "{\"ids\": \"[" + id + "]\", \"br\": \"" + br * 1000 + "\"}",
                         },
                         encode = Netease_AESCBC,
                         decode = Netease_url
@@ -267,7 +274,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 根据歌曲ID获取
-        public dynamic Song(long id)
+        public string Song(long id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -294,14 +301,18 @@ namespace Meting4Net.Core
         #region 网易云音乐API加密
         private static Music_api Netease_AESCBC(Music_api api)
         {
+            #region 废弃
             //string body = Common.Obj2JsonStr(api.body);
             //string ids = api.body.ids.ToString();
             //string br = api.body.br.ToString();
-            //string body = "{\"ids\": \"" + ids + "\", \"br\": \"" + br + "\"}";
+            //string body = "{\"ids\": \"" + ids + "\", \"br\": \"" + br + "\"}"; 
+            #endregion
+
             string encryptBody = Encrypt.EncryptedRequest(api.body.data.ToString());
             // [0] params  [1] encSecKey
             string[] encryptParms = encryptBody.Split('\n');
 
+            #region 废弃
             //Music_api newApi = new Music_api
             //{
             //    method = api.method,
@@ -313,7 +324,9 @@ namespace Meting4Net.Core
             //    },
             //    encode = api.encode,
             //    decode = api.decode
-            //};
+            //}; 
+            #endregion
+
             api.url = api.url.Replace("/api/", "/weapi/");
             api.body = new
             {
@@ -355,6 +368,7 @@ namespace Meting4Net.Core
         /// <returns></returns>
         public static Music_search_item Format_netease(dynamic songItem)
         {
+            #region 废弃
             //dynamic result = new
             //{
             //    id = data.id.ToString(),
@@ -365,7 +379,9 @@ namespace Meting4Net.Core
             //    url_id = data.id.ToString(),
             //    lyric_id = data.id.ToString(),
             //    source = "netease"
-            //};
+            //}; 
+            #endregion
+
             Music_search_item result = new Music_search_item
             {
                 id = songItem.id,
@@ -449,7 +465,6 @@ namespace Meting4Net.Core
                     br = -1
                 };
             }
-            //url = Common.Obj2JsonStr(url);
             return url;
         }
         #endregion
