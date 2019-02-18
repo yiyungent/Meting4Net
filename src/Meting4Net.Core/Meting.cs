@@ -86,13 +86,6 @@ namespace Meting4Net.Core
         {
             if (api.encode != null)
             {
-                #region 废弃
-                //string[] fullTypeNameAndMethodName = new string[2];
-                //fullTypeNameAndMethodName[0] = this.ToString();
-                //fullTypeNameAndMethodName[1] = api.encode.ToString().ToUpperInvariant()[0] + api.encode.ToString().Substring(1);
-                //api = PhpCommon.Call_user_func_array(fullTypeNameAndMethodName, api); 
-                #endregion
-
                 api = api.encode(api);
             }
 
@@ -128,14 +121,6 @@ namespace Meting4Net.Core
 
             if (api.decode != null)
             {
-                #region 废弃
-                //// [0]完全限定类名，[1]方法名
-                //string[] arr = new string[2];
-                //arr[0] = this.ToString();
-                //arr[1] = api.decode.ToString()[0].ToString().ToUpperInvariant() + api.decode.ToString().Substring(1);
-                //this.Data = PhpCommon.Call_user_func_array(arr, this.Data).ToString(); 
-                #endregion
-
                 this.Data = api.decode(this.Data).ToJsonStr();
             }
             if (api.format != null && !string.IsNullOrEmpty(api.format.ToString()))
@@ -216,14 +201,6 @@ namespace Meting4Net.Core
             {
                 raw = this.PickUp(raw, rule);
             }
-            #region 废弃
-            //string[] temp = new string[2];
-            //temp[0] = this.ToString();
-            //temp[1] = "Format_" + this.Server;
-
-            //raw = Common.Dynamic2JArray(raw);
-            //dynamic result = PhpCommon.Array_map(temp, raw); 
-            #endregion
 
             Music_search_item[] result = Format_select(raw);
 
@@ -238,31 +215,10 @@ namespace Meting4Net.Core
             switch (this.Server)
             {
                 case "netease":
-                    #region 废弃
-                    //api = new
-                    //{
-                    //    method = "POST",
-                    //    url = "http://music.163.com/api/song/enhance/player/url",
-                    //    body = new
-                    //    {
-                    //        ids = "[" + id + "]",
-                    //        br = br * 1000
-                    //    },
-                    //    encode = "netease_AESCBC",
-                    //    decode = "netease_url"
-                    //}; 
-                    #endregion
-
                     api = new Music_api
                     {
                         method = "POST",
                         url = "http://music.163.com/api/song/enhance/player/url",
-                        #region 废弃
-                        //body = new
-                        //{
-                        //    data = "{\"ids\": \"[" + id + "]\", \"br\": \"" + br * 1000 + "\"}",
-                        //}, 
-                        #endregion
                         body = Common.Dynamic2JObject(new
                         {
                             ids = "[" + id + "]",
@@ -296,12 +252,6 @@ namespace Meting4Net.Core
                     {
                         method = "POST",
                         url = "http://music.163.com/api/v3/song/detail/",
-                        #region 废弃
-                        //body = new
-                        //{
-                        //    data = "{\"c\":\"[{\\\"id\\\":" + id + ",\\\"v\\\":0}]\"}"
-                        //}, 
-                        #endregion
                         body = Common.Dynamic2JObject(new
                         {
                             c = "[{\"id\":" + id + ",\"v\":0}]"
@@ -327,20 +277,6 @@ namespace Meting4Net.Core
                     {
                         method = "POST",
                         url = "http://music.163.com/api/v1/album/" + id,
-                        #region 废弃
-                        //body = new
-                        //{
-                        //    data = Common.Obj2JsonStr(new
-                        //    {
-                        //        total = "true",
-                        //        offset = "0",
-                        //        id = id,
-                        //        limit = "1000",
-                        //        ext = "true",
-                        //        private_cloud = "true"
-                        //    })
-                        //}, 
-                        #endregion
                         body = Common.Dynamic2JObject(new
                         {
                             total = "true",
@@ -371,18 +307,6 @@ namespace Meting4Net.Core
                     {
                         method = "POST",
                         url = "http://music.163.com/api/v1/artist/" + id,
-                        #region 废弃
-                        //body = new
-                        //{
-                        //    data = Common.Obj2JsonStr(new
-                        //    {
-                        //        ext = "true",
-                        //        private_cloud = "true",
-                        //        top = limit,
-                        //        id = id
-                        //    }),
-                        //}, 
-                        #endregion
                         body = Common.Dynamic2JObject(new
                         {
                             ext = "true",
@@ -403,41 +327,13 @@ namespace Meting4Net.Core
         #region 网易云音乐API加密
         private static Music_api Netease_AESCBC(Music_api api)
         {
-            #region 废弃
-            //string body = Common.Obj2JsonStr(api.body);
-            //string ids = api.body.ids.ToString();
-            //string br = api.body.br.ToString();
-            //string body = "{\"ids\": \"" + ids + "\", \"br\": \"" + br + "\"}"; 
-            #endregion
-            #region 废弃
-            //string bodyJsonStr = api.body.data.ToString(); 
-            #endregion
             string bodyJsonStr = Common.Obj2JsonStr(api.body);
             string encryptBody = Encrypt.EncryptedRequest(bodyJsonStr);
             // [0] params  [1] encSecKey
             string[] encryptParms = encryptBody.Split('\n');
 
-            #region 废弃
-            //Music_api newApi = new Music_api
-            //{
-            //    method = api.method,
-            //    url = api.url.ToString().Replace("/api/", "/weapi/"),
-            //    body = new
-            //    {
-            //        @params = encryptParms[0],
-            //        encSecKey = encryptParms[1]
-            //    },
-            //    encode = api.encode,
-            //    decode = api.decode
-            //}; 
-            #endregion
-
             api.url = api.url.Replace("/api/", "/weapi/");
-            //api.body = new
-            //{
-            //    @params = encryptParms[0],
-            //    encSecKey = encryptParms[1]
-            //};
+
             api.body = Common.Dynamic2JObject(new
             {
                 @params = encryptParms[0],
@@ -478,20 +374,6 @@ namespace Meting4Net.Core
         /// <returns></returns>
         public static Music_search_item Format_netease(dynamic songItem)
         {
-            #region 废弃
-            //dynamic result = new
-            //{
-            //    id = data.id.ToString(),
-            //    name = data.name.ToString(),
-            //    artist = new Object(),
-            //    album = data.al.name.ToString(),
-            //    pic_id = Common.IsPropertyExist(data.al, "pic_str") ? data.al.pic_str.ToString() : data.al.pic.ToString(),
-            //    url_id = data.id.ToString(),
-            //    lyric_id = data.id.ToString(),
-            //    source = "netease"
-            //}; 
-            #endregion
-
             Music_search_item result = new Music_search_item
             {
                 id = songItem.id,
@@ -527,7 +409,7 @@ namespace Meting4Net.Core
         /// <returns></returns>
         private Dictionary<string, string> CurlSet()
         {
-            Dictionary<string, string> header = new Dictionary<string, string>();
+            Dictionary<string, string> header = null;
             switch (this.Server)
             {
                 case "netease":
