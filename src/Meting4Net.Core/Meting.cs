@@ -208,35 +208,6 @@ namespace Meting4Net.Core
         }
         #endregion
 
-        #region 根据音乐ID获取音乐链接
-        public string Url(long id, int br = 320)
-        {
-            Music_api api = null;
-            switch (this.Server)
-            {
-                case "netease":
-                    api = new Music_api
-                    {
-                        method = "POST",
-                        url = "http://music.163.com/api/song/enhance/player/url",
-                        body = Common.Dynamic2JObject(new
-                        {
-                            ids = "[" + id + "]",
-                            br = br * 1000
-                        }),
-                        encode = Netease_AESCBC,
-                        decode = Netease_url
-                    };
-                    break;
-                case "tencent":
-                    api = new Music_api { };
-                    break;
-            }
-
-            return this.Exec(api);
-        }
-        #endregion
-
         #region 搜索
 
         #endregion
@@ -344,6 +315,64 @@ namespace Meting4Net.Core
                         }),
                         encode = Netease_AESCBC,
                         format = "playlist.tracks"
+                    };
+                    break;
+            }
+
+            return this.Exec(api);
+        }
+        #endregion
+
+        #region 根据音乐ID获取音乐链接
+        public string Url(long id, int br = 320)
+        {
+            Music_api api = null;
+            switch (this.Server)
+            {
+                case "netease":
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://music.163.com/api/song/enhance/player/url",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            ids = "[" + id + "]",
+                            br = br * 1000
+                        }),
+                        encode = Netease_AESCBC,
+                        decode = Netease_url
+                    };
+                    break;
+                case "tencent":
+                    api = new Music_api { };
+                    break;
+            }
+
+            return this.Exec(api);
+        }
+        #endregion
+
+        #region 根据歌曲ID查歌词
+        public string Lyric(long id)
+        {
+            Music_api api = null;
+            switch (this.Server)
+            {
+                case "netease":
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://music.163.com/api/song/lyric",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            id = id,
+                            os = "linux",
+                            lv = -1,
+                            kv = -1,
+                            tv = -1
+                        }),
+                        encode = Netease_AESCBC,
+                        decode = Netease_lyric
                     };
                     break;
             }
@@ -486,6 +515,21 @@ namespace Meting4Net.Core
                 };
             }
             return url;
+        }
+        #endregion
+
+        #region 提取(解析)网易云音乐歌词
+        private static Music_decode_lyric Netease_lyric(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            Models.Netease.Netease_lyric data = JsonConvert.DeserializeObject<Models.Netease.Netease_lyric>(jsonStr);
+            Music_decode_lyric lyric = new Music_decode_lyric
+            {
+                lyric = data.lrc != null && !string.IsNullOrEmpty(data.lrc.lyric) ? data.lrc.lyric : "",
+                tlyric = data.tlyric != null && !string.IsNullOrEmpty(data.tlyric.lyric) ? data.tlyric.lyric : ""
+            };
+
+            return lyric;
         }
         #endregion
     }

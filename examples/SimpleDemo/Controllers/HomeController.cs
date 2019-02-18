@@ -19,7 +19,9 @@ namespace SimpleDemo.Controllers
             //string jsonStr = api.FormatMethod(true).Album(73927024);
             //string jsonStr = api.Album(73927024);
             //string jsonStr = api.FormatMethod(true).Artist(1049179);
-            string jsonStr = api.FormatMethod(true).Playlist(2487120533);
+            //string jsonStr = api.FormatMethod(true).Playlist(2487120533);
+            //string jsonStr = api.FormatMethod(true).Lyric(35847388);
+            string jsonStr = api.FormatMethod(false).Lyric(35847388);
 
             return Content(jsonStr, "application/json");
         }
