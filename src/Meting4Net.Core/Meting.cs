@@ -112,6 +112,11 @@ namespace Meting4Net.Core
 
             this.Curl(url: url, payload: parmsData);
 
+            if (string.IsNullOrEmpty(this.Raw))
+            {
+                return "异常: 未查询到数据";
+            }
+
             // 若不进行格式化，则直接返回原始数据
             if (!this.Format)
             {
@@ -323,6 +328,37 @@ namespace Meting4Net.Core
                         },
                         encode = Netease_AESCBC,
                         format = "songs"
+                    };
+                    break;
+            }
+
+            return this.Exec(api);
+        }
+        #endregion
+
+        #region 根据作者ID获取
+        public string Artist(long id, int limit = 50)
+        {
+            Music_api api = null;
+            switch (this.Server)
+            {
+                case "netease":
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://music.163.com/api/v1/artist/" + id,
+                        body = new
+                        {
+                            data = Common.Obj2JsonStr(new
+                            {
+                                ext = "true",
+                                private_cloud = "true",
+                                top = limit,
+                                id = id
+                            }),
+                        },
+                        encode = Netease_AESCBC,
+                        format = "hotSongs"
                     };
                     break;
             }
