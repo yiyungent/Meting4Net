@@ -10,7 +10,7 @@
 
 ## Introduction
 
-Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> for .Net, Thanks to <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a>.
+Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> for .Net, Thanks to <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a>.   
 A powerful music API framework to accelerate your development
  + **Elegant** - Easy to use, a standardized format for all music platforms.
  + **Lightweight** - A single-file library that's less than 46KB.
@@ -32,7 +32,7 @@ Meting api = new Meting("netease");
 string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
 {
     page = 1,
-    limit = 50## 环境
+    limit = 50
 });
 
 return Content(jsonStr, "application/json");
