@@ -26,31 +26,62 @@ namespace Meting4Net.Core
 
         private string _raw;
         private string _data;
-        private string _info;
-        private string _error;
-        private string _status;
+        //private string _info;
+        //private string _error;
+        //private string _status;
 
+        /// <summary>
+        /// 获取的原始json数据
+        /// </summary>
         public string Raw { get { return _raw; } set { _raw = value; } }
+
+        /// <summary>
+        /// 如果格式化则为格式化后json,未格式化则同 Raw
+        /// </summary>
         public string Data { get { return _data; } set { _data = value; } }
-        public string Info { get { return _info; } set { _info = value; } }
-        public string Error { get { return _error; } set { _error = value; } }
-        public string Status { get { return _status; } set { _status = value; } }
+
+        //public string Info { get { return _info; } set { _info = value; } }
+        //public string Error { get { return _error; } set { _error = value; } }
+        //public string Status { get { return _status; } set { _status = value; } }
 
         private string _server;
-        private string _proxy;
+        //private string _proxy;
         private bool _format = false;
         private Dictionary<string, string> _header;
 
+        /// <summary>
+        /// 音乐服务者(eg. netease)
+        /// </summary>
         public string Server { get { return _server; } set { _server = value; } }
-        public string Proxy { get { return _proxy; } set { _proxy = value; } }
+        //public string Proxy { get { return _proxy; } set { _proxy = value; } }
+
+        /// <summary>
+        /// 是否格式化, 默认 false
+        /// </summary>
         public bool Format { get { return _format; } set { _format = value; } }
+
+        /// <summary>
+        /// 请求头
+        /// </summary>
         public Dictionary<string, string> Header { get { return _header; } set { _header = value; } }
 
+        #region 初始化
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="value"></param>
         public Meting(string value = "netease")
         {
             this.Site(value);
         }
+        #endregion
 
+        #region 初始化Server, Header
+        /// <summary>
+        /// 初始化Server, Header
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public Meting Site(string value)
         {
             string[] suppose = new string[] { "netease", "tencent", "xiami", "kugou", "baidu" };
@@ -59,29 +90,51 @@ namespace Meting4Net.Core
 
             return this;
         }
+        #endregion
 
+        #region 自定义Cookie
+        /// <summary>
+        /// 自定义Cookie
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public Meting Cookie(string value)
         {
             this.Header["Cookie"] = value;
 
             return this;
         }
+        #endregion
 
+        #region 是否格式化
+        /// <summary>
+        /// 是否格式化
+        /// </summary>
+        /// <param name="value">默认格式化 true</param>
+        /// <returns></returns>
         public Meting FormatMethod(bool value = true)
         {
             this.Format = value;
 
             return this;
         }
+        #endregion
 
-        public Meting ProxyMethod(string value)
-        {
-            this.Proxy = value;
+        #region 设置代理
+        //public Meting ProxyMethod(string value)
+        //{
+        //    this.Proxy = value;
 
-            return this;
-        }
+        //    return this;
+        //} 
+        #endregion
 
         #region 执行，返回数据
+        /// <summary>
+        /// 执行，返回数据
+        /// </summary>
+        /// <param name="api"></param>
+        /// <returns></returns>
         private string Exec(Music_api api)
         {
             if (api.encode != null)
@@ -107,7 +160,7 @@ namespace Meting4Net.Core
 
             if (string.IsNullOrEmpty(this.Raw))
             {
-                return "异常: 未查询到数据";
+                return "{\"code\": -1, \"msg\": \"异常：未查询到数据\"}";
             }
 
             // 若不进行格式化，则直接返回原始数据
@@ -134,7 +187,7 @@ namespace Meting4Net.Core
 
         #region 发起HTTP请求
         /// <summary>
-        /// 
+        /// 发起HTTP请求
         /// </summary>
         /// <param name="url"></param>
         /// <param name="payload"></param>
@@ -194,6 +247,12 @@ namespace Meting4Net.Core
         #endregion
 
         #region 对原始json进行清理(格式化)
+        /// <summary>
+        /// 对原始json进行清理(格式化)
+        /// </summary>
+        /// <param name="raw"></param>
+        /// <param name="rule"></param>
+        /// <returns></returns>
         private Music_search_item[] Clean(dynamic raw, string rule)
         {
             raw = Common.JsonStr2Obj(raw.ToString());
@@ -208,7 +267,13 @@ namespace Meting4Net.Core
         }
         #endregion
 
-        #region 搜索
+        #region 搜索歌曲
+        /// <summary>
+        /// 搜索歌曲
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public string Search(string keyword, Options options = null)
         {
             #region 当未提供 options 时则为 null,此时对其进行 new ，使其不为 null,但其中的初始化属性仍为null，这样因为默认 options 不为null,所以下方判断时不再需要判断 options!=null
@@ -245,6 +310,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 根据歌曲ID获取
+        /// <summary>
+        /// 根据歌曲ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string Song(long id)
         {
             Music_api api = null;
@@ -270,6 +340,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 根据专辑ID获取
+        /// <summary>
+        /// 根据专辑ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string Album(long id)
         {
             Music_api api = null;
@@ -299,7 +374,13 @@ namespace Meting4Net.Core
         }
         #endregion
 
-        #region 根据作者ID获取
+        #region 根据作家ID获取
+        /// <summary>
+        /// 根据作家ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
         public string Artist(long id, int limit = 50)
         {
             Music_api api = null;
@@ -328,6 +409,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 根据歌单ID获取
+        /// <summary>
+        /// 根据歌单ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string Playlist(long id)
         {
             Music_api api = null;
@@ -356,6 +442,12 @@ namespace Meting4Net.Core
         #endregion
 
         #region 根据音乐ID获取音乐链接
+        /// <summary>
+        /// 根据音乐ID获取音乐链接
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="br"></param>
+        /// <returns></returns>
         public string Url(long id, int br = 320)
         {
             Music_api api = null;
@@ -385,6 +477,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 根据歌曲ID查歌词
+        /// <summary>
+        /// 根据歌曲ID查歌词
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string Lyric(long id)
         {
             Music_api api = null;
@@ -414,6 +511,12 @@ namespace Meting4Net.Core
         #endregion
 
         #region 歌曲图片(对指定歌曲编号，返回图片地址)
+        /// <summary>
+        /// 歌曲图片(对指定歌曲编号，返回图片地址)
+        /// </summary>
+        /// <param name="id">eg.传递通过 api.Song(35847388) 获取到的 pic_id</param>
+        /// <param name="size"></param>
+        /// <returns></returns>
         public string Pic(long id, int size = 300)
         {
             string picUrl = string.Empty;
@@ -433,6 +536,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 网易云音乐API加密
+        /// <summary>
+        /// 网易云音乐API加密
+        /// </summary>
+        /// <param name="api"></param>
+        /// <returns></returns>
         private static Music_api Netease_AESCBC(Music_api api)
         {
             string bodyJsonStr = Common.Obj2JsonStr(api.body);
@@ -453,6 +561,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 网易云音乐歌曲ID加密
+        /// <summary>
+        /// 网易云音乐歌曲ID加密
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string Netease_encryptId(long id)
         {
             char[] magic = "3go8&$8*3*3h0k(2)2".ToCharArray();
@@ -480,6 +593,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 格式化选择
+        /// <summary>
+        /// 格式化选择
+        /// </summary>
+        /// <param name="rawArray"></param>
+        /// <returns></returns>
         private Music_search_item[] Format_select(JArray rawArray)
         {
             Del_music_item_format del_Music_Item = null;
@@ -569,6 +687,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)网易云音乐链接
+        /// <summary>
+        /// 提取(解析)网易云音乐链接
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
         private static Music_decode_url Netease_url(dynamic result)
         {
             string jsonStr = result.ToString();
@@ -597,6 +720,11 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)网易云音乐歌词
+        /// <summary>
+        /// 提取(解析)网易云音乐歌词
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
         private static Music_decode_lyric Netease_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
