@@ -47,7 +47,9 @@ namespace SimpleDemo.Controllers
 
             #region 腾讯QQ音乐 API
             Meting api = new Meting("tencent");
-            string jsonStr = api.FormatMethod(true).Search("千里邀月");
+            //string jsonStr = api.FormatMethod(true).Search("千里邀月");
+            // 腾讯传递 通过Search() 获取到的 "id"
+            string jsonStr = api.FormatMethod(true).Song("004MQDu81ob4BW");
             #endregion
 
             return Content(jsonStr, "application/json");
