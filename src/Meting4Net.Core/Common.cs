@@ -5,6 +5,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
+using System.Security.Cryptography;
 
 namespace Meting4Net.Core
 {
@@ -100,5 +101,114 @@ namespace Meting4Net.Core
             }
             return dictionary;
         }
+
+        #region Base64方式的编码与解码
+        ///编码
+        public static string EncodeBase64(string code_type, string code)
+        {
+            string encode = "";
+            byte[] bytes = Encoding.GetEncoding(code_type).GetBytes(code);
+            //byte[] bytes = Encoding.UTF8.GetBytes(code);
+            try
+            {
+                encode = Convert.ToBase64String(bytes);
+            }
+            catch
+            {
+                encode = code;
+            }
+            return encode;
+        }
+        ///编码
+        public static string EncodeBase64(byte[] bytes)
+        {
+            string encode = "";
+            encode = Convert.ToBase64String(bytes);
+
+            return encode;
+        }
+        ///解码
+        public static string DecodeBase64(string code_type, string code)
+        {
+            string decode = "";
+            byte[] bytes = Convert.FromBase64String(code);
+            try
+            {
+                decode = Encoding.GetEncoding(code_type).GetString(bytes);
+            }
+            catch
+            {
+                decode = code;
+            }
+            return decode;
+        }
+        #endregion
+
+        #region MD5加密
+        /// <summary>
+        /// 16位MD5加密
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string MD5Encrypt16(string str)
+        {
+            var md5 = new MD5CryptoServiceProvider();
+            string t2 = BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(str)), 4, 8);
+            t2 = t2.Replace("-", "");
+            return t2;
+        }
+
+        /// <summary>
+        /// 16位MD5加密
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="flag"></param>
+        /// <returns></returns>
+        public static byte[] MD5Encrypt16(string str, bool flag)
+        {
+            //获取加密服务  
+            MD5CryptoServiceProvider md5CSP = new MD5CryptoServiceProvider();
+            //获取要加密的字段，并转化为Byte[]数组  
+            byte[] testEncrypt = System.Text.Encoding.UTF8.GetBytes(str);
+            //加密Byte[]数组  
+            byte[] resultEncrypt = md5CSP.ComputeHash(testEncrypt);
+
+            return resultEncrypt;
+        }
+        /// <summary>
+        /// 32位MD5加密
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string MD5Encrypt32(string str)
+        {
+            string cl = str;
+            string pwd = "";
+            MD5 md5 = MD5.Create(); //实例化一个md5对像
+                                    // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
+            byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(cl));
+            // 通过使用循环，将字节类型的数组转换为字符串，此字符串是常规字符格式化所得
+            for (int i = 0; i < s.Length; i++)
+            {
+                // 将得到的字符串使用十六进制类型格式。格式后的字符是小写的字母，如果使用大写（X）则格式后的字符是大写字符 
+                pwd = pwd + s[i].ToString("X");
+            }
+            return pwd;
+        }
+        /// <summary>
+        /// 64位MD5加密
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string MD5Encrypt64(string str)
+        {
+            string cl = str;
+            //string pwd = "";
+            MD5 md5 = MD5.Create(); //实例化一个md5对像
+                                    // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
+            byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(cl));
+            return Convert.ToBase64String(s);
+        }
+        #endregion
     }
 }

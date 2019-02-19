@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 
 namespace Meting4Net.Core.Models.Netease
 {
-    public class Netease_search_raw
+    public class Netease_search_raw : JsonModel
     {
         public Netease_search_result result { get; set; }
         public int code { get; set; }
     }
 
-    public class Netease_search_result
+    public class Netease_search_result : JsonModel
     {
         public Netease_search_result_song[] songs { get; set; }
         public int songCount { get; set; }
     }
 
-    public class Netease_search_result_song
+    public class Netease_search_result_song : JsonModel
     {
         public string name { get; set; }
         public int id { get; set; }
@@ -56,7 +56,7 @@ namespace Meting4Net.Core.Models.Netease
         public Netease_search_result_song_privilege privilege { get; set; }
     }
 
-    public class Netease_search_result_song_al
+    public class Netease_search_result_song_al : JsonModel
     {
         public int id { get; set; }
         public string name { get; set; }
@@ -66,7 +66,7 @@ namespace Meting4Net.Core.Models.Netease
         public long pic { get; set; }
     }
 
-    public class Netease_search_result_song_h
+    public class Netease_search_result_song_h : JsonModel
     {
         public int br { get; set; }
         public int fid { get; set; }
@@ -74,7 +74,7 @@ namespace Meting4Net.Core.Models.Netease
         public float vd { get; set; }
     }
 
-    public class Netease_search_result_song_m
+    public class Netease_search_result_song_m : JsonModel
     {
         public int br { get; set; }
         public int fid { get; set; }
@@ -82,7 +82,7 @@ namespace Meting4Net.Core.Models.Netease
         public float vd { get; set; }
     }
 
-    public class Netease_search_result_song_l
+    public class Netease_search_result_song_l : JsonModel
     {
         public int br { get; set; }
         public int fid { get; set; }
@@ -90,7 +90,7 @@ namespace Meting4Net.Core.Models.Netease
         public float vd { get; set; }
     }
 
-    public class Netease_search_result_song_privilege
+    public class Netease_search_result_song_privilege : JsonModel
     {
         public int id { get; set; }
         public int fee { get; set; }
@@ -108,7 +108,7 @@ namespace Meting4Net.Core.Models.Netease
         public int flag { get; set; }
     }
 
-    public class Netease_search_result_song_ar
+    public class Netease_search_result_song_ar : JsonModel
     {
         public int id { get; set; }
         public string name { get; set; }

@@ -14,7 +14,7 @@ namespace Meting4Net.Core.Models.Standard
         public Music_search_item[] items { get; set; }
     }
 
-    public class Music_search_item
+    public class Music_search_item : JsonModel
     {
         public int id { get; set; }
         public string name { get; set; }

@@ -9,13 +9,13 @@ namespace Meting4Net.Core.Models.Netease
     /// <summary>
     /// 通过 Meting.Url() 获得的原始 Netease json数据
     /// </summary>
-    public class Netease_url
+    public class Netease_url : JsonModel
     {
         public Netease_url_data[] data { get; set; }
         public int code { get; set; }
     }
 
-    public class Netease_url_data
+    public class Netease_url_data : JsonModel
     {
         public int id { get; set; }
         public string url { get; set; }

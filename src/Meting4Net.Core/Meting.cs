@@ -381,6 +381,25 @@ namespace Meting4Net.Core
         }
         #endregion
 
+        #region 专辑图片(对指定歌曲编号，返回专辑图片地址)
+        public string Pic(long id, int size = 300)
+        {
+            string picUrl = string.Empty;
+            switch (this.Server)
+            {
+                case "netease":
+                    picUrl = "https://p3.music.126.net/" + this.Netease_encryptId(id) + "/" + id + ".jpg?param=" + size + "y" + size;
+                    break;
+            }
+
+            string jsonStr = Common.Obj2JsonStr(new
+            {
+                url = picUrl
+            });
+            return jsonStr;
+        }
+        #endregion
+
         #region 网易云音乐API加密
         private static Music_api Netease_AESCBC(Music_api api)
         {
@@ -398,6 +417,33 @@ namespace Meting4Net.Core
             });
 
             return api;
+        }
+        #endregion
+
+        #region 网易云音乐歌曲ID加密
+        public string Netease_encryptId(long id)
+        {
+            char[] magic = "3go8&$8*3*3h0k(2)2".ToCharArray();
+            char[] song_id = id.ToString().ToCharArray();
+            for (int i = 0; i < song_id.Length; i++)
+            {
+                int temp1 = PhpCommon.Ord(song_id[i].ToString());
+                int temp2 = PhpCommon.Ord(magic[i % magic.Length].ToString());
+                int temp3 = temp1 ^ temp2;
+                song_id[i] = PhpCommon.Chr(temp3);
+            }
+
+            #region 不可行
+            //string md5Temp = Common.MD5Encrypt16(string.Join("", song_id));
+            //// 此处不一致
+            //string result = Common.EncodeBase64("utf-8", md5Temp); 
+            #endregion
+
+            byte[] temp4 = Common.MD5Encrypt16(string.Join("", song_id), true);
+            string result = Common.EncodeBase64(temp4);
+            result = result.Replace("/", "+").Replace("_", "-");
+
+            return result;
         }
         #endregion
 

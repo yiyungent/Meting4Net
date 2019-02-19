@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Meting4Net.Core.Models.Netease
 {
-    public class Netease_lyric
+    public class Netease_lyric : JsonModel
     {
         public bool sgc { get; set; }
         public bool sfy { get; set; }
@@ -19,7 +19,7 @@ namespace Meting4Net.Core.Models.Netease
         public int code { get; set; }
     }
 
-    public class Netease_lyric_transuser
+    public class Netease_lyric_transuser : JsonModel
     {
         public int id { get; set; }
         public int status { get; set; }
@@ -29,7 +29,7 @@ namespace Meting4Net.Core.Models.Netease
         public long uptime { get; set; }
     }
 
-    public class Netease_lyric_lyricuser
+    public class Netease_lyric_lyricuser : JsonModel
     {
         public int id { get; set; }
         public int status { get; set; }
@@ -39,19 +39,19 @@ namespace Meting4Net.Core.Models.Netease
         public long uptime { get; set; }
     }
 
-    public class Netease_lyric_lrc
+    public class Netease_lyric_lrc : JsonModel
     {
         public int version { get; set; }
         public string lyric { get; set; }
     }
 
-    public class Netease_lyric_klyric
+    public class Netease_lyric_klyric : JsonModel
     {
         public int version { get; set; }
         public object lyric { get; set; }
     }
 
-    public class Netease_lyric_tlyric
+    public class Netease_lyric_tlyric : JsonModel
     {
         public int version { get; set; }
         public string lyric { get; set; }
