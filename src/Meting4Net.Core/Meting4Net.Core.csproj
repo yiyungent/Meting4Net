@@ -2,6 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
+    <Authors>yiyun</Authors>
+    <Company>yiyun</Company>
+    <Version>0.1.0</Version>
+    <Description>Wow, such a powerful music API framework for .Net</Description>
+    <Copyright>Copyright (c) 2019 yiyun</Copyright>
+    <PackageLicenseUrl>https://github.com/yiyungent/Meting4Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://yiyungent.github.io/Meting4Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yiyungent/Meting4Net</RepositoryUrl>
+    <NeutralLanguage />
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Meting4Net</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

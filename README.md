@@ -7,13 +7,15 @@
 
 [![repo size](https://img.shields.io/github/repo-size/yiyungent/Meting4Net.svg?style=flat)]()
 [![LICENSE](https://img.shields.io/github/license/yiyungent/Meting4Net.svg?style=flat)](https://mit-license.org/)
+[![nuget](https://img.shields.io/nuget/v/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
+[![downloads](https://img.shields.io/nuget/dt/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
+
 
 ## Introduction
 
 Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> for .Net, Thanks to <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a>.   
 A powerful music API framework to accelerate your development
  + **Elegant** - Easy to use, a standardized format for all music platforms.
- + **Lightweight** - A single-file library that's less than 46KB.
  + **Powerful** - Support various music platforms, including Tencent, NetEase, Xiami, KuGou, Baidu and more.
  + **Free** - Under MIT license, need I say more?
 
