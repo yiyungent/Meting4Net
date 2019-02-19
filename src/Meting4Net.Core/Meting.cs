@@ -315,6 +315,25 @@ namespace Meting4Net.Core
                         format = "result.songs"
                     };
                     break;
+                case "tencent":
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            format = "json",
+                            p = options.page != null ? options.page : 1,
+                            n = options.limit != null ? options.limit : 30,
+                            w = keyword,
+                            aggr = 1,
+                            lossless = 1,
+                            cr = 1,
+                            new_json = 1
+                        }),
+                        format = "data.song.list"
+                    };
+                    break;
             }
 
             return this.Exec(api);
@@ -618,6 +637,9 @@ namespace Meting4Net.Core
                 case "netease":
                     del_Music_Item = Format_netease;
                     break;
+                case "tencent":
+                    del_Music_Item = Format_tencent;
+                    break;
             }
             List<Music_search_item> list = new List<Music_search_item>();
             JEnumerable<JToken> jTokens = rawArray.Children();
@@ -637,17 +659,17 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="songItem">(单首)网易云音乐json数据</param>
         /// <returns></returns>
-        public static Music_search_item Format_netease(dynamic songItem)
+        private static Music_search_item Format_netease(dynamic songItem)
         {
             Music_search_item result = new Music_search_item
             {
-                id = songItem.id,
+                id = songItem.id.ToString(),
                 name = songItem.name.ToString(),
                 artist = null,
                 album = songItem.al.name.ToString(),
                 pic_id = Common.IsPropertyExist(songItem.al, "pic_str") ? songItem.al.pic_str.ToString() : songItem.al.pic.ToString(),
-                url_id = songItem.id,
-                lyric_id = songItem.id,
+                url_id = songItem.id.ToString(),
+                lyric_id = songItem.id.ToString(),
                 source = "netease"
             };
             Match match;
@@ -658,6 +680,36 @@ namespace Meting4Net.Core
             }
             List<string> artistList = new List<string>();
             foreach (dynamic vo in songItem.ar)
+            {
+                artistList.Add(vo.name.ToString());
+            }
+            result.artist = artistList.ToArray();
+
+            return result;
+        }
+        #endregion
+
+        #region 对搜索到的(单首)腾讯音乐数据进行格式化
+        private Music_search_item Format_tencent(dynamic songItem)
+        {
+            if (Common.IsPropertyExist(songItem, "musicData"))
+            {
+                songItem = songItem.musicData;
+            }
+
+            Music_search_item result = new Music_search_item
+            {
+                id = songItem.mid.ToString(),
+                name = songItem.name.ToString(),
+                artist = null,
+                album = songItem.album.title.ToString().Trim(),
+                pic_id = songItem.album.mid.ToString(),
+                url_id = songItem.mid.ToString(),
+                lyric_id = songItem.mid.ToString(),
+                source = "tencent"
+            };
+            List<string> artistList = new List<string>();
+            foreach (dynamic vo in songItem.singer)
             {
                 artistList.Add(vo.name.ToString());
             }
@@ -691,6 +743,16 @@ namespace Meting4Net.Core
                     };
                     break;
                 case "tencent":
+                    header = new Dictionary<string, string>
+                    {
+                        { "Referer", "http://y.qq.com" },
+                        { "Cookie", "pgv_pvi=22038528; pgv_si=s3156287488; pgv_pvid=5535248600; yplayer_open=1; ts_last=y.qq.com/portal/player.html; ts_uid=4847550686; yq_index=0; qqmusic_fromtag=66; player_exist=1" },
+                        { "User-Agent", "QQ%E9%9F%B3%E4%B9%90/54409 CFNetwork/901.1 Darwin/17.6.0 (x86_64)" },
+                        { "Accept", "*/*" },
+                        { "Accept-Language", "zh-CN,zh;q=0.8,gl;q=0.6,zh-TW;q=0.4" },
+                        { "Connection", "keep-alive" },
+                        { "Content-Type", "application/x-www-form-urlencoded" }
+                    };
                     break;
             }
 

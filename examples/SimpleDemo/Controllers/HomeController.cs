@@ -13,7 +13,7 @@ namespace SimpleDemo.Controllers
         // GET: Home
         public ContentResult Index()
         {
-            Meting api = new Meting("netease");
+            //Meting api = new Meting("netease");
             //string jsonStr = api.FormatMethod(true).Url(35847388);
             //string jsonStr = api.FormatMethod(true).Song(35847388);
             //string jsonStr = api.FormatMethod(true).Album(73927024);
@@ -38,9 +38,15 @@ namespace SimpleDemo.Controllers
             //});
             //string jsonStr = api.FormatMethod(true).Search("Soldier");
             // 只返回 3 条 原始网易音乐格式
-            string jsonStr = api.FormatMethod(false).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
+            //string jsonStr = api.FormatMethod(false).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
+            //{
+            //    limit = 3
+            //});
+
+            Meting api = new Meting("tencent");
+            string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
             {
-                limit = 3
+                limit = 5
             });
             return Content(jsonStr, "application/json");
         }

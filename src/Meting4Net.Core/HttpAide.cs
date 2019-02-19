@@ -50,6 +50,10 @@ namespace Meting4Net.Core
                         {
                             request.KeepAlive = true;
                         }
+                        else if (temp[0].Equals("Connection", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            request.KeepAlive = false;
+                        }
                         else if (temp[0].Equals("Content-Type", StringComparison.InvariantCultureIgnoreCase))
                         {
                             request.ContentType = temp[1];
@@ -119,6 +123,10 @@ namespace Meting4Net.Core
                         else if (temp[0].Equals("Connection", StringComparison.InvariantCultureIgnoreCase) && temp[1].Equals("keep-alive", StringComparison.InvariantCultureIgnoreCase))
                         {
                             request.KeepAlive = true;
+                        }
+                        else if (temp[0].Equals("Connection", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            request.KeepAlive = false;
                         }
                         else if (temp[0].Equals("Content-Type", StringComparison.InvariantCultureIgnoreCase))
                         {

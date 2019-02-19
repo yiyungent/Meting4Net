@@ -16,13 +16,13 @@ namespace Meting4Net.Core.Models.Standard
 
     public class Music_search_item : JsonModel
     {
-        public int id { get; set; }
+        public string id { get; set; }
         public string name { get; set; }
         public string[] artist { get; set; }
         public string album { get; set; }
         public string pic_id { get; set; }
-        public int url_id { get; set; }
-        public int lyric_id { get; set; }
+        public string url_id { get; set; }
+        public string lyric_id { get; set; }
         public string source { get; set; }
     }
 
