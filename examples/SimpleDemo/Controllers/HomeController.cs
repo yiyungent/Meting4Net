@@ -48,8 +48,11 @@ namespace SimpleDemo.Controllers
             #region 腾讯QQ音乐 API
             Meting api = new Meting("tencent");
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
-            // 腾讯传递 通过Search() 获取到的 "id"
-            string jsonStr = api.FormatMethod(true).Song("004MQDu81ob4BW");
+            // 腾讯传递 通过Search() 获取到的 歌曲 "id"
+            //string jsonStr = api.FormatMethod(true).Song("004MQDu81ob4BW");
+            // 例如专辑 https://y.qq.com/n/yqq/album/001AMQBG3GzakR.html#stat=y_new.album.otheralbum.click
+            // 则其中 001AMQBG3GzakR 为专辑ID
+            string jsonStr = api.FormatMethod(true).Album("001AMQBG3GzakR");
             #endregion
 
             return Content(jsonStr, "application/json");

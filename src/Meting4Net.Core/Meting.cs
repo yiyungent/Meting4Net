@@ -413,6 +413,21 @@ namespace Meting4Net.Core
                         format = "songs"
                     };
                     break;
+                case "tencent":
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "https://c.y.qq.com/v8/fcg-bin/fcg_v8_album_detail_cp.fcg",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            albummid = id,
+                            platform = "mac",
+                            format = "json",
+                            newsong = 1
+                        }),
+                        format = "data.getSongInfo"
+                    };
+                    break;
             }
 
             return this.Exec(api);
