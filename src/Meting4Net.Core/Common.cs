@@ -43,6 +43,17 @@ namespace Meting4Net.Core
             {
                 return ((JObject)data).ContainsKey(propertyname);
             }
+            else if (data is JArray)
+            {
+                try
+                {
+                    return ((JArray)data)[Convert.ToInt32(propertyname)] != null;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
             else
             {
                 bool flag = data.GetType().GetProperty(propertyname) != null;

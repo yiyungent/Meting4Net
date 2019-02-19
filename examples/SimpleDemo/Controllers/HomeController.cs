@@ -55,7 +55,10 @@ namespace SimpleDemo.Controllers
             //string jsonStr = api.FormatMethod(true).Album("001AMQBG3GzakR");
             // https://y.qq.com/n/yqq/singer/001fNHEf1SFEFN.html#stat=y_new.singerlist.singerpic
             // 其中 001fNHEf1SFEFN 为 歌手ID
-            string jsonStr = api.FormatMethod(true).Artist("001fNHEf1SFEFN");
+            //string jsonStr = api.FormatMethod(true).Artist("001fNHEf1SFEFN");
+            // https://y.qq.com/n/yqq/playsquare/1721973967.html#stat=y_new.playlist.pic_click
+            // 其中 1721973967 为歌单ID
+            string jsonStr = api.FormatMethod(true).Playlist("1721973967");
             #endregion
 
             return Content(jsonStr, "application/json");

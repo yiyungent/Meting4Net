@@ -247,11 +247,23 @@ namespace Meting4Net.Core
             string[] t = rule.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string vo in t)
             {
-                if (!Common.IsPropertyExist(array, vo.ToString()) || string.IsNullOrEmpty(array[vo].ToString()))
+                if (!Common.IsPropertyExist(array, vo.ToString()))
                 {
                     return null;
                 }
-                array = array[vo];
+                if (array is JObject)
+                {
+                    array = array[vo];
+                }
+                else if (array is JArray)
+                {
+                    int voInt = Convert.ToInt32(vo);
+                    array = array[voInt];
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             return array;
@@ -267,6 +279,7 @@ namespace Meting4Net.Core
         /// <returns></returns>
         private Music_search_item[] Clean(dynamic raw, string rule)
         {
+            // 根据 json字符串 第一层是 {}: JObject , 还是 []: JArray 确定转换为哪种类型的对象
             raw = Common.JsonStr2Obj(raw.ToString());
             if (!string.IsNullOrEmpty(rule))
             {
@@ -510,6 +523,21 @@ namespace Meting4Net.Core
                         }),
                         encode = Netease_AESCBC,
                         format = "playlist.tracks"
+                    };
+                    break;
+                case "tencent":
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "https://c.y.qq.com/v8/fcg-bin/fcg_v8_playlist_cp.fcg",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            id = id,
+                            format = "json",
+                            newsong = 1,
+                            platform = "jqspaframe.json"
+                        }),
+                        format = "data.cdlist.0.songlist"
                     };
                     break;
             }
