@@ -23,6 +23,14 @@ A powerful music API framework to accelerate your development
 
 .NET Framework 4.5+ and Newtonsoft.Json 12.0.1+ installed.
 
+## Installation
+
+Require this package, with [NuGet](https://www.nuget.org/packages/Meting4Net), in the root directory of your project, if you use Visual Studio, then click **Tools** -> **NuGet Package Manager** -> **Package Manager Console** , make sure "Default project" is the project you want to install, enter the command below to install.
+
+```bash
+Install-Package Meting4Net -Version 0.1.0
+```
+
 ## Quick Start
 
 ```csharp
@@ -40,6 +48,11 @@ string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Mo
 return Content(jsonStr, "application/json");
 //[{"id":35847388,"name":"Hello","artist":["Adele"],"album":"Hello","pic_id":"1407374890649284","url_id":35847388,"lyric_id":35847388,"source":"netease"},{"id":33211676,"name":"Hello","artist":["OMFG"],"album":"Hello",...
 ```
+
+## Environment
+
+- Operating environment: .NET Framework 4.5+    
+- Development environment: Visual Studio Community 2017
 
 ## Related Projects
 
