@@ -346,7 +346,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string Song(long id)
+        public string Song(string id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -376,7 +376,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string Album(long id)
+        public string Album(string id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -412,7 +412,7 @@ namespace Meting4Net.Core
         /// <param name="id"></param>
         /// <param name="limit"></param>
         /// <returns></returns>
-        public string Artist(long id, int limit = 50)
+        public string Artist(string id, int limit = 50)
         {
             Music_api api = null;
             switch (this.Server)
@@ -445,7 +445,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string Playlist(long id)
+        public string Playlist(string id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -479,7 +479,7 @@ namespace Meting4Net.Core
         /// <param name="id"></param>
         /// <param name="br"></param>
         /// <returns></returns>
-        public string Url(long id, int br = 320)
+        public string Url(string id, int br = 320)
         {
             Music_api api = null;
             switch (this.Server)
@@ -513,7 +513,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string Lyric(long id)
+        public string Lyric(string id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -548,7 +548,7 @@ namespace Meting4Net.Core
         /// <param name="id">eg.传递通过 api.Song(35847388) 获取到的 pic_id</param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public string Pic(long id, int size = 300)
+        public string Pic(string id, int size = 300)
         {
             string picUrl = string.Empty;
             switch (this.Server)
@@ -597,10 +597,10 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string Netease_encryptId(long id)
+        public string Netease_encryptId(string id)
         {
             char[] magic = "3go8&$8*3*3h0k(2)2".ToCharArray();
-            char[] song_id = id.ToString().ToCharArray();
+            char[] song_id = id.ToCharArray();
             for (int i = 0; i < song_id.Length; i++)
             {
                 int temp1 = PhpCommon.Ord(song_id[i].ToString());
