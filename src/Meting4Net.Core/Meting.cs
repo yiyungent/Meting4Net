@@ -29,6 +29,7 @@ namespace Meting4Net.Core
         //private string _info;
         //private string _error;
         //private string _status;
+        private int _tryCount = 3;
 
         /// <summary>
         /// 获取的原始json数据
@@ -43,6 +44,11 @@ namespace Meting4Net.Core
         //public string Info { get { return _info; } set { _info = value; } }
         //public string Error { get { return _error; } set { _error = value; } }
         //public string Status { get { return _status; } set { _status = value; } }
+
+        /// <summary>
+        /// HTTP请求尝试次数，默认 3
+        /// </summary>
+        public int TryCount { get { return _tryCount; } set { _tryCount = value; } }
 
         private string _server;
         //private string _proxy;
@@ -204,15 +210,21 @@ namespace Meting4Net.Core
             string postDataStr = "";
             string responseData = "";
             StringBuilder responseHeadersSb = new StringBuilder();
-            if (payload != null)
+            // HTTP 请求尝试，若响应体 为 空，则会再次尝试，直到不为空 或则 尝试次数用完
+            for (int i = 0; i < this.TryCount; i++)
             {
-                postDataStr = payload;
-                responseData = HttpAide.HttpPost(url: url, postDataStr: postDataStr, responseHeadersSb: responseHeadersSb, headers: headers.ToArray());
+                if (payload != null)
+                {
+                    postDataStr = payload;
+                    responseData = HttpAide.HttpPost(url: url, postDataStr: postDataStr, responseHeadersSb: responseHeadersSb, headers: headers.ToArray());
+                }
+                else
+                {
+                    responseData = HttpAide.HttpGet(url: url, responseHeadersSb: responseHeadersSb, headers: headers.ToArray());
+                }
+                if (!string.IsNullOrEmpty(responseData)) break;
             }
-            else
-            {
-                responseData = HttpAide.HttpGet(url: url, responseHeadersSb: responseHeadersSb, headers: headers.ToArray());
-            }
+            // 若需要响应头，则添加响应头
             if (headerHave)
             {
                 responseData = responseHeadersSb.ToString() + "\r\n\r\n" + responseData;
