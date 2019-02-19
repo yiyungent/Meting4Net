@@ -30,6 +30,7 @@ namespace Meting4Net.Core
         //private string _error;
         //private string _status;
         private int _tryCount = 3;
+        private int _br;
 
         /// <summary>
         /// 获取的原始json数据
@@ -49,6 +50,8 @@ namespace Meting4Net.Core
         /// HTTP请求尝试次数，默认 3
         /// </summary>
         public int TryCount { get { return _tryCount; } set { _tryCount = value; } }
+
+        public int Br { get { return _br; } set { _br = value; } }
 
         private string _server;
         //private string _proxy;
@@ -164,9 +167,15 @@ namespace Meting4Net.Core
 
             this.Curl(url: url, payload: parmsData);
 
-            if (string.IsNullOrEmpty(this.Raw))
+            if (string.IsNullOrEmpty(this.Raw) || this.Raw.Contains("参数错误"))
             {
-                return "{\"code\": -1, \"msg\": \"异常：未查询到数据\"}";
+                string errJsonStr = Common.Obj2JsonStr(new
+                {
+                    code = -1,
+                    msg = "未查询到数据",
+                    message = this.Raw
+                });
+                return errJsonStr;
             }
 
             // 若不进行格式化，则直接返回原始数据
@@ -182,7 +191,7 @@ namespace Meting4Net.Core
             {
                 this.Data = api.decode(this.Data).ToJsonStr();
             }
-            if (api.format != null && !string.IsNullOrEmpty(api.format.ToString()))
+            if (!string.IsNullOrEmpty(api.format))
             {
                 this.Data = Common.Obj2JsonStr(this.Clean(this.Data, api.format));
             }
@@ -573,9 +582,21 @@ namespace Meting4Net.Core
                     };
                     break;
                 case "tencent":
-                    api = new Music_api { };
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            songmid = id,
+                            platform = "yqq",
+                            format = "json"
+                        }),
+                        decode = Tencent_url
+                    };
                     break;
             }
+            this.Br = br;
 
             return this.Exec(api);
         }
@@ -840,12 +861,13 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        private static Music_decode_url Netease_url(dynamic result)
+        private Music_decode_url Netease_url(dynamic result)
         {
             string jsonStr = result.ToString();
-            Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);
+            //Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);
+            dynamic data = Common.JsonStr2Obj(jsonStr);
             Music_decode_url url = null;
-            if (!string.IsNullOrEmpty(data.data[0].url))
+            if (!string.IsNullOrEmpty(data.data[0].url.ToString()))
             {
                 url = new Music_decode_url
                 {
@@ -863,6 +885,115 @@ namespace Meting4Net.Core
                     br = -1
                 };
             }
+
+            return url;
+        }
+        #endregion
+
+        #region 提取(解析)腾讯音乐链接
+        private Music_decode_url Tencent_url(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            dynamic dataInit = Common.JsonStr2Obj(jsonStr);
+            int guid = new Random().Next(100000000, 999999999);
+
+            JArray type = new JArray
+            {
+                new JArray("size_320mp3", 320, "M800", "mp3"),
+                new JArray("size_192aac", 192, "C600", "m4a"),
+                new JArray("size_128mp3", 128, "M500", "mp3"),
+                new JArray("size_96aac", 96, "C400", "m4a"),
+                new JArray("size_48aac", 48, "C200", "m4a"),
+                new JArray("size_24aac", 24, "C100", "m4a")
+            };
+
+            JObject payload = new JObject
+            {
+               new  JProperty("req_0", new JObject
+               {
+                   new JProperty("module", "vkey.GetVkeyServer"),
+                   new JProperty("method", "CgiGetVkey"),
+                   new JProperty("param", new JObject
+                   {
+                       new JProperty("guid", guid.ToString()),
+                       new JProperty("songmid", new JArray()),
+                       new JProperty("filename", new JArray()),
+                       new JProperty("songtype", new JArray()),
+                       new JProperty("uin", "0"),
+                       new JProperty("loginflag", 1),
+                       new JProperty("platform", "20")
+                   })
+               })
+            };
+
+            JArray arr1 = new JArray();
+            JArray arr2 = new JArray();
+            JArray arr3 = new JArray();
+            foreach (dynamic vo in type)
+            {
+                dynamic temp1 = dataInit["data"][0]["mid"];
+                arr1.Add(temp1);
+                dynamic temp2 = vo[2].ToString() + dataInit["data"][0]["file"]["media_mid"] + "." + vo[3].ToString();
+                arr2.Add(temp2);
+                dynamic temp3 = dataInit["data"][0]["type"];
+                arr3.Add(temp3);
+            }
+            payload["req_0"]["param"]["songmid"] = arr1;
+            payload["req_0"]["param"]["filename"] = arr2;
+            payload["req_0"]["param"]["songtype"] = arr3;
+
+
+            Music_api api = new Music_api
+            {
+                method = "GET",
+                url = "https://u.y.qq.com/cgi-bin/musicu.fcg",
+                body = Common.Dynamic2JObject(new
+                {
+                    format = "json",
+                    platform = "yqq.json",
+                    needNewCode = 0,
+                    data = Common.Obj2JsonStr(payload)
+                })
+            };
+            dynamic response = Common.JsonStr2Obj(this.Exec(api));
+            dynamic vkeys = response["req_0"]["data"]["midurlinfo"];
+
+
+            Music_decode_url url = null;
+            int index = 0;
+            foreach (JToken vo in type.Children())
+            {
+                if (dataInit["data"][0]["file"][vo[0].ToString()] != null && Convert.ToInt32(vo[1].ToString()) <= this.Br)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(vkeys[index]["vkey"].ToString()))
+                        {
+                            url = new Music_decode_url
+                            {
+                                url = response["req_0"]["data"]["sip"][0].ToString() + vkeys[index]["purl"].ToString(),
+                                size = dataInit["data"][0]["file"][vo[0].ToString()],
+                                br = Convert.ToInt32(vo[1].ToString())
+                            };
+                            break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+                index++;
+            }
+            if (url == null || url.url == null)
+            {
+                url = new Music_decode_url
+                {
+                    url = "",
+                    size = 0,
+                    br = -1
+                };
+            }
+
             return url;
         }
         #endregion
@@ -873,7 +1004,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        private static Music_decode_lyric Netease_lyric(dynamic result)
+        private Music_decode_lyric Netease_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
             Models.Netease.Netease_lyric data = JsonConvert.DeserializeObject<Models.Netease.Netease_lyric>(jsonStr);

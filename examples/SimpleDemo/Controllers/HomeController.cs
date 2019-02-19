@@ -42,14 +42,14 @@ namespace SimpleDemo.Controllers
             //string jsonStr = api.FormatMethod(false).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
             //{
             //    limit = 3
-            //}); 
+            //});
             #endregion
 
             #region 腾讯QQ音乐 API
             Meting api = new Meting("tencent");
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
             // 腾讯传递 通过Search() 获取到的 歌曲 "id"
-            //string jsonStr = api.FormatMethod(true).Song("004MQDu81ob4BW");
+            //string jsonStr = api.FormatMethod(true).Song("001Nal2N2f0Qr8");
             // 例如专辑 https://y.qq.com/n/yqq/album/001AMQBG3GzakR.html#stat=y_new.album.otheralbum.click
             // 则其中 001AMQBG3GzakR 为专辑ID
             //string jsonStr = api.FormatMethod(true).Album("001AMQBG3GzakR");
@@ -58,7 +58,9 @@ namespace SimpleDemo.Controllers
             //string jsonStr = api.FormatMethod(true).Artist("001fNHEf1SFEFN");
             // https://y.qq.com/n/yqq/playsquare/1721973967.html#stat=y_new.playlist.pic_click
             // 其中 1721973967 为歌单ID
-            string jsonStr = api.FormatMethod(true).Playlist("1721973967");
+            //string jsonStr = api.FormatMethod(true).Playlist("1721973967");
+            // https://y.qq.com/n/yqq/song/001Nal2N2f0Qr8.html
+            string jsonStr = api.FormatMethod(true).Url("001Nal2N2f0Qr8");
             #endregion
 
             return Content(jsonStr, "application/json");
