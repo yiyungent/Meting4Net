@@ -462,6 +462,23 @@ namespace Meting4Net.Core
                         format = "hotSongs"
                     };
                     break;
+                case "tencent":
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            singermid = id,
+                            begin = 0,
+                            num = limit,
+                            order = "listen",
+                            platform = "mac",
+                            newsong = 1
+                        }),
+                        format = "data.list"
+                    };
+                    break;
             }
 
             return this.Exec(api);
