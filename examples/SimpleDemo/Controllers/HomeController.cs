@@ -28,7 +28,20 @@ namespace SimpleDemo.Controllers
             // 错误：传递专辑ID
             //string jsonStr = api.Pic(73927024);
             // 正确：传递通过 api.Song(35847388) 获取到的 pic_id
-            string jsonStr = api.Pic(1407374890649284);
+            //string jsonStr = api.Pic(1407374890649284);
+
+            // 需要设置 page 时，必须同时设置 limit 才有效
+            //string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
+            //{
+            //    page = 1,
+            //    limit = 50
+            //});
+            //string jsonStr = api.FormatMethod(true).Search("Soldier");
+            // 只返回 3 条 原始网易音乐格式
+            string jsonStr = api.FormatMethod(false).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
+            {
+                limit = 3
+            });
             return Content(jsonStr, "application/json");
         }
     }

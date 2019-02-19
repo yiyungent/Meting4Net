@@ -209,7 +209,39 @@ namespace Meting4Net.Core
         #endregion
 
         #region 搜索
+        public string Search(string keyword, Options options = null)
+        {
+            #region 当未提供 options 时则为 null,此时对其进行 new ，使其不为 null,但其中的初始化属性仍为null，这样因为默认 options 不为null,所以下方判断时不再需要判断 options!=null
+            if (options == null)
+            {
+                options = new Options();
+            }
+            #endregion
 
+            Music_api api = null;
+            switch (this.Server)
+            {
+                case "netease":
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://music.163.com/api/cloudsearch/pc",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            s = keyword,
+                            type = options.type != null ? options.type : 1,
+                            limit = options.limit != null ? options.limit : 30,
+                            total = "true",
+                            offset = options.page != null && options.limit != null ? (options.page - 1) * options.limit : 0
+                        }),
+                        encode = Netease_AESCBC,
+                        format = "result.songs"
+                    };
+                    break;
+            }
+
+            return this.Exec(api);
+        }
         #endregion
 
         #region 根据歌曲ID获取
@@ -381,7 +413,7 @@ namespace Meting4Net.Core
         }
         #endregion
 
-        #region 专辑图片(对指定歌曲编号，返回专辑图片地址)
+        #region 歌曲图片(对指定歌曲编号，返回图片地址)
         public string Pic(long id, int size = 300)
         {
             string picUrl = string.Empty;

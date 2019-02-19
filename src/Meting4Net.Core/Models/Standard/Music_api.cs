@@ -18,6 +18,13 @@ namespace Meting4Net.Core.Models.Standard
         public string format { get; set; }
     }
 
+    public class Options
+    {
+        public int? page { get; set; } = null;
+        public int? limit { get; set; } = null;
+        public int? type { get; set; } = null;
+    }
+
     public delegate Music_api Del_music_api_encode(Music_api api);
 
     public delegate Music_decode Del_music_api_decode(dynamic data);
