@@ -14,21 +14,30 @@
 ## Introduction
 
 Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> for .Net, Thanks to <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a>.   
+
 A powerful music API framework to accelerate your development
  + **Elegant** - Easy to use, a standardized format for all music platforms.
  + **Powerful** - Support various music platforms, including Tencent, NetEase, Xiami, KuGou, Baidu and more.
  + **Free** - Under MIT license, need I say more?
+ 
+## Progress
+
+- [x] 网易云音乐 Meting Open API 移植完成 v0.1.0
+- [x] 腾讯QQ音乐 Meting Open API 移植完成 v0.2.0
 
 ## Requirement
 
-.NET Framework 4.5+ and Newtonsoft.Json 12.0.1+ installed.
+Only need to match one.
+
+- .NET Framework 4.5+ and Newtonsoft.Json 12.0.1+ installed.
+- .NET Standard 2.0+ and Newtonsoft.Json 12.0.1+ installed.
 
 ## Installation
 
 Require this package, with [NuGet](https://www.nuget.org/packages/Meting4Net), in the root directory of your project, if you use Visual Studio, then click **Tools** -> **NuGet Package Manager** -> **Package Manager Console** , make sure "Default project" is the project you want to install, enter the command below to install.
 
 ```bash
-Install-Package Meting4Net -Version 0.1.0
+PM> Install-Package Meting4Net -Version 0.2.0
 ```
 
 ## Quick Start
