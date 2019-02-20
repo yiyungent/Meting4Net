@@ -653,7 +653,7 @@ namespace Meting4Net.Core
         /// <summary>
         /// 歌曲图片(对指定歌曲编号，返回图片地址)
         /// </summary>
-        /// <param name="id">eg.传递通过 api.Song(35847388) 获取到的 pic_id</param>
+        /// <param name="id">eg.传递通过 api.Song("35847388") 获取到的 pic_id</param>
         /// <param name="size"></param>
         /// <returns></returns>
         public string Pic(string id, int size = 300)
@@ -1051,6 +1051,85 @@ namespace Meting4Net.Core
             };
 
             return rtn;
+        }
+        #endregion
+
+
+
+
+        #region 即将废弃
+        /// <summary>
+        /// 根据歌曲ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Obsolete("该方法即将废弃，请使用 Song(string id) 代替")]
+        public string Song(long id)
+        {
+            return Song(id.ToString());
+        }
+        /// <summary>
+        /// 根据专辑ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Obsolete("该方法即将废弃，请使用 Album(string id) 代替")]
+        public string Album(long id)
+        {
+            return Album(id.ToString());
+        }
+        /// <summary>
+        /// 根据作家ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="limit"></param>
+        /// <returns></returns>
+        [Obsolete("该方法即将废弃，请使用 Artist(string id, int limit = 50) 代替")]
+        public string Artist(long id, int limit = 50)
+        {
+            return Artist(id.ToString(), limit);
+        }
+        /// <summary>
+        /// 根据歌单ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Obsolete("该方法即将废弃，请使用 Playlist(string id) 代替")]
+        public string Playlist(long id)
+        {
+            return Playlist(id.ToString());
+        }
+        /// <summary>
+        /// 根据音乐ID获取音乐链接
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="br"></param>
+        /// <returns></returns>
+        [Obsolete("该方法即将废弃，请使用 Url(string id, int br = 320) 代替")]
+        public string Url(long id, int br = 320)
+        {
+            return Url(id.ToString(), br);
+        }
+        /// <summary>
+        /// 根据歌曲ID查歌词
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Obsolete("该方法即将废弃，请使用 Lyric(string id) 代替")]
+        public string Lyric(long id)
+        {
+            return Lyric(id.ToString());
+        }
+        /// <summary>
+        /// 歌曲图片(对指定歌曲编号，返回图片地址)
+        /// </summary>
+        /// <param name="id">eg.传递通过 api.Song("35847388") 获取到的 pic_id</param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        [Obsolete("该方法即将废弃，请使用 Pic(string id, int size = 300) 代替")]
+        public string Pic(long id, int size = 300)
+        {
+            return Pic(id.ToString(), size);
         }
         #endregion
     }
