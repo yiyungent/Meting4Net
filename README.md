@@ -13,7 +13,7 @@
 
 ## Introduction
 
-Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> for .Net, Thanks to <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a>.   
+Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> for .Net, thanks to <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a>.   
 
 A powerful music API framework to accelerate your development
  + **Elegant** - Easy to use, a standardized format for all music platforms.
@@ -29,15 +29,15 @@ A powerful music API framework to accelerate your development
 
 Only need to match one.
 
-- .NET Framework 4.5+ and Newtonsoft.Json 12.0.1+ installed.
-- .NET Standard 2.0+ and Newtonsoft.Json 12.0.1+ installed.
+- .NET Framework (>= 4.5) and Newtonsoft.Json (>= 12.0.1) installed.
+- .NET Standard (>= 2.0) and Microsoft.CSharp (>= 4.5.0), and Newtonsoft.Json (>= 12.0.1) installed.
 
 ## Installation
 
 Require this package, with [NuGet](https://www.nuget.org/packages/Meting4Net), in the root directory of your project, if you use Visual Studio, then click **Tools** -> **NuGet Package Manager** -> **Package Manager Console** , make sure "Default project" is the project you want to install, enter the command below to install.
 
 ```bash
-PM> Install-Package Meting4Net -Version 0.2.0
+PM> Install-Package Meting4Net
 ```
 
 ## Quick Start
@@ -60,7 +60,7 @@ return Content(jsonStr, "application/json");
 
 ## Environment
 
-- Operating environment: .NET Framework 4.5+    
+- Operating environment: .NET Framework (>= 4.5) or .NET Standard (>= 2.0)    
 - Development environment: Visual Studio Community 2017
 
 ## Related Projects
