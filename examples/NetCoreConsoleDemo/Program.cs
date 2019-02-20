@@ -8,8 +8,13 @@ namespace NetCoreConsoleDemo
     {
         static void Main(string[] args)
         {
-            Meting api = new Meting("tencent");
-            string jsonStr = api.FormatMethod(true).Search("千里邀月");
+            //Meting api = new Meting("tencent");
+            //string jsonStr = api.FormatMethod(true).Search("千里邀月");
+
+            Meting api = new Meting("netease");
+            string jsonStr = api.FormatMethod(true).Lyric("35847388");
+
+
             Console.WriteLine(jsonStr);
 
             Console.ReadLine();

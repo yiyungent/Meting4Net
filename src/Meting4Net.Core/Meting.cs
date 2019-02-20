@@ -866,10 +866,10 @@ namespace Meting4Net.Core
             string jsonStr = result.ToString();
             //Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);
             dynamic data = Common.JsonStr2Obj(jsonStr);
-            Music_decode_url url = null;
+            Music_decode_url rtn = null;
             if (!string.IsNullOrEmpty(data.data[0].url.ToString()))
             {
-                url = new Music_decode_url
+                rtn = new Music_decode_url
                 {
                     url = data.data[0].url,
                     size = data.data[0].size,
@@ -878,7 +878,7 @@ namespace Meting4Net.Core
             }
             else
             {
-                url = new Music_decode_url
+                rtn = new Music_decode_url
                 {
                     url = "",
                     size = 0,
@@ -886,7 +886,7 @@ namespace Meting4Net.Core
                 };
             }
 
-            return url;
+            return rtn;
         }
         #endregion
 
@@ -1007,14 +1007,17 @@ namespace Meting4Net.Core
         private Music_decode_lyric Netease_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
-            Models.Netease.Netease_lyric data = JsonConvert.DeserializeObject<Models.Netease.Netease_lyric>(jsonStr);
-            Music_decode_lyric lyric = new Music_decode_lyric
+            //Models.Netease.Netease_lyric data = JsonConvert.DeserializeObject<Models.Netease.Netease_lyric>(jsonStr);
+            dynamic data = Common.JsonStr2Obj(jsonStr);
+            Music_decode_lyric rtn = new Music_decode_lyric
             {
-                lyric = data.lrc != null && !string.IsNullOrEmpty(data.lrc.lyric) ? data.lrc.lyric : "",
-                tlyric = data.tlyric != null && !string.IsNullOrEmpty(data.tlyric.lyric) ? data.tlyric.lyric : ""
+                //lyric = data.lrc != null && !string.IsNullOrEmpty(data.lrc.lyric) ? data.lrc.lyric : "",
+                lyric = data.lrc != null && data.lrc.lyric != null ? data.lrc.lyric : "",
+                //tlyric = data.tlyric != null && !string.IsNullOrEmpty(data.tlyric.lyric) ? data.tlyric.lyric : ""
+                tlyric = data.tlyric != null && data.tlyric.lyric != null ? data.tlyric.lyric : ""
             };
 
-            return lyric;
+            return rtn;
         }
         #endregion
     }

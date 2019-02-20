@@ -14,14 +14,14 @@ namespace SimpleDemo.Controllers
         public ContentResult Index()
         {
             #region 网易云音乐 API
-            //Meting api = new Meting("netease");
+            Meting api = new Meting("netease");
             //string jsonStr = api.FormatMethod(true).Url("35847388");
             //string jsonStr = api.FormatMethod(true).Song("35847388");
             //string jsonStr = api.FormatMethod(true).Album("73927024");
             //string jsonStr = api.Album("73927024");
             //string jsonStr = api.FormatMethod(true).Artist("1049179");
             //string jsonStr = api.FormatMethod(true).Playlist("2487120533");
-            //string jsonStr = api.FormatMethod(true).Lyric("35847388");
+            string jsonStr = api.FormatMethod(true).Lyric("35847388");
             //string jsonStr = api.FormatMethod(false).Lyric("35847388");
 
             // 错误：传递歌曲ID
@@ -46,7 +46,7 @@ namespace SimpleDemo.Controllers
             #endregion
 
             #region 腾讯QQ音乐 API
-            Meting api = new Meting("tencent");
+            //Meting api = new Meting("tencent");
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
             // 腾讯传递 通过Search() 获取到的 歌曲 "id"
             //string jsonStr = api.FormatMethod(true).Song("001Nal2N2f0Qr8");
@@ -60,7 +60,7 @@ namespace SimpleDemo.Controllers
             // 其中 1721973967 为歌单ID
             //string jsonStr = api.FormatMethod(true).Playlist("1721973967");
             // https://y.qq.com/n/yqq/song/001Nal2N2f0Qr8.html
-            string jsonStr = api.FormatMethod(true).Url("001Nal2N2f0Qr8");
+            //string jsonStr = api.FormatMethod(true).Url("001Nal2N2f0Qr8");
             #endregion
 
             return Content(jsonStr, "application/json");
