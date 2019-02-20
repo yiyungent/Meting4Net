@@ -664,12 +664,16 @@ namespace Meting4Net.Core
                 case "netease":
                     picUrl = "https://p3.music.126.net/" + this.Netease_encryptId(id) + "/" + id + ".jpg?param=" + size + "y" + size;
                     break;
+                case "tencent":
+                    picUrl = "https://y.gtimg.cn/music/photo_new/T002R" + size + "x" + size + "M000" + id + ".jpg?max_age=2592000";
+                    break;
             }
 
             string jsonStr = Common.Obj2JsonStr(new
             {
                 url = picUrl
             });
+
             return jsonStr;
         }
         #endregion
