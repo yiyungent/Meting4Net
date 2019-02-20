@@ -17,6 +17,7 @@
     <FileVersion>0.0.1.0</FileVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Meting4Net</PackageId>
+    <PackageIconUrl>https://github.com/yiyungent/Meting4Net/blob/master/LICENSE</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
