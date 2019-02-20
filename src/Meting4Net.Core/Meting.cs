@@ -630,6 +630,19 @@ namespace Meting4Net.Core
                         decode = Netease_lyric
                     };
                     break;
+                case "tencent":
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            songmid = id,
+                            g_tk = "5381"
+                        }),
+                        decode = Tencent_lyric
+                    };
+                    break;
             }
 
             return this.Exec(api);
@@ -1015,6 +1028,22 @@ namespace Meting4Net.Core
                 lyric = data.lrc != null && data.lrc.lyric != null ? data.lrc.lyric : "",
                 //tlyric = data.tlyric != null && !string.IsNullOrEmpty(data.tlyric.lyric) ? data.tlyric.lyric : ""
                 tlyric = data.tlyric != null && data.tlyric.lyric != null ? data.tlyric.lyric : ""
+            };
+
+            return rtn;
+        }
+        #endregion
+
+        #region 提取(解析)腾讯音乐歌词
+        private Music_decode_lyric Tencent_lyric(dynamic result)
+        {
+            string str = result.ToString();
+            string jsonStr = Regex.Match(str, @"MusicJsonCallback\((.*)\)").Groups[1].Value;
+            dynamic data = Common.JsonStr2Obj(jsonStr);
+            Music_decode_lyric rtn = new Music_decode_lyric
+            {
+                lyric = data.lyric != null ? Common.DecodeBase64("utf-8", data.lyric.ToString()) : "",
+                tlyric = data.trans != null ? Common.DecodeBase64("utf-8", data.trans.ToString()) : ""
             };
 
             return rtn;

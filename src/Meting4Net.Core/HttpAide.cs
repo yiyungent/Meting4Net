@@ -33,7 +33,7 @@ namespace Meting4Net.Core
                 {
                     foreach (string header in headers)
                     {
-                        string[] temp = header.Split(new string[] { ":", ": " }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] temp = header.Split(new string[] { ": " }, StringSplitOptions.RemoveEmptyEntries);
                         if (temp[0].Equals("Referer", StringComparison.InvariantCultureIgnoreCase))
                         {
                             request.Referer = temp[1];
@@ -90,6 +90,7 @@ namespace Meting4Net.Core
             {
                 throw ex;
             }
+
             return rtResult;
         }
         #endregion
@@ -170,6 +171,7 @@ namespace Meting4Net.Core
             {
                 throw ex;
             }
+
             return rtResult;
         }
         #endregion
