@@ -1,9 +1,9 @@
 <p align="center">
-<img src="images/Meting4Net.png" alt="Meting4Net">
+<img src="_images/Meting4Net.png" alt="Meting4Net">
 </p>
 <h1 align="center">Meting4Net</h1>
 
-> :cake: Wow, such a powerful music API framework for .Net
+> 一个强大的音乐API框架
 
 [![repo size](https://img.shields.io/github/repo-size/yiyungent/Meting4Net.svg?style=flat)]()
 [![LICENSE](https://img.shields.io/github/license/yiyungent/Meting4Net.svg?style=flat)](https://mit-license.org/)
@@ -11,43 +11,43 @@
 [![downloads](https://img.shields.io/nuget/dt/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
 
 
-## Introduction
+## 介绍
 
 Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> for .Net, thanks to <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a>.   
 
-A powerful music API framework to accelerate your development
- + **Elegant** - Easy to use, a standardized format for all music platforms.
- + **Powerful** - Support various music platforms, including Tencent, NetEase, Xiami, KuGou, Baidu and more.
- + **Free** - Under MIT license, need I say more?
+一个强大的音乐API框架促进你的开发
+ + **优雅** - 简单易用, 对于所有平台均可一个标准格式.
+ + **丰富** - 支持多个音乐平台, 包括 腾讯QQ音乐, 网易云音乐, 虾米音乐, 酷狗, 百度等.
+ + **免费** - MIT协议 发布
  
-## Progress
+## 进度
 
 - [x] 网易云音乐 Meting Open API 移植完成 v0.1.0
 - [x] 腾讯QQ音乐 Meting Open API 移植完成 v0.2.0
 
-## Requirement
+## 需要
 
-Only need to match one.
+只需要满足下方其中一条.
 
-- .NET Framework (>= 4.5) and Newtonsoft.Json (>= 12.0.1) installed.
-- .NET Standard (>= 2.0) and Microsoft.CSharp (>= 4.5.0), and Newtonsoft.Json (>= 12.0.1) installed.
+- .NET Framework (>= 4.5) 且 Newtonsoft.Json (>= 12.0.1) 被安装.
+- .NET Standard (>= 2.0) 且 Microsoft.CSharp (>= 4.5.0), Newtonsoft.Json (>= 12.0.1) 被安装.
 
-## Installation
+## 安装
 
-Require this package, with [NuGet](https://www.nuget.org/packages/Meting4Net), in the root directory of your project, if you use Visual Studio, then click **Tools** -> **NuGet Package Manager** -> **Package Manager Console** , make sure "Default project" is the project you want to install, enter the command below to install.
+推荐使用 [NuGet](https://www.nuget.org/packages/Meting4Net), 在你项目的根目录 执行下方的命令, 如果你使用 Visual Studio, 这时依次点击 **Tools** -> **NuGet Package Manager** -> **Package Manager Console** , 确保 "Default project" 是你想要安装的项目, 输入下方的命令进行安装.
 
 ```bash
 PM> Install-Package Meting4Net
 ```
 
-## Quick Start
+## 快速开始
 
 ```csharp
 using Meting4Net.Core;
    ...
-// Initialize to netease API
+// 初始化 网易云音乐API
 Meting api = new Meting("netease");
-// Get data
+// 获得 json 数据
 string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
 {
     page = 1,
@@ -58,12 +58,12 @@ return Content(jsonStr, "application/json");
 //[{"id":35847388,"name":"Hello","artist":["Adele"],"album":"Hello","pic_id":"1407374890649284","url_id":35847388,"lyric_id":35847388,"source":"netease"},{"id":33211676,"name":"Hello","artist":["OMFG"],"album":"Hello",...
 ```
 
-## Environment
+## 环境
 
-- Operating environment: .NET Framework (>= 4.5) or .NET Standard (>= 2.0)    
-- Development environment: Visual Studio Community 2017
+- 运行环境: .NET Framework (>= 4.5) or .NET Standard (>= 2.0)    
+- 开发环境: Visual Studio Community 2017
 
-## Related Projects
+## 相关项目
 
  - [Meting](https://github.com/metowolf/Meting)
  
