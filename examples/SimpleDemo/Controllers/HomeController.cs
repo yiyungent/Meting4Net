@@ -74,7 +74,9 @@ namespace SimpleDemo.Controllers
             // 其中 album_id= 后的 1746593 即为专辑ID
             //string jsonStr = api.FormatMethod(true).Album("1746593");
             // https://www.kugou.com/singer/19671.html 其中 19671 即为作家ID
-            string jsonStr = api.FormatMethod(true).Artist("19671");
+            //string jsonStr = api.FormatMethod(true).Artist("19671");
+            // https://www.kugou.com/yy/special/single/602964.html 其中 602964 即为歌单ID
+            string jsonStr = api.FormatMethod(true).Playlist("602964");
             Console.WriteLine(jsonStr);
             #endregion
 

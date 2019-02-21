@@ -656,6 +656,23 @@ namespace Meting4Net.Core
                         format = "data.cdlist.0.songlist"
                     };
                     break;
+                case ServerProvider.Kugou:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://mobilecdn.kugou.com/api/v3/special/song",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            specialid = id,
+                            area_code = 1,
+                            page = 1,
+                            plat = 2,
+                            pagesize = -1,
+                            version = 8990
+                        }),
+                        format = "data.info"
+                    };
+                    break;
             }
 
             return this.Exec(api);
