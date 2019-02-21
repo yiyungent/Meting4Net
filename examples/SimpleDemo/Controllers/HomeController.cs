@@ -46,7 +46,7 @@ namespace SimpleDemo.Controllers
             #endregion
 
             #region 腾讯QQ音乐 API
-            Meting api = new Meting("tencent");
+            //Meting api = new Meting("tencent");
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
             // 腾讯传递 通过Search() 获取到的 歌曲 "id"
             //string jsonStr = api.FormatMethod(true).Song("001Nal2N2f0Qr8");
@@ -62,7 +62,14 @@ namespace SimpleDemo.Controllers
             // https://y.qq.com/n/yqq/song/001Nal2N2f0Qr8.html
             //string jsonStr = api.FormatMethod(true).Url("001Nal2N2f0Qr8");
             //
-            string jsonStr = api.FormatMethod(true).Lyric("001Nal2N2f0Qr8");
+            //string jsonStr = api.FormatMethod(true).Lyric("001Nal2N2f0Qr8");
+            #endregion
+
+            #region 酷狗音乐 API
+            Meting api = new Meting(ServerProvider.Kugou);
+            string jsonStr = api.FormatMethod(true).Search("千里邀月");
+
+            Console.WriteLine(jsonStr);
             #endregion
 
             return Content(jsonStr, "application/json");

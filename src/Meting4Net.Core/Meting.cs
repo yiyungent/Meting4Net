@@ -20,6 +20,7 @@ using Meting4Net.Core.Models.Standard;
 
 namespace Meting4Net.Core
 {
+    #region 音乐API 服务提供者
     /// <summary>
     /// 音乐API 服务提供者
     /// </summary>
@@ -32,9 +33,17 @@ namespace Meting4Net.Core
         /// <summary>
         /// 腾讯QQ音乐
         /// </summary>
-        Tencent = 1
+        Tencent = 1,
+        /// <summary>
+        /// 酷狗音乐
+        /// </summary>
+        Kugou = 2
     }
+    #endregion
 
+    /// <summary>
+    /// 音乐API
+    /// </summary>
     public class Meting
     {
         /// <summary>
@@ -97,18 +106,18 @@ namespace Meting4Net.Core
 
         #region 初始化
         /// <summary>
-        /// 初始化
+        /// 初始化音乐API 服务提供者
         /// </summary>
         /// <param name="value"></param>
-        public Meting(string value = "netease")
+        public Meting(ServerProvider value = ServerProvider.Netease)
         {
             this.Site(value);
         }
         #endregion
 
-        #region 初始化Server, Header
+        #region 设置音乐API 服务提供者 (初始化Server, Header)
         /// <summary>
-        /// 初始化Server, Header
+        /// 设置音乐API 服务提供者 (初始化Server, Header)
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -374,6 +383,28 @@ namespace Meting4Net.Core
                             new_json = 1
                         }),
                         format = "data.song.list"
+                    };
+                    break;
+                case ServerProvider.Kugou:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://mobilecdn.kugou.com/api/v3/search/song",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            api_ver = 1,
+                            area_code = 1,
+                            correct = 1,
+                            pagesize = options.limit != null ? options.limit : 30,
+                            plat = 2,
+                            tag = 1,
+                            sver = 5,
+                            showtype = 10,
+                            page = options.page != null ? options.page : 1,
+                            keyword = keyword,
+                            version = 8990
+                        }),
+                        format = "data.info"
                     };
                     break;
             }
@@ -772,6 +803,9 @@ namespace Meting4Net.Core
                 case ServerProvider.Tencent:
                     del_Music_Item = Format_tencent;
                     break;
+                case ServerProvider.Kugou:
+                    del_Music_Item = Format_kugou;
+                    break;
             }
             List<Music_search_item> list = new List<Music_search_item>();
             JEnumerable<JToken> jTokens = rawArray.Children();
@@ -851,6 +885,36 @@ namespace Meting4Net.Core
         }
         #endregion
 
+        #region 对搜索到的(单首)酷狗音乐数据进行格式化
+        /// <summary>
+        /// 对搜索到的(单首)酷狗音乐数据进行格式化
+        /// </summary>
+        /// <param name="songItem"></param>
+        /// <returns></returns>
+        private Music_search_item Format_kugou(dynamic songItem)
+        {
+            Music_search_item result = new Music_search_item
+            {
+                id = songItem.hash.ToString(),
+                // 千月兔、hanser - 千里邀月 (人声版)
+                name = Common.IsPropertyExist(songItem, "filename") ? songItem.filename.ToString() : songItem.fileName.ToString(),
+                artist = null,
+                album = Common.IsPropertyExist(songItem, "album_name") ? songItem.album_name.ToString() : "",
+                url_id = songItem.hash.ToString(),
+                pic_id = songItem.hash.ToString(),
+                lyric_id = songItem.hash.ToString(),
+                source = "kugou"
+            };
+            // [0] 千月兔、hanser    [1] 千里邀月 (人声版)
+            string[] artistsAndName = result.name.Split(new string[] { " - " }, StringSplitOptions.RemoveEmptyEntries);
+
+            result.artist = artistsAndName[0].Split(new string[] { "、" }, StringSplitOptions.RemoveEmptyEntries);
+            result.name = artistsAndName[1];
+
+            return result;
+        }
+        #endregion
+
         #region 设置请求头
         /// <summary>
         /// 设置请求头
@@ -884,6 +948,13 @@ namespace Meting4Net.Core
                         { "Accept-Language", "zh-CN,zh;q=0.8,gl;q=0.6,zh-TW;q=0.4" },
                         { "Connection", "keep-alive" },
                         { "Content-Type", "application/x-www-form-urlencoded" }
+                    };
+                    break;
+                case ServerProvider.Kugou:
+                    header = new Dictionary<string, string>
+                    {
+                        { "User-Agent", "IPhone-8990-searchSong" },
+                        { "UNI-UserAgent", "iOS11.4-Phone8990-1009-0-WiFi" }
                     };
                     break;
             }
@@ -1079,9 +1150,21 @@ namespace Meting4Net.Core
 
         #region 即将废弃
 
-        #region 初始化Server, Header
+        #region 初始化
         /// <summary>
-        /// 初始化Server, Header
+        /// 初始化音乐API 服务提供者
+        /// </summary>
+        /// <param name="value"></param>
+        [Obsolete("该方法即将废弃，请使用 Meting(ServerProvider value = ServerProvider.Netease) 代替")]
+        public Meting(string value)
+        {
+            this.Site(value);
+        }
+        #endregion
+
+        #region 设置音乐API 服务提供者 (初始化Server, Header)
+        /// <summary>
+        /// 设置音乐API 服务提供者 (初始化Server, Header)
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
