@@ -853,7 +853,7 @@ namespace Meting4Net.Core
             {
                 id = songItem.id.ToString(),
                 name = songItem.name.ToString(),
-                artist = null,
+                artist = new string[0],
                 album = songItem.al.name.ToString(),
                 pic_id = Common.IsPropertyExist(songItem.al, "pic_str") ? songItem.al.pic_str.ToString() : songItem.al.pic.ToString(),
                 url_id = songItem.id.ToString(),
@@ -889,7 +889,7 @@ namespace Meting4Net.Core
             {
                 id = songItem.mid.ToString(),
                 name = songItem.name.ToString(),
-                artist = null,
+                artist = new string[0],
                 album = songItem.album.title.ToString().Trim(),
                 pic_id = songItem.album.mid.ToString(),
                 url_id = songItem.mid.ToString(),
@@ -920,7 +920,9 @@ namespace Meting4Net.Core
                 id = songItem.hash.ToString(),
                 // 千月兔、hanser - 千里邀月 (人声版)
                 name = Common.IsPropertyExist(songItem, "filename") ? songItem.filename.ToString() : songItem.fileName.ToString(),
-                artist = null,
+                // Note: 不能写完 artist = null,
+                // 不然当后面未给与 artist 值时，json化后会 变为 artist: null , 而不是 artist: []
+                artist = new string[0],
                 album = Common.IsPropertyExist(songItem, "album_name") ? songItem.album_name.ToString() : "",
                 url_id = songItem.hash.ToString(),
                 pic_id = songItem.hash.ToString(),

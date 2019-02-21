@@ -67,9 +67,9 @@ namespace SimpleDemo.Controllers
 
             #region 酷狗音乐 API
             Meting api = new Meting(ServerProvider.Kugou);
-            //string jsonStr = api.FormatMethod(true).Search("千里邀月");
+            string jsonStr = api.FormatMethod(true).Search("千里邀月");
             // 传递通过 Search("千里邀月") 获得的 id
-            string jsonStr = api.FormatMethod(true).Song("e64025c53de70ba1d91aec1f8c38f1ae");
+            //string jsonStr = api.FormatMethod(true).Song("e64025c53de70ba1d91aec1f8c38f1ae");
 
             Console.WriteLine(jsonStr);
             #endregion
