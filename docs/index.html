@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
 </head>
 <body>
+  <nav>
+    <a href="#/">中文</a>
+    <a href="#/en/">EN</a>
+  </nav>
   <div id="app"></div>
   <script>
     window.$docsify = {
@@ -51,8 +55,9 @@
       },
       // end search settings
 
-      // 加载 导航栏 _navbar.md
-      loadNavbar: true
+      // 加载侧边栏
+      loadSidebar: true,
+      subMaxLevel: 2
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>

@@ -1,5 +1,5 @@
 <p align="center">
-<img src="_images/Meting4Net.png" alt="Meting4Net">
+<img src="docs/_images/Meting4Net.png" alt="Meting4Net">
 </p>
 <h1 align="center">Meting4Net</h1>
 
