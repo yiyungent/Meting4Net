@@ -220,7 +220,7 @@ namespace Meting4Net.Core
             {
                 this.Data = api.decode(this.Data).ToJsonStr();
             }
-            if (!string.IsNullOrEmpty(api.format))
+            if (api.format != null)
             {
                 this.Data = Common.Obj2JsonStr(this.Clean(this.Data, api.format));
             }
@@ -319,11 +319,19 @@ namespace Meting4Net.Core
         {
             // 根据 json字符串 第一层是 {}: JObject , 还是 []: JArray 确定转换为哪种类型的对象
             raw = Common.JsonStr2Obj(raw.ToString());
+
             if (!string.IsNullOrEmpty(rule))
             {
                 raw = this.PickUp(raw, rule);
             }
-
+            if (raw is JObject)
+            {
+                raw = new JArray
+                {
+                    new JObject(raw)
+                };
+            }
+            // Note: 向 Format_select() 的参数类型必须是 JArray
             Music_search_item[] result = Format_select(raw);
 
             return result;
@@ -449,6 +457,20 @@ namespace Meting4Net.Core
                             format = "json"
                         }),
                         format = "data"
+                    };
+                    break;
+                case ServerProvider.Kugou:
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://m.kugou.com/app/i/getSongInfo.php",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            cmd = "playInfo",
+                            hash = id,
+                            from = "mkugou"
+                        }),
+                        format = ""
                     };
                     break;
             }
