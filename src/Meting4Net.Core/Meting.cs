@@ -20,8 +20,26 @@ using Meting4Net.Core.Models.Standard;
 
 namespace Meting4Net.Core
 {
+    /// <summary>
+    /// 音乐API 服务提供者
+    /// </summary>
+    public enum ServerProvider
+    {
+        /// <summary>
+        /// 网易云音乐
+        /// </summary>
+        Netease = 0,
+        /// <summary>
+        /// 腾讯QQ音乐
+        /// </summary>
+        Tencent = 1
+    }
+
     public class Meting
     {
+        /// <summary>
+        /// 当前版本
+        /// </summary>
         public const string VERSION = "0.1.0";
 
         private string _raw;
@@ -47,21 +65,24 @@ namespace Meting4Net.Core
         //public string Status { get { return _status; } set { _status = value; } }
 
         /// <summary>
-        /// HTTP请求尝试次数，默认 3
+        /// HTTP请求尝试次数，默认 3（当未查询到数据时，或查询出错时，尝试再次查询的次数）
         /// </summary>
         public int TryCount { get { return _tryCount; } set { _tryCount = value; } }
 
+        /// <summary>
+        /// 歌曲 比特率
+        /// </summary>
         public int Br { get { return _br; } set { _br = value; } }
 
-        private string _server;
+        private ServerProvider _server;
         //private string _proxy;
         private bool _format = false;
         private Dictionary<string, string> _header;
 
         /// <summary>
-        /// 音乐服务者(eg. netease)
+        /// 音乐API 服务提供者
         /// </summary>
-        public string Server { get { return _server; } set { _server = value; } }
+        public ServerProvider Server { get { return _server; } set { _server = value; } }
         //public string Proxy { get { return _proxy; } set { _proxy = value; } }
 
         /// <summary>
@@ -91,10 +112,9 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public Meting Site(string value)
+        public Meting Site(ServerProvider value)
         {
-            string[] suppose = new string[] { "netease", "tencent", "xiami", "kugou", "baidu" };
-            this.Server = PhpCommon.In_array(value, suppose) ? value : "netease";
+            this.Server = value;
             this.Header = this.CurlSet();
 
             return this;
@@ -320,7 +340,7 @@ namespace Meting4Net.Core
             Music_api api = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     api = new Music_api
                     {
                         method = "POST",
@@ -337,7 +357,7 @@ namespace Meting4Net.Core
                         format = "result.songs"
                     };
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     api = new Music_api
                     {
                         method = "GET",
@@ -373,7 +393,7 @@ namespace Meting4Net.Core
             Music_api api = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     api = new Music_api
                     {
                         method = "POST",
@@ -386,7 +406,7 @@ namespace Meting4Net.Core
                         format = "songs"
                     };
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     api = new Music_api
                     {
                         method = "GET",
@@ -417,7 +437,7 @@ namespace Meting4Net.Core
             Music_api api = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     api = new Music_api
                     {
                         method = "POST",
@@ -435,7 +455,7 @@ namespace Meting4Net.Core
                         format = "songs"
                     };
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     api = new Music_api
                     {
                         method = "GET",
@@ -468,7 +488,7 @@ namespace Meting4Net.Core
             Music_api api = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     api = new Music_api
                     {
                         method = "POST",
@@ -484,7 +504,7 @@ namespace Meting4Net.Core
                         format = "hotSongs"
                     };
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     api = new Music_api
                     {
                         method = "GET",
@@ -518,7 +538,7 @@ namespace Meting4Net.Core
             Music_api api = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     api = new Music_api
                     {
                         method = "POST",
@@ -534,7 +554,7 @@ namespace Meting4Net.Core
                         format = "playlist.tracks"
                     };
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     api = new Music_api
                     {
                         method = "GET",
@@ -567,7 +587,7 @@ namespace Meting4Net.Core
             Music_api api = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     api = new Music_api
                     {
                         method = "POST",
@@ -581,7 +601,7 @@ namespace Meting4Net.Core
                         decode = Netease_url
                     };
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     api = new Music_api
                     {
                         method = "GET",
@@ -613,7 +633,7 @@ namespace Meting4Net.Core
             Music_api api = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     api = new Music_api
                     {
                         method = "POST",
@@ -630,7 +650,7 @@ namespace Meting4Net.Core
                         decode = Netease_lyric
                     };
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     api = new Music_api
                     {
                         method = "GET",
@@ -661,10 +681,10 @@ namespace Meting4Net.Core
             string picUrl = string.Empty;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     picUrl = "https://p3.music.126.net/" + this.Netease_encryptId(id) + "/" + id + ".jpg?param=" + size + "y" + size;
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     picUrl = "https://y.gtimg.cn/music/photo_new/T002R" + size + "x" + size + "M000" + id + ".jpg?max_age=2592000";
                     break;
             }
@@ -746,10 +766,10 @@ namespace Meting4Net.Core
             Del_music_item_format del_Music_Item = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     del_Music_Item = Format_netease;
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     del_Music_Item = Format_tencent;
                     break;
             }
@@ -841,7 +861,7 @@ namespace Meting4Net.Core
             Dictionary<string, string> header = null;
             switch (this.Server)
             {
-                case "netease":
+                case ServerProvider.Netease:
                     header = new Dictionary<string, string>
                     {
                         { "Referer", "https://music.163.com/" },
@@ -854,7 +874,7 @@ namespace Meting4Net.Core
                         { "Content-Type", "application/x-www-form-urlencoded" }
                     };
                     break;
-                case "tencent":
+                case ServerProvider.Tencent:
                     header = new Dictionary<string, string>
                     {
                         { "Referer", "http://y.qq.com" },
@@ -1058,6 +1078,33 @@ namespace Meting4Net.Core
 
 
         #region 即将废弃
+
+        #region 初始化Server, Header
+        /// <summary>
+        /// 初始化Server, Header
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [Obsolete("该方法即将废弃，请使用 Site(ServerProvider value) 代替")]
+        public Meting Site(string value)
+        {
+            ServerProvider provider = ServerProvider.Netease;
+            switch (value)
+            {
+                case "netease":
+                    provider = ServerProvider.Netease;
+                    break;
+                case "tencent":
+                    provider = ServerProvider.Tencent;
+                    break;
+            }
+            this.Server = provider;
+            this.Header = this.CurlSet();
+
+            return this;
+        }
+        #endregion
+
         /// <summary>
         /// 根据歌曲ID获取
         /// </summary>
@@ -1131,6 +1178,7 @@ namespace Meting4Net.Core
         {
             return Pic(id.ToString(), size);
         }
+
         #endregion
     }
 }

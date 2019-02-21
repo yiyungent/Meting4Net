@@ -17,7 +17,7 @@
     <FileVersion>0.0.2.0</FileVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Meting4Net</PackageId>
-    <PackageIconUrl>https://github.com/yiyungent/Meting4Net/blob/master/docs/images/favicon.png?raw=true</PackageIconUrl>
+    <PackageIconUrl>https://github.com/yiyungent/Meting4Net/blob/master/docs/_media/favicon.png?raw=true</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
