@@ -21,7 +21,8 @@ namespace NetCoreConsoleDemo
 
             Meting api = new Meting(ServerProvider.Kugou);
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
-            string jsonStr = api.FormatMethod(true).Lyric("e64025c53de70ba1d91aec1f8c38f1ae");
+            //string jsonStr = api.FormatMethod(true).Lyric("e64025c53de70ba1d91aec1f8c38f1ae");
+            string jsonStr = api.FormatMethod(true).Pic("e64025c53de70ba1d91aec1f8c38f1ae");
 
             Console.WriteLine(jsonStr);
 

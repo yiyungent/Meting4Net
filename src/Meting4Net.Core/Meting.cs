@@ -855,6 +855,12 @@ namespace Meting4Net.Core
                 case ServerProvider.Tencent:
                     picUrl = "https://y.gtimg.cn/music/photo_new/T002R" + size + "x" + size + "M000" + id + ".jpg?max_age=2592000";
                     break;
+                case ServerProvider.Kugou:
+                    string rawJsonStr = this.FormatMethod(false).Song(id);
+                    dynamic jsonObj = Common.JsonStr2Obj(rawJsonStr);
+                    // 发现酷狗的图片大小有限，对于 e64025c53de70ba1d91aec1f8c38f1ae，尝试 100,200,400可行，其它均 404没有，不知道其它歌曲图片情况如何，这里于是暂时写死
+                    picUrl = jsonObj.imgUrl.ToString().Replace("{size}", "400");
+                    break;
             }
 
             string jsonStr = Common.Obj2JsonStr(new
