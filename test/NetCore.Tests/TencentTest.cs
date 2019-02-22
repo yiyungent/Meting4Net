@@ -1,34 +1,33 @@
-using System;
-using Xunit;
-
-using Meting4Net.Core;
+Ôªøusing System;
 using System.Collections.Generic;
+using System.Text;
+
+using Xunit;
+using Meting4Net.Core;
 
 namespace NetCore.Tests
 {
-    public class NeteaseTest
+    public class TencentTest
     {
         public Meting Api { get; set; }
 
-        public NeteaseTest()
+        public TencentTest()
         {
-            this.Api = new Meting(ServerProvider.Netease);
+            this.Api = new Meting(ServerProvider.Tencent);
         }
 
         [Fact]
         public void SearchTest()
         {
-            Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Search("«ß¿Ô—˚‘¬");
+            string jsonStr = Api.FormatMethod(true).Search("ÂçÉÈáåÈÇÄÊúà");
 
-            Assert.Contains("«ß¿Ô—˚‘¬", jsonStr);
+            Assert.Contains("ÂçÉÈáåÈÇÄÊúà", jsonStr);
         }
 
         [Fact]
         public void UrlTest()
         {
-            Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Url("35847388");
+            string jsonStr = Api.FormatMethod(true).Url("001Nal2N2f0Qr8");
 
             Assert.Contains("\"url\":", jsonStr);
             Assert.Contains("\"size\":", jsonStr);
@@ -38,8 +37,7 @@ namespace NetCore.Tests
         [Fact]
         public void SongTest()
         {
-            Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Song("35847388");
+            string jsonStr = Api.FormatMethod(true).Song("001Nal2N2f0Qr8");
 
             Assert.Contains("id", jsonStr);
             Assert.Contains("name", jsonStr);
@@ -54,8 +52,7 @@ namespace NetCore.Tests
         [Fact]
         public void AlbumTest()
         {
-            Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Album("73927024");
+            string jsonStr = Api.FormatMethod(true).Album("001AMQBG3GzakR");
 
             Assert.Contains("id", jsonStr);
             Assert.Contains("name", jsonStr);
@@ -71,7 +68,7 @@ namespace NetCore.Tests
         public void ArtistTest()
         {
             Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Artist("1049179");
+            string jsonStr = Api.FormatMethod(true).Artist("001fNHEf1SFEFN");
 
             Assert.Contains("id", jsonStr);
             Assert.Contains("name", jsonStr);
@@ -87,7 +84,7 @@ namespace NetCore.Tests
         public void PlaylistTest()
         {
             Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Playlist("2487120533");
+            string jsonStr = Api.FormatMethod(true).Playlist("1721973967");
 
             Assert.Contains("id", jsonStr);
             Assert.Contains("name", jsonStr);
@@ -103,7 +100,7 @@ namespace NetCore.Tests
         public void LyricTest()
         {
             Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Lyric("35847388");
+            string jsonStr = Api.FormatMethod(true).Lyric("001Nal2N2f0Qr8");
 
             Assert.Contains("lyric", jsonStr);
             Assert.Contains("tlyric", jsonStr);
@@ -113,7 +110,7 @@ namespace NetCore.Tests
         public void PicTest()
         {
             Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Pic("1407374890649284");
+            string jsonStr = Api.FormatMethod(true).Pic("002szRig2zZxtj");
 
             Assert.Contains("url", jsonStr);
         }
