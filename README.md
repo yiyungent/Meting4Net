@@ -26,6 +26,7 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
 
 - [x] 网易云音乐 Meting Open API 移植完成 v0.1.0
 - [x] 腾讯QQ音乐 Meting Open API 移植完成 v0.2.0
+- [x] 酷狗音乐 Meting Open API 移植完成 v1.0.0
 
 ## 需要
 

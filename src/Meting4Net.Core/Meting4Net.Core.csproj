@@ -1,24 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!--<TargetFrameworks>net45;netstandard2.0</TargetFrameworks>-->
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <!--<TargetFrameworks>netstandard2.0;net45</TargetFrameworks>-->
     <!--<TargetFramework>net45</TargetFramework>-->
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <!--<TargetFramework>netcoreapp2.0</TargetFramework>-->
     <!-- 注意:当使用单元测试时，必须明确目标框架,参考 https://github.com/nunit/docs/wiki/.NET-Core-and-.NET-Standard#why-cant-my-tests-target-net-standard -->
     <!-- 不知道为什么,net45 无法测试依然提示未找到测试方法,让明确平台框架 -->
     
     <Authors>yiyun</Authors>
     <Company>yiyun</Company>
-    <Version>0.2.0</Version>
+    <!-- 主要版本.次要版本.修订 -->
+    <Version>1.0.0</Version>
     <Description>Wow, such a powerful music API framework for .Net</Description>
     <Copyright>Copyright (c) 2019 yiyun</Copyright>
     <PackageLicenseUrl>https://github.com/yiyungent/Meting4Net/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://yiyungent.github.io/Meting4Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/yiyungent/Meting4Net</RepositoryUrl>
     <NeutralLanguage />
-    <AssemblyVersion>0.0.2.0</AssemblyVersion>
-    <FileVersion>0.0.2.0</FileVersion>
+    <!-- 程序集版本 -->
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <!-- 主要版本.次要版本.内部版本号.修订 -->
+    <!-- 程序集的文件版本 -->
+    <FileVersion>1.0.0.0</FileVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Meting4Net</PackageId>
     <PackageIconUrl>https://github.com/yiyungent/Meting4Net/blob/master/docs/_media/favicon.png?raw=true</PackageIconUrl>
