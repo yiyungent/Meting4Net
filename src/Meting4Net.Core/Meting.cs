@@ -815,6 +815,22 @@ namespace Meting4Net.Core
                         decode = Tencent_lyric
                     };
                     break;
+                case ServerProvider.Kugou:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://krcs.kugou.com/search",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            keyword = "%20-%20",
+                            ver = 1,
+                            hash = id,
+                            client = "mobi",
+                            man = "yes"
+                        }),
+                        decode = Kugou_lyric
+                    };
+                    break;
             }
 
             return this.Exec(api);
@@ -1322,6 +1338,35 @@ namespace Meting4Net.Core
         }
         #endregion
 
+        #region 提取(解析)酷狗音乐歌词
+        private Music_lyric Kugou_lyric(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            dynamic data = Common.JsonStr2Obj(jsonStr);
+            Music_api api = new Music_api
+            {
+                method = "GET",
+                url = "http://lyrics.kugou.com/download",
+                body = Common.Dynamic2JObject(new
+                {
+                    charset = "utf8",
+                    accesskey = data.candidates[0].accesskey,
+                    id = data.candidates[0].id,
+                    client = "mobi",
+                    fmt = "lrc",
+                    ver = 1
+                })
+            };
+            data = Common.JsonStr2Obj(this.Exec(api));
+            Music_lyric rtn = new Music_lyric
+            {
+                lyric = Common.DecodeBase64("utf-8", data.content.ToString()),
+                tlyric = ""
+            };
+
+            return rtn;
+        }
+        #endregion
 
 
 
