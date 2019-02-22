@@ -79,7 +79,6 @@ namespace SimpleDemo.Controllers
             //string jsonStr = api.FormatMethod(true).Playlist("602964");
             // 传递 歌曲ID
             string jsonStr = api.FormatMethod(true).Url("e64025c53de70ba1d91aec1f8c38f1ae");
-            Console.WriteLine(jsonStr);
             #endregion
 
             return Content(jsonStr, "application/json");
