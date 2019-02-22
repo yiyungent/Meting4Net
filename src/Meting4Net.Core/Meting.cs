@@ -180,22 +180,40 @@ namespace Meting4Net.Core
                 api = api.encode(api);
             }
 
-            // GET:url?后参数，POST: POST body内容----均为 key1=value1&key2=value2
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict = Common.JObject2Dict(api.body);
-            string parmsData = PhpCommon.Http_build_query(dict);
+            string sendData = string.Empty;
+            #region 判断发送数据的类型
+            if (api.sendDataType == SendDataType.KeyValueParm)
+            {
+                // GET:url?后参数，POST: POST body内容----均为 key1=value1&key2=value2
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict = Common.JObject2Dict((JObject)api.body);
+                // 转换为 key1=value1&key2=value2
+                string parmsData = PhpCommon.Http_build_query(dict);
+
+                sendData = parmsData;
+            }
+            else if (api.sendDataType == SendDataType.Json)
+            {
+                // PS: 其实发送 json 数据的话，只能是 post 请求，将发送的json放到请求体中
+                sendData = api.body.ToString();
+            }
+            #endregion
+
             string url = api.url;
-            if (api.method == "GET")
+            if (api.method.Equals("GET", StringComparison.InvariantCultureIgnoreCase))
             {
                 if (api.body != null && !string.IsNullOrEmpty(api.body.ToString()))
                 {
-                    url = api.url + "?" + parmsData;
-                    parmsData = null;
+                    // GET 请求，则直接将要发送数据放到 url 后
+                    url = api.url + "?" + sendData;
+                    sendData = null;
                 }
             }
 
-            this.Curl(url: url, payload: parmsData);
+            // Curl() 会根据 sendData是否为null, 而选择 GET 还是 POST, sendData为null,则GET
+            this.Curl(url: url, payload: sendData);
 
+            #region 判断查询结果是否有误
             if (string.IsNullOrEmpty(this.Raw) || this.Raw.Contains("参数错误"))
             {
                 string errJsonStr = Common.Obj2JsonStr(new
@@ -206,6 +224,7 @@ namespace Meting4Net.Core
                 });
                 return errJsonStr;
             }
+            #endregion
 
             // 若不进行格式化，则直接返回原始数据
             if (!this.Format)
@@ -724,6 +743,7 @@ namespace Meting4Net.Core
                     {
                         method = "POST",
                         url = "http://media.store.kugou.com/v1/get_res_privilege",
+                        sendDataType = SendDataType.Json,
                         body = Common.Dynamic2JObject(new
                         {
                             relate = 1,
@@ -1072,15 +1092,15 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        private Music_decode_url Netease_url(dynamic result)
+        private Music_url Netease_url(dynamic result)
         {
             string jsonStr = result.ToString();
             //Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);
             dynamic data = Common.JsonStr2Obj(jsonStr);
-            Music_decode_url rtn = null;
+            Music_url rtn = null;
             if (!string.IsNullOrEmpty(data.data[0].url.ToString()))
             {
-                rtn = new Music_decode_url
+                rtn = new Music_url
                 {
                     url = data.data[0].url,
                     size = data.data[0].size,
@@ -1089,7 +1109,7 @@ namespace Meting4Net.Core
             }
             else
             {
-                rtn = new Music_decode_url
+                rtn = new Music_url
                 {
                     url = "",
                     size = 0,
@@ -1102,7 +1122,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)腾讯音乐链接
-        private Music_decode_url Tencent_url(dynamic result)
+        private Music_url Tencent_url(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic dataInit = Common.JsonStr2Obj(jsonStr);
@@ -1170,7 +1190,7 @@ namespace Meting4Net.Core
             dynamic vkeys = response["req_0"]["data"]["midurlinfo"];
 
 
-            Music_decode_url url = null;
+            Music_url url = null;
             int index = 0;
             foreach (JToken vo in type.Children())
             {
@@ -1180,7 +1200,7 @@ namespace Meting4Net.Core
                     {
                         if (!string.IsNullOrEmpty(vkeys[index]["vkey"].ToString()))
                         {
-                            url = new Music_decode_url
+                            url = new Music_url
                             {
                                 url = response["req_0"]["data"]["sip"][0].ToString() + vkeys[index]["purl"].ToString(),
                                 size = dataInit["data"][0]["file"][vo[0].ToString()],
@@ -1197,7 +1217,7 @@ namespace Meting4Net.Core
             }
             if (url == null || url.url == null)
             {
-                url = new Music_decode_url
+                url = new Music_url
                 {
                     url = "",
                     size = 0,
@@ -1210,13 +1230,13 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)酷狗音乐链接
-        private Music_decode_url Kugou_url(dynamic result)
+        private Music_url Kugou_url(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic data = Common.JsonStr2Obj(jsonStr);
 
             int max = 0;
-            Music_decode_url rtn = null;
+            Music_url rtn = null;
             foreach (JObject vo in data.data[0].relate_goods)
             {
                 int br = Convert.ToInt32(vo["info"]["bitrate"].ToString());
@@ -1240,7 +1260,7 @@ namespace Meting4Net.Core
                     if (Common.IsPropertyExist(t, "url"))
                     {
                         max = Convert.ToInt32(t.bitRate.ToString()) / 1000;
-                        rtn = new Music_decode_url
+                        rtn = new Music_url
                         {
                             url = t.url[0].ToString(),
                             size = t.fileSize,
@@ -1251,7 +1271,7 @@ namespace Meting4Net.Core
             } // end foreach
             if (Common.IsPropertyExist(data, "url"))
             {
-                rtn = new Music_decode_url
+                rtn = new Music_url
                 {
                     url = "",
                     size = 0,
@@ -1269,12 +1289,12 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        private Music_decode_lyric Netease_lyric(dynamic result)
+        private Music_lyric Netease_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
             //Models.Netease.Netease_lyric data = JsonConvert.DeserializeObject<Models.Netease.Netease_lyric>(jsonStr);
             dynamic data = Common.JsonStr2Obj(jsonStr);
-            Music_decode_lyric rtn = new Music_decode_lyric
+            Music_lyric rtn = new Music_lyric
             {
                 //lyric = data.lrc != null && !string.IsNullOrEmpty(data.lrc.lyric) ? data.lrc.lyric : "",
                 lyric = data.lrc != null && data.lrc.lyric != null ? data.lrc.lyric : "",
@@ -1287,12 +1307,12 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)腾讯音乐歌词
-        private Music_decode_lyric Tencent_lyric(dynamic result)
+        private Music_lyric Tencent_lyric(dynamic result)
         {
             string str = result.ToString();
             string jsonStr = Regex.Match(str, @"MusicJsonCallback\((.*)\)").Groups[1].Value;
             dynamic data = Common.JsonStr2Obj(jsonStr);
-            Music_decode_lyric rtn = new Music_decode_lyric
+            Music_lyric rtn = new Music_lyric
             {
                 lyric = data.lyric != null ? Common.DecodeBase64("utf-8", data.lyric.ToString()) : "",
                 tlyric = data.trans != null ? Common.DecodeBase64("utf-8", data.trans.ToString()) : ""

@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Meting4Net.Core
 {
-    public class PhpCommon
+    class PhpCommon
     {
         #region 指定字符串是否在字符串数组中
         public static bool In_array(string value, string[] array)

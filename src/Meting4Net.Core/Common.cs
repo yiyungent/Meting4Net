@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 
 namespace Meting4Net.Core
 {
-    public class Common
+    class Common
     {
         public static dynamic JsonStr2Obj(string jsonStr)
         {

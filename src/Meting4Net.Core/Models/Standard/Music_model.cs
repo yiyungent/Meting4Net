@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Meting4Net.Core.Models.Standard
 {
-    public class Music_decode_url : Music_decode
+    public class Music_model : JsonModel
     {
-        public string url { get; set; }
-        public int size { get; set; }
-        public int br { get; set; }
+
     }
 }

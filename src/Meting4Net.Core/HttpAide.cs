@@ -5,10 +5,11 @@ using System.Text;
 using System.Net;
 using System.IO.Compression;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace Meting4Net.Core
 {
-    public class HttpAide
+    class HttpAide
     {
         #region Http Get
         /// <summary>
@@ -189,6 +190,39 @@ namespace Meting4Net.Core
             }
 
             return cookiesDic;
+        }
+        #endregion
+
+        #region 检查是否为简单的参数类型(若是则可直接转换为 key1=val1&key2=val2 )
+        /// <summary>
+        /// 检查是否为简单的参数类型(若是则可直接转换为 key1=val1&key2=val2 )
+        /// </summary>
+        /// <param name="parmData"></param>
+        /// <returns></returns>
+        public static bool IsSimpleParms(dynamic parmData)
+        {
+            if (parmData is JObject)
+            {
+                // 再判断其值是否全为 简单值（非JObject,JArray）
+                JObject jObject = (JObject)parmData;
+                bool isSimple = true;
+                foreach (JToken item in jObject.PropertyValues())
+                {
+                    if (item is JObject || item is JArray)
+                    {
+                        return false;
+                    }
+                }
+                return isSimple;
+            }
+            else if (parmData is JArray)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
         #endregion
     }
