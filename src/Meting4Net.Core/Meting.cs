@@ -62,12 +62,12 @@ namespace Meting4Net.Core
         /// <summary>
         /// 获取的原始json数据
         /// </summary>
-        public string Raw { get { return _raw; } set { _raw = value; } }
+        public string Raw { get { return _raw; } protected set { _raw = value; } }
 
         /// <summary>
         /// 如果格式化则为格式化后json,未格式化则同 Raw
         /// </summary>
-        public string Data { get { return _data; } set { _data = value; } }
+        public string Data { get { return _data; } protected set { _data = value; } }
 
         //public string Info { get { return _info; } set { _info = value; } }
         //public string Error { get { return _error; } set { _error = value; } }
@@ -81,7 +81,7 @@ namespace Meting4Net.Core
         /// <summary>
         /// 歌曲 比特率
         /// </summary>
-        public int Br { get { return _br; } set { _br = value; } }
+        protected int Br { get { return _br; } protected set { _br = value; } }
 
         private ServerProvider _server;
         //private string _proxy;
@@ -102,7 +102,7 @@ namespace Meting4Net.Core
         /// <summary>
         /// 请求头
         /// </summary>
-        public Dictionary<string, string> Header { get { return _header; } set { _header = value; } }
+        protected Dictionary<string, string> Header { get { return _header; } set { _header = value; } }
 
         #region 初始化
         /// <summary>
