@@ -68,7 +68,7 @@ namespace SimpleDemo.Controllers
             #region 酷狗音乐 API
             Meting api = new Meting(ServerProvider.Kugou);
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
-            // 传递通过 Search("千里邀月") 获得的 id
+            // 传递通过 Search("千里邀月") 获得的 歌曲id
             //string jsonStr = api.FormatMethod(true).Song("e64025c53de70ba1d91aec1f8c38f1ae");
             // http://www.kugou.com/share/9vXiM9bt7V2.html#hash=8B264F3E5F587DDB2631660B34CD43FB&album_id=1746593
             // 其中 album_id= 后的 1746593 即为专辑ID
@@ -76,7 +76,9 @@ namespace SimpleDemo.Controllers
             // https://www.kugou.com/singer/19671.html 其中 19671 即为作家ID
             //string jsonStr = api.FormatMethod(true).Artist("19671");
             // https://www.kugou.com/yy/special/single/602964.html 其中 602964 即为歌单ID
-            string jsonStr = api.FormatMethod(true).Playlist("602964");
+            //string jsonStr = api.FormatMethod(true).Playlist("602964");
+            // 传递 歌曲ID
+            string jsonStr = api.FormatMethod(true).Url("e64025c53de70ba1d91aec1f8c38f1ae");
             Console.WriteLine(jsonStr);
             #endregion
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace Meting4Net.Core
 {
@@ -44,7 +45,9 @@ namespace Meting4Net.Core
 
         #region 将一个字典内的所有值均UrlEncode，且拼接为Url格式参数
         /// <summary>
-        /// 将一个字典内的所有值均UrlEncode，且拼接为Url格式参数
+        /// 普通类型： 将一个字典内的所有值均UrlEncode，且拼接为Url格式参数
+        /// 普通类型： key=value&  返回拼接后的字符串
+        /// 复杂json类型: 当value属性值不为单一值，即为 JObject / JArray时，直接将data转换为 json字符串返回
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -55,12 +58,64 @@ namespace Meting4Net.Core
                 return null;
             }
             StringBuilder sb = new StringBuilder();
+            // 标记是否是 简单类型: key1=value1&key2=value2&
+            bool isSimple = true;
             foreach (string key in data.Keys)
             {
-                sb.Append(key + "=" + HttpUtility.UrlEncode(data[key].ToString()) + "&");
+                if (data[key] is JArray)
+                {
+                    isSimple = false;
+                    #region 废弃，这样拼接字符串，最后依然失败
+                    //// eg. Kugou Url() 的API resource
+                    //JArray arr = (JArray)data[key];
+                    //int index = 0;
+                    //foreach (JToken item in arr.Children())
+                    //{
+                    //    if (item is JObject)
+                    //    {
+                    //        JObject jObject = (JObject)item;
+                    //        foreach (JProperty property in jObject.Properties())
+                    //        {
+                    //            // resource[0][type]=audio
+                    //            string temp = string.Format("{0}[{1}][{2}]={3}", key, index, property.Name, property.Value.ToString());
+                    //            sb.Append(HttpUtility.UrlEncode(temp) + "&");
+                    //        }
+                    //    }
+                    //    index++;
+                    //} 
+                    #endregion
+
+                    #region 如果属性值又为一个json数组,那么直接将整个 json字符串对象 作为请求体发送
+                    sb.Clear();
+                    sb.Append(Common.Dict2JObject(data).ToString());
+                    break;
+                    #endregion
+                }
+                else if (data[key] is JObject)
+                {
+                    isSimple = false;
+                    #region 如果属性值又为一个json对象, 那么直接将整个 json字符串对象 作为请求体发送
+                    sb.Clear();
+                    sb.Append(Common.Dict2JObject(data).ToString());
+                    break;
+                    #endregion
+                }
+                else
+                {
+                    sb.Append(key + "=" + HttpUtility.UrlEncode(data[key].ToString()) + "&");
+                }
             }
             string str = sb.ToString();
-            return str.Substring(0, str.Length - 1);
+            if (isSimple)
+            {
+                // 简单类型，发送拼接参数 字符串
+                return str.Substring(0, str.Length - 1);
+            }
+            else
+            {
+                // 非简单类型，直接发送整个 json字符串
+                return str;
+            }
         }
         #endregion
 

@@ -182,7 +182,7 @@ namespace Meting4Net.Core
 
             // GET:url?后参数，POST: POST body内容----均为 key1=value1&key2=value2
             Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict = Common.Dynamic2Dict(api.body);
+            dict = Common.JObject2Dict(api.body);
             string parmsData = PhpCommon.Http_build_query(dict);
             string url = api.url;
             if (api.method == "GET")
@@ -719,6 +719,34 @@ namespace Meting4Net.Core
                         decode = Tencent_url
                     };
                     break;
+                case ServerProvider.Kugou:
+                    api = new Music_api
+                    {
+                        method = "POST",
+                        url = "http://media.store.kugou.com/v1/get_res_privilege",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            relate = 1,
+                            userid = "0",
+                            vip = 0,
+                            appid = 1000,
+                            token = "",
+                            behavior = "download",
+                            area_code = "1",
+                            clientver = "8990",
+                            resource = new JArray
+                            {
+                                Common.Dynamic2JObject(new
+                                {
+                                    id = 0,
+                                    type = "audio",
+                                    hash = id
+                                })
+                            },
+                        }),
+                        decode = Kugou_url
+                    };
+                    break;
             }
             this.Br = br;
 
@@ -1178,6 +1206,60 @@ namespace Meting4Net.Core
             }
 
             return url;
+        }
+        #endregion
+
+        #region 提取(解析)酷狗音乐链接
+        private Music_decode_url Kugou_url(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            dynamic data = Common.JsonStr2Obj(jsonStr);
+
+            int max = 0;
+            Music_decode_url rtn = null;
+            foreach (JObject vo in data.data[0].relate_goods)
+            {
+                int br = Convert.ToInt32(vo["info"]["bitrate"].ToString());
+                if (br == this.Br && br > max)
+                {
+                    Music_api api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://trackercdn.kugou.com/i/v2/",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            hash = vo["hash"].ToString(),
+                            key = Common.MD5Encrypt32(vo["hash"].ToString() + "kgcloudv2"),
+                            pid = 3,
+                            behavior = "play",
+                            cmd = "25",
+                            version = 8990
+                        }),
+                    };
+                    dynamic t = Common.JsonStr2Obj(this.Exec(api));
+                    if (Common.IsPropertyExist(t, "url"))
+                    {
+                        max = Convert.ToInt32(t.bitRate.ToString()) / 1000;
+                        rtn = new Music_decode_url
+                        {
+                            url = t.url[0].ToString(),
+                            size = t.fileSize,
+                            br = Convert.ToInt32(t.bitRate.ToString()) / 1000
+                        };
+                    }
+                } // if br
+            } // end foreach
+            if (Common.IsPropertyExist(data, "url"))
+            {
+                rtn = new Music_decode_url
+                {
+                    url = "",
+                    size = 0,
+                    br = -1
+                };
+            }
+
+            return rtn;
         }
         #endregion
 

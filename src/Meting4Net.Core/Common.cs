@@ -62,16 +62,38 @@ namespace Meting4Net.Core
             }
         }
 
-        public static Dictionary<string, string> JObject2Dict(dynamic obj)
+        #region JObject2Dict
+        public static Dictionary<string, object> JObject2Dict(JObject obj)
         {
-            if (obj is JObject)
-            {
-                JObject jObject = (JObject)obj;
-                Dictionary<string, string> rtn = jObject.ToObject<Dictionary<string, string>>();
-                return rtn;
-            }
-            return null;
+            JObject jObject = (JObject)obj;
+            Dictionary<string, object> rtn = jObject.ToObject<Dictionary<string, object>>();
+            return rtn;
         }
+        #endregion
+
+        #region Dict2JObject
+        public static JObject Dict2JObject(Dictionary<string, object> dict)
+        {
+            JObject jObject = new JObject();
+            foreach (string key in dict.Keys)
+            {
+                if (dict[key] is JObject)
+                {
+                    jObject.Add(key, (JObject)dict[key]);
+                }
+                else if (dict[key] is JArray)
+                {
+                    jObject.Add(key, (JArray)dict[key]);
+                }
+                else
+                {
+                    jObject.Add(key, dict[key].ToString());
+                }
+            }
+
+            return jObject;
+        }
+        #endregion
 
         /// <summary>
         /// IP地址转换为数字
@@ -201,8 +223,9 @@ namespace Meting4Net.Core
             // 通过使用循环，将字节类型的数组转换为字符串，此字符串是常规字符格式化所得
             for (int i = 0; i < s.Length; i++)
             {
-                // 将得到的字符串使用十六进制类型格式。格式后的字符是小写的字母，如果使用大写（X）则格式后的字符是大写字符 
-                pwd = pwd + s[i].ToString("X");
+                // 将得到的字符串使用十六进制类型格式。格式后的字符是小写的字母
+                // X 表示大写， x 表示小写， X2和x2表示不省略首位为0的十六进制数
+                pwd = pwd + s[i].ToString("x2");
             }
             return pwd;
         }
