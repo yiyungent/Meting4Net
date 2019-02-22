@@ -81,7 +81,7 @@ namespace Meting4Net.Core
         /// <summary>
         /// 歌曲 比特率
         /// </summary>
-        protected int Br { get { return _br; } protected set { _br = value; } }
+        protected int Br { get { return _br; } set { _br = value; } }
 
         private ServerProvider _server;
         //private string _proxy;
