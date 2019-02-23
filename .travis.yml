@@ -1,5 +1,5 @@
 language: csharp
-solution: learnGit.sln
+solution: Meting4Net.sln
 mono: none
 dotnet: 2.1.301
 script:
