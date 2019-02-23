@@ -4,5 +4,7 @@ mono: none
 dotnet: 2.1.301
 script:
  - dotnet restore
+ - msbuild /p:Configuration=Release Meting4Net.sln
+ - mono ./packages/xunit.runners.*/tools/xunit.console.clr4.exe ./test/NetCore.Tests/bin/Release/netcoreapp2.1/NetCore.Tests.dll
 os:
   - linux
