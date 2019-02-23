@@ -3,9 +3,9 @@ solution: Meting4Net.sln
 
 matrix:
   include:
-    - dotnet: 2.1.301
-      mono: none
-      env: DOTNETCORE=2  # optional, can be used to take different code paths in your script
+   # - dotnet: 2.1.301
+     # mono: none
+     # env: DOTNETCORE=2  # optional, can be used to take different code paths in your script
     - mono: latest
     
 install:
@@ -15,7 +15,7 @@ install:
 script:
  - dotnet restore
  - msbuild /p:Configuration=Release Meting4Net.sln
- - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./test/NetCore.Tests/bin/Release/netcoreapp2.1/NetCore.Tests.dll
+ - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./test/NetCore.Tests/bin/Release/netcoreapp2.1/NetCore.Tests.dll
  
 os:
   - linux
