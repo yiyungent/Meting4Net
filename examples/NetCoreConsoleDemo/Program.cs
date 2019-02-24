@@ -27,7 +27,9 @@ namespace NetCoreConsoleDemo
             Meting api = new Meting(ServerProvider.Xiami);
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
             // 传递通过Search获得的歌曲ID
-            string jsonStr = api.FormatMethod(true).Song("1808486366");
+            //string jsonStr = api.FormatMethod(true).Song("1808486366");
+            // https://www.xiami.com/album/2103947271  其中专辑ID为2103947271
+            string jsonStr = api.FormatMethod(true).Album("2103947271");
 
             Console.WriteLine(jsonStr);
 
