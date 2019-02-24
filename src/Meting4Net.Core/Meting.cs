@@ -447,7 +447,8 @@ namespace Meting4Net.Core
                         {
                             data = new JObject
                             {
-                                { "key", keyword },
+                                // 注意: 需对搜索关键字 unicode
+                                { "key",Common.String2Unicode( keyword) },
                                 { "pagingVO", new JObject {
                                     { "page", options.page != null ? options.page: 1 },
                                     { "pageSize", options.limit != null ? options.limit : 30 }
@@ -515,6 +516,23 @@ namespace Meting4Net.Core
                             from = "mkugou"
                         }),
                         format = ""
+                    };
+                    break;
+                case ServerProvider.Xiami:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.songservice.getsongdetail/1.0/",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            data = new JObject
+                            {
+                                { "songId", id }
+                            },
+                            r = "mtop.alimusic.music.songservice.getsongdetail"
+                        }),
+                        encode = Xiami_sign,
+                        format = "data.data.songDetail"
                     };
                     break;
             }
@@ -961,8 +979,7 @@ namespace Meting4Net.Core
             string resData = this.Curl(url, null, true).Raw;
             MatchCollection matchColl = Regex.Matches(resData, "_m_h5[^;]+");
             this.Header["Cookie"] = matchColl[0].Value + "; " + matchColl[1].Value;
-            // 对搜索关键字 unicode
-            api.body["data"]["key"] = Common.String2Unicode(api.body["data"]["key"].ToString());
+
             string jsonData = Common.Obj2JsonStr(new JObject
             {
                 new JProperty("requestStr", Common.Obj2JsonStr(new JObject

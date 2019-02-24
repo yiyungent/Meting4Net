@@ -25,7 +25,9 @@ namespace NetCoreConsoleDemo
             //string jsonStr = api.FormatMethod(true).Pic("e64025c53de70ba1d91aec1f8c38f1ae");
 
             Meting api = new Meting(ServerProvider.Xiami);
-            string jsonStr = api.FormatMethod(true).Search("千里邀月");
+            //string jsonStr = api.FormatMethod(true).Search("千里邀月");
+            // 传递通过Search获得的歌曲ID
+            string jsonStr = api.FormatMethod(true).Song("1808486366");
 
             Console.WriteLine(jsonStr);
 
