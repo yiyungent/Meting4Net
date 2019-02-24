@@ -774,6 +774,29 @@ namespace Meting4Net.Core
                         format = "data.info"
                     };
                     break;
+                case ServerProvider.Xiami:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.list.collectservice.getcollectdetail/1.0/",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            data = new JObject
+                            {
+                                { "listId", id },
+                                { "isFullTags", false },
+                                { "pagingVO", new JObject
+                                {
+                                    { "page", 1 },
+                                    { "pageSize", 1000 }
+                                } }
+                            },
+                            r = "mtop.alimusic.music.list.collectservice.getcollectdetail"
+                        }),
+                        encode = Xiami_sign,
+                        format = "data.data.collectDetail.songs"
+                    };
+                    break;
             }
 
             return this.Exec(api);
