@@ -872,6 +872,26 @@ namespace Meting4Net.Core
                         decode = Kugou_url
                     };
                     break;
+                case ServerProvider.Xiami:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.songservice.getsongs/1.0/",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            data = new JObject
+                            {
+                                { "songIds", new JArray
+                                {
+                                    id
+                                } }
+                            },
+                            r = "mtop.alimusic.music.songservice.getsongs"
+                        }),
+                        encode = Xiami_sign,
+                        decode = Xiami_url
+                    };
+                    break;
             }
             this.Br = br;
 
@@ -1477,6 +1497,49 @@ namespace Meting4Net.Core
                 } // if br
             } // end foreach
             if (Common.IsPropertyExist(data, "url"))
+            {
+                rtn = new Music_url
+                {
+                    url = "",
+                    size = 0,
+                    br = -1
+                };
+            }
+
+            return rtn;
+        }
+        #endregion
+
+        #region 提取(解析)虾米音乐链接
+        protected Music_url Xiami_url(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            dynamic songData = Common.JsonStr2Obj(jsonStr);
+            JObject types = new JObject
+            {
+                { "s", 740 },
+                { "h", 320 },
+                { "l", 128 },
+                { "f", 64 },
+                { "e", 32 }
+            };
+            int max = 0;
+            Music_url rtn = null;
+            foreach (var vo in songData["data"]["data"]["songs"][0]["listenFiles"])
+            {
+                // 找歌曲质量 小于指定比特率，但最接近的 指定比特率的
+                if (Convert.ToInt32(types[vo["quality"].ToString()].ToString()) <= this.Br && Convert.ToInt32(types[vo["quality"].ToString()].ToString()) > max)
+                {
+                    max = Convert.ToInt32(types[vo["quality"].ToString()].ToString());
+                    rtn = new Music_url
+                    {
+                        url = vo["listenFile"],
+                        size = vo["fileSize"],
+                        br = types[vo["quality"].ToString()]
+                    };
+                }
+            } // end foreach
+            if (rtn == null || string.IsNullOrEmpty(rtn.url))
             {
                 rtn = new Music_url
                 {

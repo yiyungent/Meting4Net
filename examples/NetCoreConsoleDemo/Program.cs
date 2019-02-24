@@ -33,7 +33,8 @@ namespace NetCoreConsoleDemo
             // https://www.xiami.com/artist/2110230610 作家ID 2110230610 
             //string jsonStr = api.FormatMethod(true).Artist("2110230610");
             // https://www.xiami.com/collect/632580584 歌单ID 632580584
-            string jsonStr = api.FormatMethod(true).Playlist("632580584");
+            //string jsonStr = api.FormatMethod(true).Playlist("632580584");
+            string jsonStr = api.FormatMethod(true).Url("1808486366");
 
             Console.WriteLine(jsonStr);
 
