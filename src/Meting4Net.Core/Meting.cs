@@ -173,7 +173,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="api"></param>
         /// <returns></returns>
-        private string Exec(Music_api api)
+        protected string Exec(Music_api api)
         {
             if (api.encode != null)
             {
@@ -256,7 +256,7 @@ namespace Meting4Net.Core
         /// <param name="payload"></param>
         /// <param name="headerHave">返回的字符串中是否包含 响应头(Response Headers)</param>
         /// <returns></returns>
-        private Meting Curl(string url, string payload = null, bool headerHave = false)
+        protected Meting Curl(string url, string payload = null, bool headerHave = false)
         {
             List<string> headers = new List<string>();
             foreach (string key in this.Header.Keys)
@@ -299,7 +299,7 @@ namespace Meting4Net.Core
         /// <param name="array"></param>
         /// <param name="rule"></param>
         /// <returns></returns>
-        private dynamic PickUp(dynamic array, string rule)
+        protected dynamic PickUp(dynamic array, string rule)
         {
             string[] t = rule.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string vo in t)
@@ -334,7 +334,7 @@ namespace Meting4Net.Core
         /// <param name="raw"></param>
         /// <param name="rule"></param>
         /// <returns></returns>
-        private Music_search_item[] Clean(dynamic raw, string rule)
+        protected Music_search_item[] Clean(dynamic raw, string rule)
         {
             // 根据 json字符串 第一层是 {}: JObject , 还是 []: JArray 确定转换为哪种类型的对象
             raw = Common.JsonStr2Obj(raw.ToString());
@@ -878,7 +878,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="api"></param>
         /// <returns></returns>
-        private static Music_api Netease_AESCBC(Music_api api)
+        protected Music_api Netease_AESCBC(Music_api api)
         {
             string bodyJsonStr = Common.Obj2JsonStr(api.body);
             string encryptBody = Encrypt.EncryptedRequest(bodyJsonStr);
@@ -935,7 +935,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="rawArray"></param>
         /// <returns></returns>
-        private Music_search_item[] Format_select(JArray rawArray)
+        protected Music_search_item[] Format_select(JArray rawArray)
         {
             Del_music_item_format del_Music_Item = null;
             switch (this.Server)
@@ -968,7 +968,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="songItem">(单首)网易云音乐json数据</param>
         /// <returns></returns>
-        private static Music_search_item Format_netease(dynamic songItem)
+        protected Music_search_item Format_netease(dynamic songItem)
         {
             Music_search_item result = new Music_search_item
             {
@@ -999,7 +999,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 对搜索到的(单首)腾讯音乐数据进行格式化
-        private Music_search_item Format_tencent(dynamic songItem)
+        protected Music_search_item Format_tencent(dynamic songItem)
         {
             if (Common.IsPropertyExist(songItem, "musicData"))
             {
@@ -1034,7 +1034,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="songItem"></param>
         /// <returns></returns>
-        private Music_search_item Format_kugou(dynamic songItem)
+        protected Music_search_item Format_kugou(dynamic songItem)
         {
             Music_search_item result = new Music_search_item
             {
@@ -1065,7 +1065,7 @@ namespace Meting4Net.Core
         /// 设置请求头
         /// </summary>
         /// <returns></returns>
-        private Dictionary<string, string> CurlSet()
+        protected Dictionary<string, string> CurlSet()
         {
             Dictionary<string, string> header = null;
             switch (this.Server)
@@ -1114,7 +1114,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        private Music_url Netease_url(dynamic result)
+        protected Music_url Netease_url(dynamic result)
         {
             string jsonStr = result.ToString();
             //Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);
@@ -1144,7 +1144,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)腾讯音乐链接
-        private Music_url Tencent_url(dynamic result)
+        protected Music_url Tencent_url(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic dataInit = Common.JsonStr2Obj(jsonStr);
@@ -1252,7 +1252,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)酷狗音乐链接
-        private Music_url Kugou_url(dynamic result)
+        protected Music_url Kugou_url(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic data = Common.JsonStr2Obj(jsonStr);
@@ -1311,7 +1311,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        private Music_lyric Netease_lyric(dynamic result)
+        protected Music_lyric Netease_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
             //Models.Netease.Netease_lyric data = JsonConvert.DeserializeObject<Models.Netease.Netease_lyric>(jsonStr);
@@ -1329,7 +1329,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)腾讯音乐歌词
-        private Music_lyric Tencent_lyric(dynamic result)
+        protected Music_lyric Tencent_lyric(dynamic result)
         {
             string str = result.ToString();
             string jsonStr = Regex.Match(str, @"MusicJsonCallback\((.*)\)").Groups[1].Value;
@@ -1345,7 +1345,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)酷狗音乐歌词
-        private Music_lyric Kugou_lyric(dynamic result)
+        protected Music_lyric Kugou_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic data = Common.JsonStr2Obj(jsonStr);

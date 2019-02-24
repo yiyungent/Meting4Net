@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Meting4Net.Core.Models.Standard
 {
-    enum SendDataType
+    public enum SendDataType
     {
         /// <summary>
         /// 键值对参数: key1=val1&key2=val2&key3=val3
@@ -20,7 +20,7 @@ namespace Meting4Net.Core.Models.Standard
         Json
     }
 
-    class Music_api
+    public class Music_api
     {
         public string method { get; set; }
         public string url { get; set; }
@@ -43,7 +43,7 @@ namespace Meting4Net.Core.Models.Standard
         public int? type { get; set; } = null;
     }
 
-    delegate Music_api Del_music_api_encode(Music_api api);
+    public delegate Music_api Del_music_api_encode(Music_api api);
 
-    delegate Music_model Del_music_api_decode(dynamic data);
+    public delegate Music_model Del_music_api_decode(dynamic data);
 }
