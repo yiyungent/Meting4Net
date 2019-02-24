@@ -1017,6 +1017,9 @@ namespace Meting4Net.Core
                 case ServerProvider.Kugou:
                     del_Music_Item = Format_kugou;
                     break;
+                case ServerProvider.Xiami:
+                    del_Music_Item = Format_xiami;
+                    break;
             }
             List<Music_search_item> list = new List<Music_search_item>();
             JEnumerable<JToken> jTokens = rawArray.Children();
@@ -1123,6 +1126,31 @@ namespace Meting4Net.Core
 
             result.artist = artistsAndName[0].Split(new string[] { "、" }, StringSplitOptions.RemoveEmptyEntries);
             result.name = artistsAndName[1];
+
+            return result;
+        }
+        #endregion
+
+        #region 对搜索到的(单首)虾米音乐数据进行格式化
+        protected Music_search_item Format_xiami(dynamic songItem)
+        {
+            Music_search_item result = new Music_search_item
+            {
+                id = songItem.songId,
+                name = songItem.songName,
+                artist = new string[0],
+                album = songItem.albumName,
+                pic_id = songItem.songId,
+                url_id = songItem.songId,
+                lyric_id = songItem.songId,
+                source = "xiami"
+            };
+            List<string> list = new List<string>();
+            foreach (dynamic vo in songItem.singerVOs)
+            {
+                list.Add(vo.artistName.ToString());
+            }
+            result.artist = list.ToArray();
 
             return result;
         }
