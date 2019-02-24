@@ -41,7 +41,8 @@ namespace NetCoreConsoleDemo
             // 无翻译歌词
             //string jsonStr = api.FormatMethod(true).Lyric("1768955559");
             // 无歌词
-            string jsonStr = api.FormatMethod(true).Lyric("1772326454");
+            //string jsonStr = api.FormatMethod(true).Lyric("1772326454");
+            string jsonStr = api.FormatMethod(true).Pic("1772326454");
             Console.WriteLine(jsonStr);
 
             Console.ReadLine();
