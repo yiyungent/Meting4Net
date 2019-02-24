@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace Meting4Net.Core
 {
@@ -242,6 +243,46 @@ namespace Meting4Net.Core
                                     // 加密后是一个字节类型的数组，这里要注意编码UTF8/Unicode等的选择　
             byte[] s = md5.ComputeHash(Encoding.UTF8.GetBytes(cl));
             return Convert.ToBase64String(s);
+        }
+        #endregion
+
+        #region 返回 当前 Unix 时间戳
+        /// <summary>
+        /// 返回 当前 Unix 时间戳
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTimeStamp()
+        {
+            long unixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            return unixDate.ToString();
+        }
+        #endregion
+
+        #region Unicode编码与解码
+        /// <summary>
+        /// 字符串转Unicode
+        /// </summary>
+        /// <param name="source">源字符串</param>
+        /// <returns>Unicode编码后的字符串</returns>
+        public static string String2Unicode(string source)
+        {
+            var bytes = Encoding.Unicode.GetBytes(source);
+            var stringBuilder = new StringBuilder();
+            for (var i = 0; i < bytes.Length; i += 2)
+            {
+                stringBuilder.AppendFormat("\\u{0}{1}", bytes[i + 1].ToString("x").PadLeft(2, '0'), bytes[i].ToString("x").PadLeft(2, '0'));
+            }
+            return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Unicode转字符串
+        /// </summary>
+        /// <param name="source">经过Unicode编码的字符串</param>
+        /// <returns>正常字符串</returns>
+        public static string Unicode2String(string source)
+        {
+            return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(source, x => Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)).ToString());
         }
         #endregion
     }

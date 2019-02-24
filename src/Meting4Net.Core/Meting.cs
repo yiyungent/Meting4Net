@@ -37,7 +37,11 @@ namespace Meting4Net.Core
         /// <summary>
         /// 酷狗音乐
         /// </summary>
-        Kugou = 2
+        Kugou = 2,
+        /// <summary>
+        /// 虾米音乐
+        /// </summary>
+        Xiami = 3
     }
     #endregion
 
@@ -432,6 +436,27 @@ namespace Meting4Net.Core
                             version = 8990
                         }),
                         format = "data.info"
+                    };
+                    break;
+                case ServerProvider.Xiami:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.search.searchservice.searchsongs/1.0/",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            data = new JObject
+                            {
+                                { "key", keyword },
+                                { "pagingVO", new JObject {
+                                    { "page", options.page != null ? options.page: 1 },
+                                    { "pageSize", options.limit != null ? options.limit : 30 }
+                                } }
+                            },
+                            r = "mtop.alimusic.search.searchservice.searchsongs"
+                        }),
+                        encode = Xiami_sign,
+                        format = "data.data.songs"
                     };
                     break;
             }
@@ -929,6 +954,49 @@ namespace Meting4Net.Core
         }
         #endregion
 
+        #region 虾米音乐API加密
+        protected Music_api Xiami_sign(Music_api api)
+        {
+            string url = "http://h5api.m.xiami.com/h5/mtop.alimusic.search.searchservice.searchsongs/1.0/?appKey=12574478&t=1511168684000&dataType=json&data=%7B%22requestStr%22%3A%22%7B%5C%22model%5C%22%3A%7B%5C%22key%5C%22%3A%5C%22Dangerous+Woman%5C%22%2C%5C%22pagingVO%5C%22%3A%7B%5C%22page%5C%22%3A1%2C%5C%22pageSize%5C%22%3A30%7D%7D%7D%22%7D&api=mtop.alimusic.search.searchservice.searchsongs&v=1.0&type=originaljson&sign=f6c99a429e9ef703ea955f7cd113a467";
+            string resData = this.Curl(url, null, true).Raw;
+            MatchCollection matchColl = Regex.Matches(resData, "_m_h5[^;]+");
+            this.Header["Cookie"] = matchColl[0].Value + "; " + matchColl[1].Value;
+            // 对搜索关键字 unicode
+            api.body["data"]["key"] = Common.String2Unicode(api.body["data"]["key"].ToString());
+            string jsonData = Common.Obj2JsonStr(new JObject
+            {
+                new JProperty("requestStr", Common.Obj2JsonStr(new JObject
+                {
+                    new JProperty("header", new JObject
+                    {
+                        new JProperty("platformId", "mac")
+                    }),
+                    new JProperty("model", api.body["data"])
+                }))
+                // 注意: 此句必须有，去除 unicode 后，再生成json后导致多出的 \\
+                // 并且必须在此处就进行去除，后面sign的生成与data的生成必须是对同一数据
+            }).Replace(@"\\u", "u");
+            string appkey = "12574478";
+            string cookie = this.Header["Cookie"];
+            string token = Regex.Match(cookie, "_m_h5_tk=([^_]+)").Groups[1].Value;
+            long t = Convert.ToInt64(Common.GetTimeStamp()) * 1000;
+            string sign = Common.MD5Encrypt32($"{token}&{t}&{appkey}&{jsonData}");
+            api.body = Common.Dynamic2JObject(new
+            {
+                appKey = appkey,
+                t = t,
+                dataType = "json",
+                data = jsonData,
+                api = api.body["r"].ToString(),
+                v = "1.0",
+                type = "originaljson",
+                sign = sign
+            });
+
+            return api;
+        }
+        #endregion
+
         #region 格式化选择
         /// <summary>
         /// 格式化选择
@@ -1100,6 +1168,16 @@ namespace Meting4Net.Core
                     {
                         { "User-Agent", "IPhone-8990-searchSong" },
                         { "UNI-UserAgent", "iOS11.4-Phone8990-1009-0-WiFi" }
+                    };
+                    break;
+                case ServerProvider.Xiami:
+                    header = new Dictionary<string, string>
+                    {
+                      { "Cookie", "_m_h5_tk=15d3402511a022796d88b249f83fb968_1511163656929; _m_h5_tk_enc=b6b3e64d81dae577fc314b5c5692df3c" },
+                        { "User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) XIAMI-MUSIC/3.1.1 Chrome/56.0.2924.87 Electron/1.6.11 Safari/537.36" },
+                        { "Accept", "application/json" },
+                        { "Content-type", "application/x-www-form-urlencoded" },
+                        { "Accept-Language", "zh-CN" }
                     };
                     break;
             }
