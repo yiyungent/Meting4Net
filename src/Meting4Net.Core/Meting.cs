@@ -687,6 +687,28 @@ namespace Meting4Net.Core
                         format = "data.info"
                     };
                     break;
+                case ServerProvider.Xiami:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.songservice.getartistsongs/1.0/",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            data = new JObject
+                            {
+                                { "artistId", id },
+                                { "pagingVO", new JObject
+                                {
+                                    { "page", 1 },
+                                    { "pageSize", limit }
+                                } }
+                            },
+                            r = "mtop.alimusic.music.songservice.getartistsongs"
+                        }),
+                        encode = Xiami_sign,
+                        format = "data.data.songs"
+                    };
+                    break;
             }
 
             return this.Exec(api);
