@@ -34,8 +34,14 @@ namespace NetCoreConsoleDemo
             //string jsonStr = api.FormatMethod(true).Artist("2110230610");
             // https://www.xiami.com/collect/632580584 歌单ID 632580584
             //string jsonStr = api.FormatMethod(true).Playlist("632580584");
-            string jsonStr = api.FormatMethod(true).Url("1808486366");
-
+            //string jsonStr = api.FormatMethod(true).Url("1808486366");
+            // https://www.xiami.com/song/1774129963 歌曲ID 1774129963
+            // 有翻译歌词
+            //string jsonStr = api.FormatMethod(true).Lyric("1774129963");
+            // 无翻译歌词
+            //string jsonStr = api.FormatMethod(true).Lyric("1768955559");
+            // 无歌词
+            string jsonStr = api.FormatMethod(true).Lyric("1772326454");
             Console.WriteLine(jsonStr);
 
             Console.ReadLine();

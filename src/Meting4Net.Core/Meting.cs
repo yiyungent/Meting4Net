@@ -956,6 +956,23 @@ namespace Meting4Net.Core
                         decode = Kugou_lyric
                     };
                     break;
+                case ServerProvider.Xiami:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.lyricservice.getsonglyrics/1.0/",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            data = new JObject
+                            {
+                                { "songId", id }
+                            },
+                            r = "mtop.alimusic.music.lyricservice.getsonglyrics"
+                        }),
+                        encode = Xiami_sign,
+                        decode = Xiami_lyric
+                    };
+                    break;
             }
 
             return this.Exec(api);
@@ -1617,6 +1634,71 @@ namespace Meting4Net.Core
                 lyric = Common.DecodeBase64("utf-8", data.content.ToString()),
                 tlyric = ""
             };
+
+            return rtn;
+        }
+        #endregion
+
+        #region 提取(解析)虾米音乐歌词
+        protected Music_lyric Xiami_lyric(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            dynamic songData = Common.JsonStr2Obj(jsonStr);
+            Music_lyric rtn = null;
+            string contentData = string.Empty;
+            if (songData["data"]["data"]["lyrics"] != null && songData["data"]["data"]["lyrics"].Count > 0)
+            {
+                // 有歌词
+                contentData = songData["data"]["data"]["lyrics"][0]["content"].ToString();
+                contentData = Regex.Replace(contentData, "<[^>]+>", "");
+
+                MatchCollection matches = Regex.Matches(contentData, @"\[([\d:\.]+)\](.*)\s\[x-trans\](.*)", RegexOptions.IgnoreCase);
+                // 目前仅适用于歌词与翻译歌词一样多
+                if (matches.Count > 0 && matches[0].Groups.Count == 4)
+                {
+                    // 有翻译歌词
+                    string[] lyricArr = new string[matches.Count];
+                    string[] tlyricArr = new string[matches.Count];
+                    for (int i = 0; i < matches.Count; i++)
+                    {
+                        // 存在BUG：可能某一句存在无翻译，从而导致.Groups[2\3] 超出索引外
+                        lyricArr[i] = "[" + matches[i].Groups[1].Value + "]" + matches[i].Groups[2].Value;
+                        tlyricArr[i] = "[" + matches[i].Groups[1].Value + "]" + matches[i].Groups[3].Value;
+                    }
+                    string lyricStr = contentData;
+                    string tlyricStr = contentData;
+                    // 循环将原歌词中的每句替换为歌词和翻译歌词
+                    for (int i = 0; i < lyricArr.Length; i++)
+                    {
+                        lyricStr = lyricStr.Replace(matches[i].Groups[0].Value, lyricArr[i]);
+                        tlyricStr = tlyricStr.Replace(matches[i].Groups[0].Value, tlyricArr[i]);
+                    }
+
+                    rtn = new Music_lyric
+                    {
+                        lyric = lyricStr,
+                        tlyric = tlyricStr
+                    };
+                }
+                else
+                {
+                    // 无翻译歌词
+                    rtn = new Music_lyric
+                    {
+                        lyric = contentData,
+                        tlyric = ""
+                    };
+                }
+            }
+            else
+            {
+                // 无歌词
+                rtn = new Music_lyric
+                {
+                    lyric = "",
+                    tlyric = ""
+                };
+            }
 
             return rtn;
         }
