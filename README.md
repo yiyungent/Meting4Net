@@ -9,8 +9,6 @@
 [![LICENSE](https://img.shields.io/github/license/yiyungent/Meting4Net.svg?style=flat)](https://mit-license.org/)
 [![nuget](https://img.shields.io/nuget/v/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
 [![downloads](https://img.shields.io/nuget/dt/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
-[![Build Status](https://dev.azure.com/Meting4Net/Meting4Net/_apis/build/status/yiyungent.Meting4Net?branchName=master)](https://dev.azure.com/Meting4Net/Meting4Net/_build/latest?definitionId=1&branchName=master)
-[![Build Status](https://travis-ci.com/yiyungent/Meting4Net.svg?branch=master)](https://travis-ci.com/yiyungent/Meting4Net)
 
 
 [English](README_en.md)
@@ -29,6 +27,13 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
 - [x] 网易云音乐 Meting Open API 移植完成 v0.1.0
 - [x] 腾讯QQ音乐 Meting Open API 移植完成 v0.2.0
 - [x] 酷狗音乐 Meting Open API 移植完成 v1.0.0
+
+## 持续集成
+
+| 环境 | 平台 | 描述 | 状态 |
+| :------: | :------: | :------: | :------: |
+| Ubuntu-16.04 | .net core 2.0.0 | 编译&自动单元测试 | [![Build Status](https://dev.azure.com/Meting4Net/Meting4Net/_apis/build/status/yiyungent.Meting4Net?branchName=master)](https://dev.azure.com/Meting4Net/Meting4Net/_build/latest?definitionId=1&branchName=master) |
+| Linux | mono 5.18.0.240 | 编译 | [![Build Status](https://travis-ci.com/yiyungent/Meting4Net.svg?branch=master)](https://travis-ci.com/yiyungent/Meting4Net) |
 
 ## 需要
 
