@@ -19,100 +19,130 @@ namespace NetCore.Tests
         [Fact]
         public void SearchTest()
         {
-            string jsonStr = Api.FormatMethod(true).Search("千里邀月");
+            string[] subStrArr = { "千里邀月" };
 
-            Assert.Contains("千里邀月", jsonStr);
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Search("千里邀月"), subStrArr);
+
+            Assert.True(isPass);
         }
 
         [Fact]
         public void UrlTest()
         {
-            string jsonStr = Api.FormatMethod(true).Url("001Nal2N2f0Qr8");
+            string[] subStrArr =
+            {
+                "url", "size", "br"
+            };
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Url("001Nal2N2f0Qr8"), subStrArr);
 
-            Assert.Contains("\"url\":", jsonStr);
-            Assert.Contains("\"size\":", jsonStr);
-            Assert.Contains("\"br\":", jsonStr);
+            Assert.True(isPass);
         }
 
         [Fact]
         public void SongTest()
         {
-            string jsonStr = Api.FormatMethod(true).Song("001Nal2N2f0Qr8");
+            string[] subStrArr =
+            {
+                "id",
+                "name",
+                "artist",
+                "album",
+                "pic_id",
+                "url_id",
+                "lyric_id",
+                "source",
+            };
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Song("001Nal2N2f0Qr8"), subStrArr);
 
-            Assert.Contains("id", jsonStr);
-            Assert.Contains("name", jsonStr);
-            Assert.Contains("artist", jsonStr);
-            Assert.Contains("album", jsonStr);
-            Assert.Contains("pic_id", jsonStr);
-            Assert.Contains("url_id", jsonStr);
-            Assert.Contains("lyric_id", jsonStr);
-            Assert.Contains("source", jsonStr);
+            Assert.True(isPass);
         }
 
         [Fact]
         public void AlbumTest()
         {
-            string jsonStr = Api.FormatMethod(true).Album("001AMQBG3GzakR");
+            string[] subStrArr =
+            {
+                "id",
+                "name",
+                "artist",
+                "album",
+                "pic_id",
+                "url_id",
+                "lyric_id",
+                "source",
+            };
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Album("001AMQBG3GzakR"), subStrArr);
 
-            Assert.Contains("id", jsonStr);
-            Assert.Contains("name", jsonStr);
-            Assert.Contains("artist", jsonStr);
-            Assert.Contains("album", jsonStr);
-            Assert.Contains("pic_id", jsonStr);
-            Assert.Contains("url_id", jsonStr);
-            Assert.Contains("lyric_id", jsonStr);
-            Assert.Contains("source", jsonStr);
+            Assert.True(isPass);
         }
 
         [Fact]
         public void ArtistTest()
         {
-            Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Artist("001fNHEf1SFEFN");
+            string[] subStrArr =
+            {
+                "id",
+                "name",
+                "artist",
+                "album",
+                "pic_id",
+                "url_id",
+                "lyric_id",
+                "source",
+            };
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Artist("001fNHEf1SFEFN"), subStrArr);
 
-            Assert.Contains("id", jsonStr);
-            Assert.Contains("name", jsonStr);
-            Assert.Contains("artist", jsonStr);
-            Assert.Contains("album", jsonStr);
-            Assert.Contains("pic_id", jsonStr);
-            Assert.Contains("url_id", jsonStr);
-            Assert.Contains("lyric_id", jsonStr);
-            Assert.Contains("source", jsonStr);
+            Assert.True(isPass);
         }
 
         [Fact]
         public void PlaylistTest()
         {
-            Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Playlist("1721973967");
+            string[] subStrArr =
+            {
+                "id",
+                "name",
+                "artist",
+                "album",
+                "pic_id",
+                "url_id",
+                "lyric_id",
+                "source",
+            };
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Playlist("1721973967"), subStrArr);
 
-            Assert.Contains("id", jsonStr);
-            Assert.Contains("name", jsonStr);
-            Assert.Contains("artist", jsonStr);
-            Assert.Contains("album", jsonStr);
-            Assert.Contains("pic_id", jsonStr);
-            Assert.Contains("url_id", jsonStr);
-            Assert.Contains("lyric_id", jsonStr);
-            Assert.Contains("source", jsonStr);
+            Assert.True(isPass);
         }
 
         [Fact]
         public void LyricTest()
         {
-            Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Lyric("001Nal2N2f0Qr8");
+            string[] subStrArr =
+            {
+                "id",
+                "name",
+                "artist",
+                "album",
+                "pic_id",
+                "url_id",
+                "lyric_id",
+                "source",
+            };
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Lyric("001Nal2N2f0Qr8"), subStrArr);
 
-            Assert.Contains("lyric", jsonStr);
-            Assert.Contains("tlyric", jsonStr);
+            Assert.True(isPass);
         }
 
         [Fact]
         public void PicTest()
         {
-            Meting api = new Meting(ServerProvider.Netease);
-            string jsonStr = Api.FormatMethod(true).Pic("002szRig2zZxtj");
+            string[] subStrArr =
+            {
+               "url"
+            };
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Pic("002szRig2zZxtj"), subStrArr);
 
-            Assert.Contains("url", jsonStr);
+            Assert.True(isPass);
         }
     }
 }
