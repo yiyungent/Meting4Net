@@ -17,8 +17,8 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 
 # 自动单元测试
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+# - task: DotNetCoreCLI@2
+  # inputs:
+   # command: test
+   # projects: '**/*Tests/*.csproj'
+   # arguments: '--configuration $(buildConfiguration)'

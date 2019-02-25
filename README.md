@@ -30,10 +30,10 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
 
 ## 持续集成
 
-| 环境 | 平台 | 描述 | 状态 |
-| :------: | :------: | :------: | :------: |
-| Ubuntu-16.04 | .net core 2.0.0 | 编译&自动单元测试 | [![Build Status](https://dev.azure.com/Meting4Net/Meting4Net/_apis/build/status/yiyungent.Meting4Net?branchName=master)](https://dev.azure.com/Meting4Net/Meting4Net/_build/latest?definitionId=1&branchName=master) |
-| Linux | mono 5.18.0.240 | 编译 | [![Build Status](https://travis-ci.com/yiyungent/Meting4Net.svg?branch=master)](https://travis-ci.com/yiyungent/Meting4Net) |
+| 环境 | 平台 | 状态 |
+| :------: | :------: | :------: |
+| Ubuntu-16.04 | .net core 2.0.0 | [![Build Status](https://dev.azure.com/Meting4Net/Meting4Net/_apis/build/status/yiyungent.Meting4Net?branchName=master)](https://dev.azure.com/Meting4Net/Meting4Net/_build/latest?definitionId=1&branchName=master) |
+| Linux | mono 5.18.0.240 | [![Build Status](https://travis-ci.com/yiyungent/Meting4Net.svg?branch=master)](https://travis-ci.com/yiyungent/Meting4Net) |
 
 ## 需要
 
@@ -56,7 +56,7 @@ PM> Install-Package Meting4Net
 using Meting4Net.Core;
    ...
 // 初始化 网易云音乐API
-Meting api = new Meting("netease");
+Meting api = new Meting(ServerProvider.Netease);
 // 获得 json 数据
 string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
 {
@@ -65,7 +65,7 @@ string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Mo
 });
 
 return Content(jsonStr, "application/json");
-//[{"id":35847388,"name":"Hello","artist":["Adele"],"album":"Hello","pic_id":"1407374890649284","url_id":35847388,"lyric_id":35847388,"source":"netease"},{"id":33211676,"name":"Hello","artist":["OMFG"],"album":"Hello",...
+//[{"id":"35847388","name":"Hello","artist":["Adele"],"album":"Hello","pic_id":"1407374890649284","url_id":"35847388","lyric_id":"35847388","source":"netease"},{"id":"33211676","name":"Hello","artist":["OMFG"],"album":"Hello",...
 ```
 
 ## 环境
@@ -77,4 +77,6 @@ return Content(jsonStr, "application/json");
 
  - [Meting](https://github.com/metowolf/Meting)
  
- 
+ ## 鸣谢
+ - 本项目由 <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> 移植而来，感谢原作者 metowolf 的贡献
+ - 网易云音乐API加密模块参考 <a href="https://github.com/IllyaTheHath/Music163Api" target="_blank">Music163Api</a>，感谢作者 IllyaTheHath 的贡献
