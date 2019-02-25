@@ -14,18 +14,18 @@ namespace NetCore.Tests
 
         public static bool TargetStrContain(Func<string> getTargetStr, string[] subStrArr)
         {
-            bool isContain = false;
+            bool isAllContain = false;
             for (int i = 0; i < TryCount; i++)
             {
-                if (getTargetStr().Contains("千里邀月"))
+                if (StrTool.ContainsStrArr(getTargetStr(), subStrArr))
                 {
-                    isContain = true;
+                    isAllContain = true;
                     break;
                 }
                 Thread.Sleep(SleepMsec * (i + 1));
             }
 
-            return isContain;
+            return isAllContain;
         }
     }
 }

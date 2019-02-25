@@ -21,7 +21,7 @@ namespace Meting4Net.Core
         /// <param name="cookies"></param>
         /// <param name="ua"></param>
         /// <returns>返回请求回复字符串</returns>
-        public static string HttpGet(string url, StringBuilder responseHeadersSb = null, string[] headers = null)
+        public static string HttpGet(string url, StringBuilder responseHeadersSb = null, string[] headers = null, WebProxy proxy = null)
         {
             string rtResult = string.Empty;
             try
@@ -65,6 +65,10 @@ namespace Meting4Net.Core
                         }
                     }
                 }
+                if (proxy != null)
+                {
+                    request.Proxy = proxy;
+                }
                 request.Timeout = 10000;
 
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -97,7 +101,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region Http Post
-        public static string HttpPost(string url, string postDataStr = "", StringBuilder responseHeadersSb = null, string[] headers = null)
+        public static string HttpPost(string url, string postDataStr = "", StringBuilder responseHeadersSb = null, string[] headers = null, WebProxy proxy = null)
         {
             string rtResult = string.Empty;
             try
@@ -139,6 +143,10 @@ namespace Meting4Net.Core
                             request.Headers.Add(header);
                         }
                     }
+                }
+                if (proxy != null)
+                {
+                    request.Proxy = proxy;
                 }
                 request.Timeout = 10000;
                 byte[] postBytes = Encoding.UTF8.GetBytes(postDataStr);

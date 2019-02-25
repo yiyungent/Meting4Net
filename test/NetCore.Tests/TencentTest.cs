@@ -119,14 +119,7 @@ namespace NetCore.Tests
         {
             string[] subStrArr =
             {
-                "id",
-                "name",
-                "artist",
-                "album",
-                "pic_id",
-                "url_id",
-                "lyric_id",
-                "source",
+                "lyric", "tlyric"
             };
             bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Lyric("001Nal2N2f0Qr8"), subStrArr);
 

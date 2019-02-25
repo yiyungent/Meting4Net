@@ -88,7 +88,7 @@ namespace Meting4Net.Core
         protected int Br { get { return _br; } set { _br = value; } }
 
         private ServerProvider _server;
-        //private string _proxy;
+        private MetingProxy _proxy;
         private bool _format = false;
         private Dictionary<string, string> _header;
 
@@ -96,7 +96,11 @@ namespace Meting4Net.Core
         /// 音乐API 服务提供者
         /// </summary>
         public ServerProvider Server { get { return _server; } set { _server = value; } }
-        //public string Proxy { get { return _proxy; } set { _proxy = value; } }
+
+        /// <summary>
+        /// 代理
+        /// </summary>
+        public MetingProxy Proxy { get { return _proxy; } set { _proxy = value; } }
 
         /// <summary>
         /// 是否格式化, 默认 false
@@ -163,12 +167,17 @@ namespace Meting4Net.Core
         #endregion
 
         #region 设置代理
-        //public Meting ProxyMethod(string value)
-        //{
-        //    this.Proxy = value;
+        /// <summary>
+        /// 设置代理
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public Meting ProxyMethod(MetingProxy value)
+        {
+            this.Proxy = value;
 
-        //    return this;
-        //} 
+            return this;
+        }
         #endregion
 
         #region 执行，返回数据
@@ -277,11 +286,11 @@ namespace Meting4Net.Core
                 if (payload != null)
                 {
                     postDataStr = payload;
-                    responseData = HttpAide.HttpPost(url: url, postDataStr: postDataStr, responseHeadersSb: responseHeadersSb, headers: headers.ToArray());
+                    responseData = HttpAide.HttpPost(url: url, postDataStr: postDataStr, responseHeadersSb: responseHeadersSb, headers: headers.ToArray(), proxy: this.Proxy != null ? this.Proxy.Proxy : null);
                 }
                 else
                 {
-                    responseData = HttpAide.HttpGet(url: url, responseHeadersSb: responseHeadersSb, headers: headers.ToArray());
+                    responseData = HttpAide.HttpGet(url: url, responseHeadersSb: responseHeadersSb, headers: headers.ToArray(), proxy: this.Proxy != null ? this.Proxy.Proxy : null);
                 }
                 if (!string.IsNullOrEmpty(responseData)) break;
             }
