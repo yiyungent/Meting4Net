@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Meting4Net.Core;
+using Meting4Net.Core.Models.Standard;
 
 namespace NetCoreConsoleDemo
 {
@@ -29,10 +30,10 @@ namespace NetCoreConsoleDemo
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
             // 传递通过Search获得的歌曲ID
             //string jsonStr = api.FormatMethod(true).Song("1808486366");
-            // https://www.xiami.com/album/2103947271  其中专辑ID为2103947271
-            //string jsonStr = api.FormatMethod(true).Album("2103947271");
-            // https://www.xiami.com/artist/2110230610 作家ID 2110230610 
-            //string jsonStr = api.FormatMethod(true).Artist("2110230610");
+            // https://www.xiami.com/album/2104586331  其中专辑ID为2104586331
+            //string jsonStr = api.FormatMethod(true).Album("2104586331");
+            // https://www.xiami.com/artist/593402077?spm=a1z1s.3057853.6862625.41.phWDbn 作家ID 593402077 
+            //string jsonStr = api.FormatMethod(true).Artist("593402077");
             // https://www.xiami.com/collect/632580584 歌单ID 632580584
             //string jsonStr = api.FormatMethod(true).Playlist("632580584");
             //string jsonStr = api.FormatMethod(true).Url("1808486366");
@@ -44,10 +45,21 @@ namespace NetCoreConsoleDemo
             // 无歌词
             //string jsonStr = api.FormatMethod(true).Lyric("1772326454");
             //string jsonStr = api.Pic("1772326454");
-            string jsonStr = api.ProxyMethod(new MetingProxy("47.97.169.111", 3128)).FormatMethod(true).Lyric("1774129963");
+            //string jsonStr = api.ProxyMethod(new MetingProxy("47.97.169.111", 3128)).FormatMethod(true).Lyric("1774129963");
 
 
-            Console.WriteLine(jsonStr);
+            //Console.WriteLine(jsonStr);
+
+            //Music_search_item[] music_Search_Items = api.SearchObj("千里邀月");
+            //Music_search_item music_Search_Item = api.SongObj("1808486366");
+            //Music_search_item[] music_Search_Items = api.AlbumObj("2104586331");
+            //Music_search_item[] music_Search_Items = api.ArtistObj("593402077");
+            //Music_search_item[] music_Search_Items = api.PlaylistObj("632580584");
+            //Music_url music_Url = api.UrlObj("1808486366");
+            //Music_lyric music_Lyric = api.LyricObj("1774129963");
+            Music_pic music_Pic = api.PicObj("1772326454");
+
+
 
             Console.ReadLine();
         }

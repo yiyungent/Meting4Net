@@ -376,7 +376,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="keyword"></param>
         /// <param name="options"></param>
-        /// <returns></returns>
+        /// <returns>返回json字符串</returns>
         public string Search(string keyword, Options options = null)
         {
             #region 当未提供 options 时则为 null,此时对其进行 new ，使其不为 null,但其中的初始化属性仍为null，这样因为默认 options 不为null,所以下方判断时不再需要判断 options!=null
@@ -473,6 +473,26 @@ namespace Meting4Net.Core
 
             return this.Exec(api);
         }
+
+        /// <summary>
+        /// 搜索歌曲
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="options"></param>
+        /// <returns>返回实体对象</returns>
+        public Music_search_item[] SearchObj(string keyword, Options options = null)
+        {
+            // 先保存其当前 Format
+            bool tempFormat = this.Format;
+            // 必须临时设置 Format=true
+            this.Format = true;
+            string jsonStr = Search(keyword, options);
+            Music_search_item[] rtn = MetingTool.MusicJson2Obj(jsonStr);
+            // 用完后设置回原来Format, 从而不影响 this.Format
+            this.Format = tempFormat;
+
+            return rtn;
+        }
         #endregion
 
         #region 根据歌曲ID获取
@@ -480,7 +500,7 @@ namespace Meting4Net.Core
         /// 根据歌曲ID获取
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>返回json字符串</returns>
         public string Song(string id)
         {
             Music_api api = null;
@@ -548,6 +568,22 @@ namespace Meting4Net.Core
 
             return this.Exec(api);
         }
+
+        /// <summary>
+        /// 根据歌曲ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>返回实体对象</returns>
+        public Music_search_item SongObj(string id)
+        {
+            bool tempFormat = this.Format;
+            this.Format = true;
+            string jsonStr = Song(id);
+            Music_search_item rtn = MetingTool.MusicJson2Obj(jsonStr)[0];
+            this.Format = tempFormat;
+
+            return rtn;
+        }
         #endregion
 
         #region 根据专辑ID获取
@@ -555,7 +591,7 @@ namespace Meting4Net.Core
         /// 根据专辑ID获取
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>返回json字符串</returns>
         public string Album(string id)
         {
             Music_api api = null;
@@ -632,6 +668,22 @@ namespace Meting4Net.Core
 
             return this.Exec(api);
         }
+
+        /// <summary>
+        /// 根据专辑ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>返回实体对象</returns>
+        public Music_search_item[] AlbumObj(string id)
+        {
+            bool tempFormat = this.Format;
+            this.Format = true;
+            string jsonStr = Album(id);
+            Music_search_item[] rtn = MetingTool.MusicJson2Obj(jsonStr);
+            this.Format = tempFormat;
+
+            return rtn;
+        }
         #endregion
 
         #region 根据作家ID获取
@@ -640,7 +692,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <param name="limit"></param>
-        /// <returns></returns>
+        /// <returns>返回json字符串</returns>
         public string Artist(string id, int limit = 50)
         {
             Music_api api = null;
@@ -722,6 +774,23 @@ namespace Meting4Net.Core
 
             return this.Exec(api);
         }
+
+        /// <summary>
+        /// 根据作家ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="limit"></param>
+        /// <returns>返回实体对象</returns>
+        public Music_search_item[] ArtistObj(string id, int limit = 50)
+        {
+            bool tempFormat = this.Format;
+            this.Format = true;
+            string jsonStr = Artist(id, limit);
+            Music_search_item[] rtn = MetingTool.MusicJson2Obj(jsonStr);
+            this.Format = tempFormat;
+
+            return rtn;
+        }
         #endregion
 
         #region 根据歌单ID获取
@@ -729,7 +798,7 @@ namespace Meting4Net.Core
         /// 根据歌单ID获取
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>返回json字符串</returns>
         public string Playlist(string id)
         {
             Music_api api = null;
@@ -810,6 +879,22 @@ namespace Meting4Net.Core
 
             return this.Exec(api);
         }
+
+        /// <summary>
+        /// 根据歌单ID获取
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>返回实体对象</returns>
+        public Music_search_item[] PlaylistObj(string id)
+        {
+            bool tempFormat = this.Format;
+            this.Format = true;
+            string jsonStr = Playlist(id);
+            Music_search_item[] rtn = MetingTool.MusicJson2Obj(jsonStr);
+            this.Format = tempFormat;
+
+            return rtn;
+        }
         #endregion
 
         #region 根据音乐ID获取音乐链接
@@ -818,7 +903,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <param name="br"></param>
-        /// <returns></returns>
+        /// <returns>返回json字符串</returns>
         public string Url(string id, int br = 320)
         {
             Music_api api = null;
@@ -906,6 +991,23 @@ namespace Meting4Net.Core
 
             return this.Exec(api);
         }
+
+        /// <summary>
+        /// 根据音乐ID获取音乐链接
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="br"></param>
+        /// <returns>返回实体对象</returns>
+        public Music_url UrlObj(string id, int br = 320)
+        {
+            bool tempFormat = this.Format;
+            this.Format = true;
+            string jsonStr = Url(id, br);
+            Music_url rtn = MetingTool.UrlJson2Obj(jsonStr);
+            this.Format = tempFormat;
+
+            return rtn;
+        }
         #endregion
 
         #region 根据歌曲ID查歌词
@@ -913,7 +1015,7 @@ namespace Meting4Net.Core
         /// 根据歌曲ID查歌词
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>返回json字符串</returns>
         public string Lyric(string id)
         {
             Music_api api = null;
@@ -986,6 +1088,22 @@ namespace Meting4Net.Core
 
             return this.Exec(api);
         }
+
+        /// <summary>
+        /// 根据歌曲ID查歌词
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>返回实体对象</returns>
+        public Music_lyric LyricObj(string id)
+        {
+            bool tempFormat = this.Format;
+            this.Format = true;
+            string jsonStr = Lyric(id);
+            Music_lyric rtn = MetingTool.LyricJson2Obj(jsonStr);
+            this.Format = tempFormat;
+
+            return rtn;
+        }
         #endregion
 
         #region 歌曲图片(对指定歌曲编号，返回图片地址)
@@ -994,7 +1112,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id">eg.传递通过 api.Song("35847388") 获取到的 pic_id</param>
         /// <param name="size"></param>
-        /// <returns></returns>
+        /// <returns>返回json字符串</returns>
         public string Pic(string id, int size = 300)
         {
             string picUrl = string.Empty;
@@ -1026,6 +1144,23 @@ namespace Meting4Net.Core
             });
 
             return jsonStr;
+        }
+
+        /// <summary>
+        /// 歌曲图片(对指定歌曲编号，返回图片地址)
+        /// </summary>
+        /// <param name="id">eg.传递通过 api.Song("35847388") 获取到的 pic_id</param>
+        /// <param name="size"></param>
+        /// <returns>返回实体对象</returns>
+        public Music_pic PicObj(string id, int size = 300)
+        {
+            bool tempFormat = this.Format;
+            this.Format = true;
+            string jsonStr = Pic(id, size);
+            Music_pic rtn = MetingTool.PicJson2Obj(jsonStr);
+            this.Format = tempFormat;
+
+            return rtn;
         }
         #endregion
 
