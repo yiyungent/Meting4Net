@@ -12,16 +12,21 @@ namespace Meting4Net.Core
 {
     class Common
     {
+        #region JsonStr2Obj
         public static dynamic JsonStr2Obj(string jsonStr)
         {
             return JsonConvert.DeserializeObject<dynamic>(jsonStr);
         }
+        #endregion
 
+        #region Obj2JsonStr
         public static string Obj2JsonStr(dynamic jsonObj)
         {
             return JsonConvert.SerializeObject(jsonObj);
         }
+        #endregion
 
+        #region Dynamic2JObject
         public static JObject Dynamic2JObject(dynamic jsonObj)
         {
             string jsonStr = Obj2JsonStr(jsonObj);
@@ -29,7 +34,9 @@ namespace Meting4Net.Core
 
             return jObject;
         }
+        #endregion
 
+        #region Dynamic2JArray
         public static JArray Dynamic2JArray(dynamic jsonObj)
         {
             string jsonStr = Obj2JsonStr(jsonObj);
@@ -37,7 +44,15 @@ namespace Meting4Net.Core
 
             return jArray;
         }
+        #endregion
 
+        #region 指定对象是否存在指定属性
+        /// <summary>
+        /// 指定对象是否存在指定属性,适用于JObject,JArray,dynamic
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="propertyname"></param>
+        /// <returns></returns>
         public static bool IsPropertyExist(dynamic data, string propertyname)
         {
             if (data is JObject)
@@ -62,6 +77,7 @@ namespace Meting4Net.Core
                 return flag;
             }
         }
+        #endregion
 
         #region JObject2Dict
         public static Dictionary<string, object> JObject2Dict(JObject obj)
@@ -96,6 +112,7 @@ namespace Meting4Net.Core
         }
         #endregion
 
+        #region IP地址转换为数字
         /// <summary>
         /// IP地址转换为数字
         /// </summary>
@@ -108,15 +125,17 @@ namespace Meting4Net.Core
             IntIp = long.Parse(ips[0]) << 0x18 | long.Parse(ips[1]) << 0x10 | long.Parse(ips[2]) << 0x8 | long.Parse(ips[3]);
             return IntIp.ToString();
         }
+        #endregion
 
+        #region 数字转换为IP地址
         /// <summary>
-        /// IP地址转换为数字
+        /// 数字转换为IP地址
         /// </summary>
-        /// <param name="ip">ip地址</param>
+        /// <param name="ipNum">数字</param>
         /// <returns></returns>
-        public static string Long2Ip(string ip)
+        public static string Long2Ip(string ipNum)
         {
-            long IntIp = long.Parse(ip);
+            long IntIp = long.Parse(ipNum);
             StringBuilder sb = new StringBuilder();
             sb.Append(IntIp >> 0x18 & 0xff).Append(".");
             sb.Append(IntIp >> 0x10 & 0xff).Append(".");
@@ -124,7 +143,9 @@ namespace Meting4Net.Core
             sb.Append(IntIp & 0xff);
             return sb.ToString();
         }
+        #endregion
 
+        #region Dynamic2Dict
         public static Dictionary<String, Object> Dynamic2Dict(dynamic dynObj)
         {
             var dictionary = new Dictionary<string, object>();
@@ -135,6 +156,7 @@ namespace Meting4Net.Core
             }
             return dictionary;
         }
+        #endregion
 
         #region Base64方式的编码与解码
         ///编码
@@ -283,6 +305,98 @@ namespace Meting4Net.Core
         public static string Unicode2String(string source)
         {
             return new Regex(@"\\u([0-9A-F]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled).Replace(source, x => Convert.ToChar(Convert.ToUInt16(x.Result("$1"), 16)).ToString());
+        }
+        #endregion
+
+        #region 生成随机字符串
+        ///<summary>
+        ///生成随机字符串 
+        ///</summary>
+        ///<param name="length">目标字符串的长度</param>
+        ///<param name="useNum">是否包含数字，1=包含，默认为包含</param>
+        ///<param name="useLow">是否包含小写字母，1=包含，默认为包含</param>
+        ///<param name="useUpp">是否包含大写字母，1=包含，默认为包含</param>
+        ///<param name="useSpe">是否包含特殊字符，1=包含，默认为不包含</param>
+        ///<param name="custom">要包含的自定义字符，直接输入要包含的字符列表</param>
+        ///<returns>指定长度的随机字符串</returns>
+        public static string GetRandomString(int length, bool useNum = true, bool useLow = true, bool useUpp = true, bool useSpe = false, string custom = "")
+        {
+            byte[] b = new byte[4];
+            new System.Security.Cryptography.RNGCryptoServiceProvider().GetBytes(b);
+            Random r = new Random(BitConverter.ToInt32(b, 0));
+            string s = null, str = custom;
+            if (useNum == true) { str += "0123456789"; }
+            if (useLow == true) { str += "abcdefghijklmnopqrstuvwxyz"; }
+            if (useUpp == true) { str += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; }
+            if (useSpe == true) { str += "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"; }
+            for (int i = 0; i < length; i++)
+            {
+                s += str.Substring(r.Next(0, str.Length - 1), 1);
+            }
+            return s;
+        }
+        #endregion
+
+        #region 进制转换
+        //return result in specified length
+        public static string hex2Bin(string strHex, int bit)
+        {
+            int decNumber = Hex2Dec(strHex);
+            return Dec2Bin(decNumber).PadLeft(bit, '0');
+        }
+
+        //return result in specified length
+        public static string Dec2Bin(int val, int bit)
+        {
+            return Convert.ToString(val, 2).PadLeft(bit, '0');
+        }
+
+        public static string Hex2Bin(string strHex)
+        {
+            int decNumber = Hex2Dec(strHex);
+            return Dec2Bin(decNumber);
+        }
+
+        public static string Bin2Hex(string strBin)
+        {
+            int decNumber = Bin2Dec(strBin);
+            return Dec2Hex(decNumber);
+        }
+
+        public static string Dec2Hex(int val)
+        {
+            return val.ToString("X");
+            //return Convert.ToString(val,16);
+        }
+
+        public static int Hex2Dec(string strHex)
+        {
+            return Convert.ToInt16(strHex, 16);
+        }
+
+        public static string Dec2Bin(int val)
+        {
+            return Convert.ToString(val, 2);
+        }
+
+        public static int Bin2Dec(string strBin)
+        {
+            return Convert.ToInt16(strBin, 2);
+        }
+        #endregion
+
+        #region 将字符串转为16进制字符，允许中文
+        public static string StringToHexString(string s, Encoding encode)
+        {
+            // 按照指定编码将string编程字节数组
+            byte[] b = encode.GetBytes(s);
+            string result = string.Empty;
+            // 逐字节变为16进制字符
+            for (int i = 0; i < b.Length; i++)
+            {
+                result += Convert.ToString(b[i], 16);
+            }
+            return result;
         }
         #endregion
     }

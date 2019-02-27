@@ -26,7 +26,7 @@ namespace NetCoreConsoleDemo
             //string jsonStr = api.FormatMethod(true).Lyric("e64025c53de70ba1d91aec1f8c38f1ae");
             //string jsonStr = api.FormatMethod(true).Pic("e64025c53de70ba1d91aec1f8c38f1ae");
 
-            Meting api = new Meting(ServerProvider.Xiami);
+            //Meting api = new Meting(ServerProvider.Xiami);
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
             // 传递通过Search获得的歌曲ID
             //string jsonStr = api.FormatMethod(true).Song("1808486366");
@@ -57,7 +57,10 @@ namespace NetCoreConsoleDemo
             //Music_search_item[] music_Search_Items = api.PlaylistObj("632580584");
             //Music_url music_Url = api.UrlObj("1808486366");
             //Music_lyric music_Lyric = api.LyricObj("1774129963");
-            Music_pic music_Pic = api.PicObj("1772326454");
+            //Music_pic music_Pic = api.PicObj("1772326454");
+
+            Meting api = new Meting(ServerProvider.Baidu);
+            Music_search_item[] items = api.SearchObj("洛少爷");
 
 
 

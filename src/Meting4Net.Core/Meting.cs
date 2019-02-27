@@ -41,7 +41,11 @@ namespace Meting4Net.Core
         /// <summary>
         /// 虾米音乐
         /// </summary>
-        Xiami = 3
+        Xiami = 3,
+        /// <summary>
+        /// 百度(千千)音乐
+        /// </summary>
+        Baidu = 4
     }
     #endregion
 
@@ -467,6 +471,25 @@ namespace Meting4Net.Core
                         }),
                         encode = Xiami_sign,
                         format = "data.data.songs"
+                    };
+                    break;
+                case ServerProvider.Baidu:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://musicapi.taihe.com/v1/restserver/ting",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            from = "qianqianmini",
+                            method = "baidu.ting.search.merge",
+                            isNew = 1,
+                            platform = "darwin",
+                            page_no = options.page != null ? options.page : 1,
+                            query = keyword,
+                            version = "11.2.1",
+                            page_size = options.limit != null ? options.limit : 30
+                        }),
+                        format = "result.song_info.song_list"
                     };
                     break;
             }
@@ -1286,6 +1309,9 @@ namespace Meting4Net.Core
                 case ServerProvider.Xiami:
                     del_Music_Item = Format_xiami;
                     break;
+                case ServerProvider.Baidu:
+                    del_Music_Item = Format_baidu;
+                    break;
             }
             List<Music_search_item> list = new List<Music_search_item>();
             JEnumerable<JToken> jTokens = rawArray.Children();
@@ -1299,9 +1325,9 @@ namespace Meting4Net.Core
         }
         #endregion
 
-        #region 对搜索到的(单首)网易云音乐数据进行格式化
+        #region 对(单首)网易云音乐数据进行格式化
         /// <summary>
-        /// 对搜索到的(单首)网易云音乐数据进行格式化
+        /// 对(单首)网易云音乐数据进行格式化
         /// </summary>
         /// <param name="songItem">(单首)网易云音乐json数据</param>
         /// <returns></returns>
@@ -1335,7 +1361,7 @@ namespace Meting4Net.Core
         }
         #endregion
 
-        #region 对搜索到的(单首)腾讯音乐数据进行格式化
+        #region 对(单首)腾讯音乐数据进行格式化
         protected Music_search_item Format_tencent(dynamic songItem)
         {
             if (Common.IsPropertyExist(songItem, "musicData"))
@@ -1365,7 +1391,7 @@ namespace Meting4Net.Core
         }
         #endregion
 
-        #region 对搜索到的(单首)酷狗音乐数据进行格式化
+        #region 对(单首)酷狗音乐数据进行格式化
         /// <summary>
         /// 对搜索到的(单首)酷狗音乐数据进行格式化
         /// </summary>
@@ -1397,7 +1423,7 @@ namespace Meting4Net.Core
         }
         #endregion
 
-        #region 对搜索到的(单首)虾米音乐数据进行格式化
+        #region 对(单首)虾米音乐数据进行格式化
         protected Music_search_item Format_xiami(dynamic songItem)
         {
             Music_search_item result = new Music_search_item
@@ -1417,6 +1443,25 @@ namespace Meting4Net.Core
                 list.Add(vo.artistName.ToString());
             }
             result.artist = list.ToArray();
+
+            return result;
+        }
+        #endregion
+
+        #region 对(单首)百度音乐数据进行格式化
+        protected Music_search_item Format_baidu(dynamic songItem)
+        {
+            Music_search_item result = new Music_search_item
+            {
+                id = songItem.song_id,
+                name = songItem.title,
+                artist = songItem.author.ToString().Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries),
+                album = songItem.album_title,
+                pic_id = songItem.song_id,
+                url_id = songItem.song_id,
+                lyric_id = songItem.song_id,
+                source = "baidu"
+            };
 
             return result;
         }
@@ -1471,6 +1516,18 @@ namespace Meting4Net.Core
                         { "User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) XIAMI-MUSIC/3.1.1 Chrome/56.0.2924.87 Electron/1.6.11 Safari/537.36" },
                         { "Accept", "application/json" },
                         { "Content-type", "application/x-www-form-urlencoded" },
+                        { "Accept-Language", "zh-CN" }
+                    };
+                    break;
+                case ServerProvider.Baidu:
+                    string randomStr = Common.GetRandomString(16);
+                    string randomHex = Common.StringToHexString(randomStr, Encoding.UTF8);
+                    header = new Dictionary<string, string>
+                    {
+                        { "Cookie", "BAIDUID=" + randomHex + ":FG=1"  },
+                        { "User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) baidu-music/1.2.1 Chrome/66.0.3359.181 Electron/3.0.5 Safari/537.36" },
+                        { "Accept", "*/*" },
+                        { "Content-type", "application/json;charset=UTF-8" },
                         { "Accept-Language", "zh-CN" }
                     };
                     break;
