@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;netstandard2.0</TargetFrameworks>
+    <!--<TargetFrameworks>net40;net45;netstandard2.0</TargetFrameworks>-->
     <!--<TargetFrameworks>netstandard2.0;net45</TargetFrameworks>-->
     <!--<TargetFramework>net45</TargetFramework>-->
-    <!--<TargetFramework>netcoreapp2.0</TargetFramework>-->
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <!-- 注意:当使用单元测试时，必须明确目标框架,参考 https://github.com/nunit/docs/wiki/.NET-Core-and-.NET-Standard#why-cant-my-tests-target-net-standard -->
     <!-- 不知道为什么,net45 无法测试依然提示未找到测试方法,让明确平台框架 -->
     
