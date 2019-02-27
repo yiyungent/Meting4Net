@@ -1242,6 +1242,7 @@ namespace Meting4Net.Core
         public string Pic(string id, int size = 300)
         {
             string picUrl = string.Empty;
+            bool tempFormat;
             switch (this.Server)
             {
                 case ServerProvider.Netease:
@@ -1251,16 +1252,27 @@ namespace Meting4Net.Core
                     picUrl = "https://y.gtimg.cn/music/photo_new/T002R" + size + "x" + size + "M000" + id + ".jpg?max_age=2592000";
                     break;
                 case ServerProvider.Kugou:
+                    tempFormat = this.Format;
                     string kugouRawJsonStr = this.FormatMethod(false).Song(id);
+                    this.Format = tempFormat;
                     dynamic jsonObj = Common.JsonStr2Obj(kugouRawJsonStr);
                     // 发现酷狗的图片大小有限，对于 e64025c53de70ba1d91aec1f8c38f1ae，尝试 100,200,400可行，其它均 404没有，不知道其它歌曲图片情况如何，这里于是暂时写死
                     picUrl = jsonObj.imgUrl.ToString().Replace("{size}", "400");
                     break;
                 case ServerProvider.Xiami:
+                    tempFormat = this.Format;
                     string xiamiRawJsonStr = this.FormatMethod(false).Song(id);
+                    this.Format = tempFormat;
                     dynamic xiamiSongObj = Common.JsonStr2Obj(xiamiRawJsonStr);
                     picUrl = xiamiSongObj.data.data.songDetail.albumLogo.ToString();
                     picUrl = picUrl.Replace("http:", "https:") + "@1e_1c_100Q_" + size + "h_" + size + "w";
+                    break;
+                case ServerProvider.Baidu:
+                    tempFormat = this.Format;
+                    string baiduRawJsonStr = this.FormatMethod(false).Song(id);
+                    this.Format = tempFormat;
+                    dynamic baiduRawJsonObj = Common.JsonStr2Obj(baiduRawJsonStr);
+                    picUrl = Common.IsPropertyExist(baiduRawJsonObj, "songinfo") && Common.IsPropertyExist(baiduRawJsonObj.songinfo, "pic_radio") ? baiduRawJsonObj.songinfo.pic_radio : baiduRawJsonObj.songinfo.pic_small;
                     break;
             }
 
