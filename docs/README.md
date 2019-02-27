@@ -31,7 +31,7 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
 
 只需要满足下方其中一条.
 
-- .NET Framework (>= 4.5) 且 Newtonsoft.Json (>= 9.0.1) 被安装.
+- .NET Framework (>= 4.0) 且 Newtonsoft.Json (>= 9.0.1) 被安装.
 - .NET Standard (>= 2.0) 且 Microsoft.CSharp (>= 4.5.0), Newtonsoft.Json (>= 9.0.1) 被安装.
 
 ## 安装
@@ -62,7 +62,7 @@ return Content(jsonStr, "application/json");
 
 ## 环境
 
-- 运行环境: .NET Framework (>= 4.5) or .NET Standard (>= 2.0)    
+- 运行环境: .NET Framework (>= 4.0) or .NET Standard (>= 2.0)    
 - 开发环境: Visual Studio Community 2017
 
 ## 相关项目
