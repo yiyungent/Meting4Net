@@ -57,7 +57,10 @@ namespace Meting4Net.Core
         {
             if (data is JObject)
             {
-                return ((JObject)data).ContainsKey(propertyname);
+                Dictionary<string, object> dict = JObject2Dict(data);
+                return dict.ContainsKey(propertyname);
+                // Newtonsoft.Json 10.0.1 不支持 ContainsKey
+                //return ((JObject)data).ContainsKey(propertyname);
             }
             else if (data is JArray)
             {
@@ -82,8 +85,7 @@ namespace Meting4Net.Core
         #region JObject2Dict
         public static Dictionary<string, object> JObject2Dict(JObject obj)
         {
-            JObject jObject = (JObject)obj;
-            Dictionary<string, object> rtn = jObject.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> rtn = obj.ToObject<Dictionary<string, object>>();
             return rtn;
         }
         #endregion

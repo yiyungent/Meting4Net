@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!--<TargetFrameworks>net45;netstandard2.0</TargetFrameworks>-->
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <!--<TargetFrameworks>netstandard2.0;net45</TargetFrameworks>-->
     <!--<TargetFramework>net45</TargetFramework>-->
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <!--<TargetFramework>netcoreapp2.0</TargetFramework>-->
     <!-- 注意:当使用单元测试时，必须明确目标框架,参考 https://github.com/nunit/docs/wiki/.NET-Core-and-.NET-Standard#why-cant-my-tests-target-net-standard -->
     <!-- 不知道为什么,net45 无法测试依然提示未找到测试方法,让明确平台框架 -->
     
     <Authors>yiyun</Authors>
     <Company>yiyun</Company>
     <!-- 主要版本.次要版本.修订 -->
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Description>Wow, such a powerful music API framework for .Net</Description>
     <Copyright>Copyright (c) 2019 yiyun</Copyright>
     <PackageLicenseUrl>https://github.com/yiyungent/Meting4Net/blob/master/LICENSE</PackageLicenseUrl>
@@ -19,13 +19,19 @@
     <RepositoryUrl>https://github.com/yiyungent/Meting4Net</RepositoryUrl>
     <NeutralLanguage />
     <!-- 程序集版本 -->
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.1.0.1</AssemblyVersion>
     <!-- 主要版本.次要版本.内部版本号.修订 -->
     <!-- 程序集的文件版本 -->
-    <FileVersion>1.1.0.0</FileVersion>
+    <FileVersion>1.1.0.1</FileVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Meting4Net</PackageId>
     <PackageIconUrl>https://github.com/yiyungent/Meting4Net/blob/master/docs/_media/favicon.png?raw=true</PackageIconUrl>
+    <PackageTags>music api</PackageTags>
+    <PackageReleaseNotes>
+## Changed
+- 降低依赖项 Newtonsoft.Json 版本
+目前音乐API支持：网易云音乐，腾讯QQ音乐，虾米，酷狗，百度
+    </PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
@@ -37,7 +43,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net45'">

@@ -57,7 +57,7 @@ namespace Meting4Net.Core
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "0.1.0";
+        public const string VERSION = "1.1.1";
 
         private string _raw;
         private string _data;
