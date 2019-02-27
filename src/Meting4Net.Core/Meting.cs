@@ -827,6 +827,25 @@ namespace Meting4Net.Core
                         format = "data.data.songs"
                     };
                     break;
+                case ServerProvider.Baidu:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://musicapi.taihe.com/v1/restserver/ting",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            from = "qianqianmini",
+                            method = "baidu.ting.artist.getSongList",
+                            artistid = id,
+                            limits = limit,
+                            platform = "darwin",
+                            offset = 0,
+                            tinguid = 0,
+                            version = "11.2.1"
+                        }),
+                        format = "songlist"
+                    };
+                    break;
             }
 
             return this.Exec(api);
