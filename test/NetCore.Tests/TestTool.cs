@@ -10,7 +10,7 @@ namespace NetCore.Tests
     {
         public static int TryCount { get; set; } = 5;
 
-        public static int SleepMsec { get; set; } = 20000;
+        public static int SleepMsec { get; set; } = 2000;
 
         public static bool TargetStrContain(Func<string> getTargetStr, string[] subStrArr)
         {
