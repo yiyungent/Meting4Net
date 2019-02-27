@@ -27,6 +27,7 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
 - [x] 网易云音乐 Meting Open API 移植完成 v0.1.0
 - [x] 腾讯QQ音乐 Meting Open API 移植完成 v0.2.0
 - [x] 酷狗音乐 Meting Open API 移植完成 v1.0.0
+- [x] 虾米, 百度音乐 Meting Open API 移植完成 v1.1.0
 
 ## 持续集成
 
@@ -35,7 +36,7 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
 | Ubuntu-16.04 | .net core 2.0.0 | [![Build Status](https://dev.azure.com/Meting4Net/Meting4Net/_apis/build/status/yiyungent.Meting4Net?branchName=master)](https://dev.azure.com/Meting4Net/Meting4Net/_build/latest?definitionId=1&branchName=master) |
 | Linux | mono 5.18.0.240 | [![Build Status](https://travis-ci.com/yiyungent/Meting4Net.svg?branch=master)](https://travis-ci.com/yiyungent/Meting4Net) |
 
-## 需要
+## 依赖
 
 只需要满足下方其中一条.
 
@@ -75,8 +76,9 @@ return Content(jsonStr, "application/json");
 
 ## 相关项目
 
- - [Meting](https://github.com/metowolf/Meting)
+- [Meting](https://github.com/metowolf/Meting)
  
  ## 鸣谢
- - 本项目由 <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> 移植而来，感谢原作者 metowolf 的贡献
- - 网易云音乐API加密模块参考 <a href="https://github.com/IllyaTheHath/Music163Api" target="_blank">Music163Api</a>，感谢作者 IllyaTheHath 的贡献
+
+- 本项目由 <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> 移植而来，感谢原作者 metowolf 的贡献
+- 网易云音乐API加密模块参考自 <a href="https://github.com/IllyaTheHath/Music163Api" target="_blank">Music163Api</a>，感谢作者 IllyaTheHath 的贡献

@@ -24,8 +24,10 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
 
 - [x] 网易云音乐 Meting Open API 移植完成 v0.1.0
 - [x] 腾讯QQ音乐 Meting Open API 移植完成 v0.2.0
+- [x] 酷狗音乐 Meting Open API 移植完成 v1.0.0
+- [x] 虾米, 百度音乐 Meting Open API 移植完成 v1.1.0
 
-## 需要
+## 依赖
 
 只需要满足下方其中一条.
 
@@ -46,7 +48,7 @@ PM> Install-Package Meting4Net
 using Meting4Net.Core;
    ...
 // 初始化 网易云音乐API
-Meting api = new Meting("netease");
+Meting api = new Meting(ServerProvider.Netease);
 // 获得 json 数据
 string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Models.Standard.Options
 {
@@ -55,7 +57,7 @@ string jsonStr = api.FormatMethod(true).Search("Soldier", new Meting4Net.Core.Mo
 });
 
 return Content(jsonStr, "application/json");
-//[{"id":35847388,"name":"Hello","artist":["Adele"],"album":"Hello","pic_id":"1407374890649284","url_id":35847388,"lyric_id":35847388,"source":"netease"},{"id":33211676,"name":"Hello","artist":["OMFG"],"album":"Hello",...
+//[{"id":"35847388","name":"Hello","artist":["Adele"],"album":"Hello","pic_id":"1407374890649284","url_id":"35847388","lyric_id":"35847388","source":"netease"},{"id":"33211676","name":"Hello","artist":["OMFG"],"album":"Hello",...
 ```
 
 ## 环境
@@ -65,6 +67,9 @@ return Content(jsonStr, "application/json");
 
 ## 相关项目
 
- - [Meting](https://github.com/metowolf/Meting)
+- [Meting](https://github.com/metowolf/Meting)
  
- 
+## 鸣谢
+
+- 本项目由 <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> 移植而来，感谢原作者 metowolf 的贡献
+- 网易云音乐API加密模块参考自 <a href="https://github.com/IllyaTheHath/Music163Api" target="_blank">Music163Api</a>，感谢作者 IllyaTheHath 的贡献

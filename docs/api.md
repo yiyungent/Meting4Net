@@ -1,4 +1,4 @@
-## Search
+## Search()关键词搜索歌曲
 
 按关键词查询歌曲
 
@@ -12,7 +12,7 @@ string Search(string keyword, Options options = null)
 | keyword | √ | 搜索关键词 |
 | options |   | 选项类，包括 limit,page,type 属性。limit,page,type 依次默认 30,1,1 |
 
-## Song
+## Song()单曲
 
 根据歌曲ID获取单首歌曲
 
@@ -24,7 +24,7 @@ string Song(string id)
 | :------: | :------: | :------: |
 | id | √ | 歌曲ID |
 
-## Album
+## Album()专辑
 
 根据专辑ID获取
 
@@ -36,7 +36,7 @@ string Album(string id)
 | :------: | :------: | :------: |
 | id | √ | 专辑ID |
 
-## Artist
+## Artist()作家/歌手
 
 根据作家ID获取
 
@@ -48,7 +48,7 @@ string Artist(string id, int limit = 50)
 | :------: | :------: | :------: |
 | id | √ | 作家ID |
 
-## Playlist
+## Playlist()歌单
 
 根据歌单ID获取
 
@@ -60,7 +60,7 @@ string Playlist(string id)
 | :------: | :------: | :------: |
 | id | √ | 歌单ID |
 
-## Url
+## Url()音乐链接
 
 根据歌曲ID获取音乐链接
 
@@ -73,7 +73,7 @@ string Url(string id, int br = 320)
 | id | √ | 歌曲ID |
 | br |   | 比特率, 默认 320 |
 
-## Lyric
+## Lyric()歌词
 
 根据歌曲ID查歌词
 
@@ -85,7 +85,7 @@ string Lyric(string id)
 | :------: | :------: | :------: |
 | id | √ | 歌曲ID |
 
-## Pic
+## Pic()封面图
 
 歌曲图片(对指定歌曲编号，返回图片地址)
 
@@ -104,7 +104,7 @@ public string Pic(string id, int size = 300)
 | id | √ | 歌曲ID |
 | size |   | 图片尺寸,默认300*300 |
 
-## FormatMethod
+## FormatMethod()统一格式
 
 是否格式化(统一返回的 json 歌曲信息格式)
 
