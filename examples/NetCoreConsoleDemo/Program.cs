@@ -61,7 +61,9 @@ namespace NetCoreConsoleDemo
 
             Meting api = new Meting(ServerProvider.Baidu);
             //Music_search_item[] items = api.SearchObj("洛少爷");
-            Music_search_item song = api.SongObj("73992640");
+            //Music_search_item song = api.SongObj("73992640");
+            // http://music.taihe.com/album/533414191  专辑ID 533414191
+            Music_search_item[] musics = api.AlbumObj("533414191");
 
 
             Console.ReadLine();
