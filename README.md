@@ -69,6 +69,8 @@ return Content(jsonStr, "application/json");
 //[{"id":"35847388","name":"Hello","artist":["Adele"],"album":"Hello","pic_id":"1407374890649284","url_id":"35847388","lyric_id":"35847388","source":"netease"},{"id":"33211676","name":"Hello","artist":["OMFG"],"album":"Hello",...
 ```
 
+#### [详细文档(/docs)](https://yiyungent.github.io/Meting4Net "在线文档")
+
 ## 环境
 
 - 运行环境: .NET Framework (>= 4.5) or .NET Standard (>= 2.0)    
