@@ -1078,6 +1078,24 @@ namespace Meting4Net.Core
                         decode = Xiami_url
                     };
                     break;
+                case ServerProvider.Baidu:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://musicapi.taihe.com/v1/restserver/ting",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            from = "qianqianmini",
+                            method = "baidu.ting.song.getInfos",
+                            songid = id,
+                            res = 1,
+                            platform = "darwin",
+                            version = "1.0.0"
+                        }),
+                        encode = Baidu_AESCBC,
+                        decode = Baidu_url
+                    };
+                    break;
             }
             this.Br = br;
 
@@ -1854,6 +1872,42 @@ namespace Meting4Net.Core
                     url = "",
                     size = 0,
                     br = -1
+                };
+            }
+
+            return rtn;
+        }
+        #endregion
+
+        #region 提取(解析)百度音乐链接
+        protected Music_url Baidu_url(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            dynamic data = Common.JsonStr2Obj(jsonStr);
+
+            int max = 0;
+            Music_url rtn = null;
+            foreach (dynamic vo in data.songurl.url)
+            {
+                int fileBr = Convert.ToInt32(vo.file_bitrate.ToString());
+                if (fileBr <= this.Br && fileBr > max)
+                {
+                    rtn = new Music_url
+                    {
+                        url = vo.file_link,
+                        br = fileBr,
+                        size = -2
+                    };
+                }
+            }
+            if (rtn == null)
+            {
+                // 若找不到满足的,则无
+                rtn = new Music_url
+                {
+                    url = "",
+                    br = -1,
+                    size = -1
                 };
             }
 
