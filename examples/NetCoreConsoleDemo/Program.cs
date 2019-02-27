@@ -69,7 +69,9 @@ namespace NetCoreConsoleDemo
             // http://music.taihe.com/songlist/566104573 歌单ID 566104573
             //Music_search_item[] musics = api.PlaylistObj("566104573");
             // 目前百度音乐获取到的音乐链接当复制到浏览器地址栏时只可用于下载，不可在线播放
-            Music_url url = api.UrlObj("73992640");
+            //Music_url url = api.UrlObj("73992640");
+            // http://music.taihe.com/song/976984 歌曲ID 976984
+            Music_lyric lyric = api.LyricObj("976984");
 
             Console.ReadLine();
         }

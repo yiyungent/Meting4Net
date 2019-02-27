@@ -1194,6 +1194,22 @@ namespace Meting4Net.Core
                         decode = Xiami_lyric
                     };
                     break;
+                case ServerProvider.Baidu:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://musicapi.taihe.com/v1/restserver/ting",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            from = "qianqianmini",
+                            method = "baidu.ting.song.lry",
+                            songid = id,
+                            platform = "darwin",
+                            version = "1.0.0"
+                        }),
+                        decode = Baidu_lyric
+                    };
+                    break;
             }
 
             return this.Exec(api);
@@ -2044,6 +2060,22 @@ namespace Meting4Net.Core
                     tlyric = ""
                 };
             }
+
+            return rtn;
+        }
+        #endregion
+
+        #region 提取(解析)百度音乐歌词
+        protected Music_lyric Baidu_lyric(dynamic result)
+        {
+            string jsonStr = result.ToString();
+            dynamic data = Common.JsonStr2Obj(jsonStr);
+
+            Music_lyric rtn = new Music_lyric
+            {
+                lyric = Common.IsPropertyExist(data, "lrcContent") ? data.lrcContent.ToString() : "",
+                tlyric = ""
+            };
 
             return rtn;
         }
