@@ -60,8 +60,8 @@ namespace NetCoreConsoleDemo
             //Music_pic music_Pic = api.PicObj("1772326454");
 
             Meting api = new Meting(ServerProvider.Baidu);
-            Music_search_item[] items = api.SearchObj("洛少爷");
-
+            //Music_search_item[] items = api.SearchObj("洛少爷");
+            Music_search_item song = api.SongObj("73992640");
 
 
             Console.ReadLine();

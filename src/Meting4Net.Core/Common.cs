@@ -270,12 +270,21 @@ namespace Meting4Net.Core
 
         #region 返回 当前 Unix 时间戳
         /// <summary>
-        /// 返回 当前 Unix 时间戳
+        /// 返回 当前 Unix 时间戳（秒）
         /// </summary>
         /// <returns></returns>
         public static string GetTimeStamp()
         {
             long unixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            return unixDate.ToString();
+        }
+        /// <summary>
+        /// 返回 当前 Unix 时间戳（毫秒）
+        /// </summary>
+        /// <returns></returns>
+        public static string GetTimeStampMicro()
+        {
+            long unixDate = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000;
             return unixDate.ToString();
         }
         #endregion

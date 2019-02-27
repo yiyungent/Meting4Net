@@ -587,6 +587,24 @@ namespace Meting4Net.Core
                         format = "data.data.songDetail"
                     };
                     break;
+                case ServerProvider.Baidu:
+                    api = new Music_api
+                    {
+                        method = "GET",
+                        url = "http://musicapi.taihe.com/v1/restserver/ting",
+                        body = Common.Dynamic2JObject(new
+                        {
+                            from = "qianqianmini",
+                            method = "baidu.ting.song.getInfos",
+                            songid = id,
+                            res = 1,
+                            platform = "darwin",
+                            version = "1.0.0"
+                        }),
+                        encode = Baidu_AESCBC,
+                        format = "songinfo"
+                    };
+                    break;
             }
 
             return this.Exec(api);
@@ -1281,6 +1299,21 @@ namespace Meting4Net.Core
                 type = "originaljson",
                 sign = sign
             });
+
+            return api;
+        }
+        #endregion
+
+        #region 百度音乐API加密
+        protected Music_api Baidu_AESCBC(Music_api api)
+        {
+            string key = "DBEECF8C50FD160E";
+            string vi = "1231021386755796";
+
+            string data = "songid=" + api.body["songid"].ToString() + "&ts=" + Common.GetTimeStampMicro();
+
+            data = Encrypt.AesEncrypt(data, key, vi);
+            api.body.Last.AddAfterSelf(new JProperty("e", data));
 
             return api;
         }

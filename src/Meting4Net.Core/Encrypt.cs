@@ -10,7 +10,8 @@ using System.Security.Cryptography;
 namespace Meting4Net.Core
 {
     /// <summary>
-    /// 网易云音乐数据加密
+    /// 加密类
+    /// eg.网易云音乐数据加密
     /// </summary>
     class Encrypt
     {
@@ -25,7 +26,7 @@ namespace Meting4Net.Core
                                        "3ece0462db0a22b8e7";
 
         /// <summary>
-        /// 对明文数据进行加密
+        /// 对明文数据进行加密(网易云API加密)
         /// </summary>
         /// <param name="text">明文数据</param>
         /// <returns>加密后的数据</returns>
