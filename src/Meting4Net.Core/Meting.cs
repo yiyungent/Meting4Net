@@ -64,8 +64,12 @@ namespace Meting4Net.Core
         //private string _info;
         //private string _error;
         //private string _status;
-        private int _tryCount = 3;
         private int _br;
+        private ServerProvider _server;
+        private MetingProxy _proxy;
+        private bool _format = false;
+        private Dictionary<string, string> _header;
+        private int _tryCount = 3;
 
         /// <summary>
         /// 获取的原始json数据
@@ -82,19 +86,9 @@ namespace Meting4Net.Core
         //public string Status { get { return _status; } set { _status = value; } }
 
         /// <summary>
-        /// HTTP请求尝试次数，默认 3（当未查询到数据时，或查询出错时，尝试再次查询的次数）
-        /// </summary>
-        public int TryCount { get { return _tryCount; } set { _tryCount = value; } }
-
-        /// <summary>
         /// 歌曲 比特率
         /// </summary>
         protected int Br { get { return _br; } set { _br = value; } }
-
-        private ServerProvider _server;
-        private MetingProxy _proxy;
-        private bool _format = false;
-        private Dictionary<string, string> _header;
 
         /// <summary>
         /// 音乐API 服务提供者
@@ -115,6 +109,11 @@ namespace Meting4Net.Core
         /// 请求头
         /// </summary>
         protected Dictionary<string, string> Header { get { return _header; } set { _header = value; } }
+
+        /// <summary>
+        /// HTTP请求尝试次数，默认 3（当未查询到数据时，或查询出错时，尝试再次查询的次数）
+        /// </summary>
+        public int TryCount { get { return _tryCount; } set { _tryCount = value; } }
 
         #region 初始化
         /// <summary>
@@ -296,6 +295,7 @@ namespace Meting4Net.Core
                 {
                     responseData = HttpAide.HttpGet(url: url, responseHeadersSb: responseHeadersSb, headers: headers.ToArray(), proxy: this.Proxy != null ? this.Proxy.Proxy : null);
                 }
+                // 直到响应数据
                 if (!string.IsNullOrEmpty(responseData)) break;
             }
             // 若需要响应头，则添加响应头
