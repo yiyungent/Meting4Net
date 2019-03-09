@@ -40,7 +40,7 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
 
 只需要满足下方其中一条.
 
-- .NET Framework (>= 4.0) 且 Newtonsoft.Json (>= 9.0.1) 被安装.
+- .NET Framework (>= 4.0) 且 Newtonsoft.Json (>= 4.5.11) 被安装.
 - .NET Standard (>= 2.0) 且 Microsoft.CSharp (>= 4.5.0), Newtonsoft.Json (>= 9.0.1) 被安装.
 
 ## 安装
@@ -81,7 +81,6 @@ return Content(jsonStr, "application/json");
 ## 相关项目
 
 - [Meting](https://github.com/metowolf/Meting)
-- [Meting4Net.Query](https://github.com/yiyungent/Meting4Net.Query)
  
  ## 鸣谢
 

@@ -31,8 +31,8 @@ A powerful music API framework to accelerate your development
 
 Only need to match one.
 
-- .NET Framework (>= 4.5) and Newtonsoft.Json (>= 12.0.1) installed.
-- .NET Standard (>= 2.0) and Microsoft.CSharp (>= 4.5.0), and Newtonsoft.Json (>= 12.0.1) installed.
+- .NET Framework (>= 4.0) and Newtonsoft.Json (>= 4.5.11) installed.
+- .NET Standard (>= 2.0) and Microsoft.CSharp (>= 4.5.0), and Newtonsoft.Json (>= 9.0.1) installed.
 
 ## Installation
 
