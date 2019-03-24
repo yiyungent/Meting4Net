@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using Meting4Net.Core;
+using Meting4Net.Core.Models.Standard;
 using Xunit;
-using Meting4Net.Core;
 
 namespace NetCore.Tests
 {
@@ -19,11 +16,15 @@ namespace NetCore.Tests
         [Fact]
         public void SearchTest()
         {
-            string[] subStrArr = { "千里邀月" };
+            int limit = 4, page = 1;
 
-            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Search("千里邀月"), subStrArr);
+            Music_search_item[] result = Api.SearchObj("千里邀月", new Meting4Net.Core.Models.Standard.Options
+            {
+                limit = limit,
+                page = page
+            });
 
-            Assert.True(isPass);
+            Assert.InRange(result.Length, 0, limit);
         }
 
         [Fact]
