@@ -1249,7 +1249,7 @@ namespace Meting4Net.Core
                     picUrl = "https://p3.music.126.net/" + this.Netease_encryptId(id) + "/" + id + ".jpg?param=" + size + "y" + size;
                     break;
                 case ServerProvider.Tencent:
-                    picUrl = "https://y.gtimg.cn/music/photo_new/T002R" + size + "x" + size + "M000" + id + ".jpg?max_age=2592000";
+                    picUrl = "https://y.gtimg.cn/music/photo_new/T002R" + size + "x" + size + "M000" + this.SongObj(id).pic_id + ".jpg?max_age=2592000";
                     break;
                 case ServerProvider.Kugou:
                     tempFormat = this.Format;
