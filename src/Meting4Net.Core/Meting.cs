@@ -1,8 +1,8 @@
 ﻿/**
- * Meting music framework
+ * Meting4Net music framework
  * https://yiyungent.github.io/Meting4Net
  * https://github.com/yiyungent/Meting4Net
- * Version 0.1.0
+ * Version 1.1.4
  *
  * Copyright 2019, yiyun <yiyungent@gmail.com>
  * Released under the MIT license
@@ -57,8 +57,9 @@ namespace Meting4Net.Core
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "1.1.2";
+        public const string VERSION = "1.1.4";
 
+        #region Fields
         private string _raw;
         private string _data;
         //private string _info;
@@ -70,7 +71,9 @@ namespace Meting4Net.Core
         private bool _format = false;
         private Dictionary<string, string> _header;
         private int _tryCount = 3;
+        #endregion
 
+        #region Properties
         /// <summary>
         /// 获取的原始json数据
         /// </summary>
@@ -114,6 +117,7 @@ namespace Meting4Net.Core
         /// HTTP请求尝试次数，默认 3（当未查询到数据时，或查询出错时，尝试再次查询的次数）
         /// </summary>
         public int TryCount { get { return _tryCount; } set { _tryCount = value; } }
+        #endregion
 
         #region 初始化
         /// <summary>
@@ -132,7 +136,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public Meting Site(ServerProvider value)
+        public virtual Meting Site(ServerProvider value)
         {
             this.Server = value;
             this.Header = this.CurlSet();
@@ -147,7 +151,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public Meting Cookie(string value)
+        public virtual Meting Cookie(string value)
         {
             this.Header["Cookie"] = value;
 
@@ -161,7 +165,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="value">默认格式化 true</param>
         /// <returns></returns>
-        public Meting FormatMethod(bool value = true)
+        public virtual Meting FormatMethod(bool value = true)
         {
             this.Format = value;
 
@@ -175,7 +179,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public Meting ProxyMethod(MetingProxy value)
+        public virtual Meting ProxyMethod(MetingProxy value)
         {
             this.Proxy = value;
 
@@ -189,7 +193,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="api"></param>
         /// <returns></returns>
-        protected string Exec(Music_api api)
+        protected virtual string Exec(Music_api api)
         {
             if (api.encode != null)
             {
@@ -272,7 +276,7 @@ namespace Meting4Net.Core
         /// <param name="payload"></param>
         /// <param name="headerHave">返回的字符串中是否包含 响应头(Response Headers)</param>
         /// <returns></returns>
-        protected Meting Curl(string url, string payload = null, bool headerHave = false)
+        protected virtual Meting Curl(string url, string payload = null, bool headerHave = false)
         {
             List<string> headers = new List<string>();
             foreach (string key in this.Header.Keys)
@@ -316,7 +320,7 @@ namespace Meting4Net.Core
         /// <param name="array"></param>
         /// <param name="rule"></param>
         /// <returns></returns>
-        protected dynamic PickUp(dynamic array, string rule)
+        protected virtual dynamic PickUp(dynamic array, string rule)
         {
             string[] t = rule.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string vo in t)
@@ -351,7 +355,7 @@ namespace Meting4Net.Core
         /// <param name="raw"></param>
         /// <param name="rule"></param>
         /// <returns></returns>
-        protected Music_search_item[] Clean(dynamic raw, string rule)
+        protected virtual Music_search_item[] Clean(dynamic raw, string rule)
         {
             // 根据 json字符串 第一层是 {}: JObject , 还是 []: JArray 确定转换为哪种类型的对象
             raw = Common.JsonStr2Obj(raw.ToString());
@@ -381,7 +385,7 @@ namespace Meting4Net.Core
         /// <param name="keyword"></param>
         /// <param name="options"></param>
         /// <returns>返回json字符串</returns>
-        public string Search(string keyword, Options options = null)
+        public virtual string Search(string keyword, Options options = null)
         {
             #region 当未提供 options 时则为 null,此时对其进行 new ，使其不为 null,但其中的初始化属性仍为null，这样因为默认 options 不为null,所以下方判断时不再需要判断 options!=null
             if (options == null)
@@ -455,7 +459,7 @@ namespace Meting4Net.Core
                     api = new Music_api
                     {
                         method = "GET",
-                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.search.searchservice.searchsongs/1.0/",
+                        url = "https://acs.m.xiami.com/h5/mtop.alimusic.search.searchservice.searchsongs/1.0/",
                         body = Common.Dynamic2JObject(new
                         {
                             data = new JObject
@@ -524,7 +528,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns>返回json字符串</returns>
-        public string Song(string id)
+        public virtual string Song(string id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -574,7 +578,7 @@ namespace Meting4Net.Core
                     api = new Music_api
                     {
                         method = "GET",
-                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.songservice.getsongdetail/1.0/",
+                        url = "https://acs.m.xiami.com/h5/mtop.alimusic.music.songservice.getsongdetail/1.0/",
                         body = Common.Dynamic2JObject(new
                         {
                             data = new JObject
@@ -633,7 +637,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns>返回json字符串</returns>
-        public string Album(string id)
+        public virtual string Album(string id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -692,7 +696,7 @@ namespace Meting4Net.Core
                     api = new Music_api
                     {
                         method = "GET",
-                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.albumservice.getalbumdetail/1.0/",
+                        url = "https://acs.m.xiami.com/h5/mtop.alimusic.music.albumservice.getalbumdetail/1.0/",
                         body = Common.Dynamic2JObject(new
                         {
                             data = new JObject
@@ -750,7 +754,7 @@ namespace Meting4Net.Core
         /// <param name="id"></param>
         /// <param name="limit"></param>
         /// <returns>返回json字符串</returns>
-        public string Artist(string id, int limit = 50)
+        public virtual string Artist(string id, int limit = 50)
         {
             Music_api api = null;
             switch (this.Server)
@@ -809,7 +813,7 @@ namespace Meting4Net.Core
                     api = new Music_api
                     {
                         method = "GET",
-                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.songservice.getartistsongs/1.0/",
+                        url = "https://acs.m.xiami.com/h5/mtop.alimusic.music.songservice.getartistsongs/1.0/",
                         body = Common.Dynamic2JObject(new
                         {
                             data = new JObject
@@ -875,7 +879,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns>返回json字符串</returns>
-        public string Playlist(string id)
+        public virtual string Playlist(string id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -932,7 +936,7 @@ namespace Meting4Net.Core
                     api = new Music_api
                     {
                         method = "GET",
-                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.list.collectservice.getcollectdetail/1.0/",
+                        url = "https://acs.m.xiami.com/h5/mtop.alimusic.music.list.collectservice.getcollectdetail/1.0/",
                         body = Common.Dynamic2JObject(new
                         {
                             data = new JObject
@@ -996,7 +1000,7 @@ namespace Meting4Net.Core
         /// <param name="id"></param>
         /// <param name="br"></param>
         /// <returns>返回json字符串</returns>
-        public string Url(string id, int br = 320)
+        public virtual string Url(string id, int br = 320)
         {
             Music_api api = null;
             switch (this.Server)
@@ -1062,7 +1066,7 @@ namespace Meting4Net.Core
                     api = new Music_api
                     {
                         method = "GET",
-                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.songservice.getsongs/1.0/",
+                        url = "https://acs.m.xiami.com/h5/mtop.alimusic.music.songservice.getsongs/1.0/",
                         body = Common.Dynamic2JObject(new
                         {
                             data = new JObject
@@ -1126,7 +1130,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns>返回json字符串</returns>
-        public string Lyric(string id)
+        public virtual string Lyric(string id)
         {
             Music_api api = null;
             switch (this.Server)
@@ -1181,7 +1185,7 @@ namespace Meting4Net.Core
                     api = new Music_api
                     {
                         method = "GET",
-                        url = "http://h5api.m.xiami.com/h5/mtop.alimusic.music.lyricservice.getsonglyrics/1.0/",
+                        url = "https://acs.m.xiami.com/h5/mtop.alimusic.music.lyricservice.getsonglyrics/1.0/",
                         body = Common.Dynamic2JObject(new
                         {
                             data = new JObject
@@ -1239,7 +1243,7 @@ namespace Meting4Net.Core
         /// <param name="id">eg.传递通过 api.Song("35847388") 获取到的 pic_id</param>
         /// <param name="size"></param>
         /// <returns>返回json字符串</returns>
-        public string Pic(string id, int size = 300)
+        public virtual string Pic(string id, int size = 300)
         {
             string picUrl = string.Empty;
             bool tempFormat;
@@ -1308,7 +1312,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="api"></param>
         /// <returns></returns>
-        protected Music_api Netease_AESCBC(Music_api api)
+        protected virtual Music_api Netease_AESCBC(Music_api api)
         {
             string bodyJsonStr = Common.Obj2JsonStr(api.body);
             string encryptBody = Encrypt.EncryptedRequest(bodyJsonStr);
@@ -1333,7 +1337,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string Netease_encryptId(string id)
+        public virtual string Netease_encryptId(string id)
         {
             char[] magic = "3go8&$8*3*3h0k(2)2".ToCharArray();
             char[] song_id = id.ToCharArray();
@@ -1360,9 +1364,9 @@ namespace Meting4Net.Core
         #endregion
 
         #region 虾米音乐API加密
-        protected Music_api Xiami_sign(Music_api api)
+        protected virtual Music_api Xiami_sign(Music_api api)
         {
-            string url = "http://h5api.m.xiami.com/h5/mtop.alimusic.search.searchservice.searchsongs/1.0/?appKey=12574478&t=1511168684000&dataType=json&data=%7B%22requestStr%22%3A%22%7B%5C%22model%5C%22%3A%7B%5C%22key%5C%22%3A%5C%22Dangerous+Woman%5C%22%2C%5C%22pagingVO%5C%22%3A%7B%5C%22page%5C%22%3A1%2C%5C%22pageSize%5C%22%3A30%7D%7D%7D%22%7D&api=mtop.alimusic.search.searchservice.searchsongs&v=1.0&type=originaljson&sign=f6c99a429e9ef703ea955f7cd113a467";
+            string url = "https://acs.m.xiami.com/h5/mtop.alimusic.recommend.songservice.getdailysongs/1.0/?appKey=12574478&t=1560663823000&dataType=json&data=%7B%22requestStr%22%3A%22%7B%5C%22header%5C%22%3A%7B%5C%22platformId%5C%22%3A%5C%22mac%5C%22%7D%2C%5C%22model%5C%22%3A%5B%5D%7D%22%7D&api=mtop.alimusic.recommend.songservice.getdailysongs&v=1.0&type=originaljson&sign=22ad1377ee193f3e2772c17c6192b17c";
             string resData = this.Curl(url, null, true).Raw;
             MatchCollection matchColl = Regex.Matches(resData, "_m_h5[^;]+");
             this.Header["Cookie"] = matchColl[0].Value + "; " + matchColl[1].Value;
@@ -1402,7 +1406,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 百度音乐API加密
-        protected Music_api Baidu_AESCBC(Music_api api)
+        protected virtual Music_api Baidu_AESCBC(Music_api api)
         {
             string key = "DBEECF8C50FD160E";
             string vi = "1231021386755796";
@@ -1422,7 +1426,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="rawArray"></param>
         /// <returns></returns>
-        protected Music_search_item[] Format_select(JArray rawArray)
+        protected virtual Music_search_item[] Format_select(JArray rawArray)
         {
             Del_music_item_format del_Music_Item = null;
             switch (this.Server)
@@ -1461,7 +1465,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="songItem">(单首)网易云音乐json数据</param>
         /// <returns></returns>
-        protected Music_search_item Format_netease(dynamic songItem)
+        protected virtual Music_search_item Format_netease(dynamic songItem)
         {
             Music_search_item result = new Music_search_item
             {
@@ -1492,7 +1496,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 对(单首)腾讯音乐数据进行格式化
-        protected Music_search_item Format_tencent(dynamic songItem)
+        protected virtual Music_search_item Format_tencent(dynamic songItem)
         {
             if (Common.IsPropertyExist(songItem, "musicData"))
             {
@@ -1527,7 +1531,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="songItem"></param>
         /// <returns></returns>
-        protected Music_search_item Format_kugou(dynamic songItem)
+        protected virtual Music_search_item Format_kugou(dynamic songItem)
         {
             Music_search_item result = new Music_search_item
             {
@@ -1554,7 +1558,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 对(单首)虾米音乐数据进行格式化
-        protected Music_search_item Format_xiami(dynamic songItem)
+        protected virtual Music_search_item Format_xiami(dynamic songItem)
         {
             Music_search_item result = new Music_search_item
             {
@@ -1579,7 +1583,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 对(单首)百度音乐数据进行格式化
-        protected Music_search_item Format_baidu(dynamic songItem)
+        protected virtual Music_search_item Format_baidu(dynamic songItem)
         {
             Music_search_item result = new Music_search_item
             {
@@ -1602,7 +1606,7 @@ namespace Meting4Net.Core
         /// 设置请求头
         /// </summary>
         /// <returns></returns>
-        protected Dictionary<string, string> CurlSet()
+        protected virtual Dictionary<string, string> CurlSet()
         {
             Dictionary<string, string> header = null;
             switch (this.Server)
@@ -1673,7 +1677,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected Music_url Netease_url(dynamic result)
+        protected virtual Music_url Netease_url(dynamic result)
         {
             string jsonStr = result.ToString();
             //Models.Netease.Netease_url data = JsonConvert.DeserializeObject<Models.Netease.Netease_url>(jsonStr);
@@ -1703,7 +1707,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)腾讯音乐链接
-        protected Music_url Tencent_url(dynamic result)
+        protected virtual Music_url Tencent_url(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic dataInit = Common.JsonStr2Obj(jsonStr);
@@ -1811,7 +1815,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)酷狗音乐链接
-        protected Music_url Kugou_url(dynamic result)
+        protected virtual Music_url Kugou_url(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic data = Common.JsonStr2Obj(jsonStr);
@@ -1865,7 +1869,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)虾米音乐链接
-        protected Music_url Xiami_url(dynamic result)
+        protected virtual Music_url Xiami_url(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic songData = Common.JsonStr2Obj(jsonStr);
@@ -1908,7 +1912,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)百度音乐链接
-        protected Music_url Baidu_url(dynamic result)
+        protected virtual Music_url Baidu_url(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic data = Common.JsonStr2Obj(jsonStr);
@@ -1949,7 +1953,7 @@ namespace Meting4Net.Core
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        protected Music_lyric Netease_lyric(dynamic result)
+        protected virtual Music_lyric Netease_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
             //Models.Netease.Netease_lyric data = JsonConvert.DeserializeObject<Models.Netease.Netease_lyric>(jsonStr);
@@ -1967,7 +1971,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)腾讯音乐歌词
-        protected Music_lyric Tencent_lyric(dynamic result)
+        protected virtual Music_lyric Tencent_lyric(dynamic result)
         {
             string str = result.ToString();
             string jsonStr = Regex.Match(str, @"MusicJsonCallback\((.*)\)").Groups[1].Value;
@@ -1983,7 +1987,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)酷狗音乐歌词
-        protected Music_lyric Kugou_lyric(dynamic result)
+        protected virtual Music_lyric Kugou_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic data = Common.JsonStr2Obj(jsonStr);
@@ -2013,7 +2017,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)虾米音乐歌词
-        protected Music_lyric Xiami_lyric(dynamic result)
+        protected virtual Music_lyric Xiami_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic songData = Common.JsonStr2Obj(jsonStr);
@@ -2078,7 +2082,7 @@ namespace Meting4Net.Core
         #endregion
 
         #region 提取(解析)百度音乐歌词
-        protected Music_lyric Baidu_lyric(dynamic result)
+        protected virtual Music_lyric Baidu_lyric(dynamic result)
         {
             string jsonStr = result.ToString();
             dynamic data = Common.JsonStr2Obj(jsonStr);
