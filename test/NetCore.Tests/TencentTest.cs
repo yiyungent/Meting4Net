@@ -134,7 +134,7 @@ namespace NetCore.Tests
             {
                "url"
             };
-            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Pic("002szRig2zZxtj"), subStrArr);
+            bool isPass = TestTool.TargetStrContain(() => Api.FormatMethod(true).Pic("00384f3K3IcUMu"), subStrArr);
 
             Assert.True(isPass);
         }
