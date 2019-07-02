@@ -22,12 +22,17 @@ Meting4Net: <a href="https://github.com/metowolf/Meting" target="_blank">Meting<
  + **丰富** - 支持多个音乐平台, 包括 腾讯QQ音乐, 网易云音乐, 虾米音乐, 酷狗, 百度等.
  + **免费** - MIT协议 发布
  
-## 进度
+## TODO
 
 - [x] 网易云音乐 Meting Open API 移植完成 v0.1.0
 - [x] 腾讯QQ音乐 Meting Open API 移植完成 v0.2.0
 - [x] 酷狗音乐 Meting Open API 移植完成 v1.0.0
 - [x] 虾米, 百度音乐 Meting Open API 移植完成 v1.1.0
+- [x] 支持返回强类型实体对象 eg: SearchObj("千里邀月") v1.1.0  
+
+#### 注
+
+- Meting4Net 跟随 <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> 更新
 
 ## 持续集成
 
