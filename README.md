@@ -1,4 +1,5 @@
 <p align="center">
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 <img src="docs/_images/Meting4Net.png" alt="Meting4Net">
 </p>
 <h1 align="center">Meting4Net</h1>
@@ -98,3 +99,14 @@ return Content(jsonStr, "application/json");
 Authored and maintained by yiyun with help from contributors ([list](https://github.com/yiyungent/Meting4Net/contributors)).
 
 > GitHub [@yiyungent](https://github.com/yiyungent)
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://yiyungent.github.io"><img src="https://avatars1.githubusercontent.com/u/16939388?v=4" width="100px;" alt="yiyun"/><br /><sub><b>yiyun</b></sub></a><br /><a href="https://github.com/yiyungent/Meting4Net/commits?author=yiyungent" title="Code">💻</a> <a href="https://github.com/yiyungent/Meting4Net/commits?author=yiyungent" title="Documentation">📖</a> <a href="#example-yiyungent" title="Examples">💡</a> <a href="#maintenance-yiyungent" title="Maintenance">🚧</a> <a href="https://github.com/yiyungent/Meting4Net/commits?author=yiyungent" title="Tests">⚠️</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
