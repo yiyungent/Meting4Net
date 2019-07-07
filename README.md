@@ -1,5 +1,4 @@
 <p align="center">
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
 <img src="docs/_images/Meting4Net.png" alt="Meting4Net">
 </p>
 <h1 align="center">Meting4Net</h1>
@@ -93,12 +92,6 @@ return Content(jsonStr, "application/json");
 - 本项目由 <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> 移植而来，感谢原作者 metowolf 的贡献
 - 网易云音乐API加密模块参考自 <a href="https://github.com/IllyaTheHath/Music163Api" target="_blank">Music163Api</a>，感谢作者 IllyaTheHath 的贡献
 
-## 作者
-
-**Meting4Net** © [yiyun](https://github.com/yiyungent), Released under the [MIT](./LICENSE) License.<br>
-Authored and maintained by yiyun with help from contributors ([list](https://github.com/yiyungent/Meting4Net/contributors)).
-
-> GitHub [@yiyungent](https://github.com/yiyungent)
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -110,3 +103,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## 作者
+
+**Meting4Net** © [yiyun](https://github.com/yiyungent), Released under the [MIT](./LICENSE) License.<br>
+Authored and maintained by yiyun with help from contributors ([list](https://github.com/yiyungent/Meting4Net/contributors)).
+
+> GitHub [@yiyungent](https://github.com/yiyungent)
+
