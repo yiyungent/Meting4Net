@@ -1,0 +1,27 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "yiyungent",
+      "name": "yiyun",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/16939388?v=4",
+      "profile": "https://yiyungent.github.io",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "maintenance",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "Meting4Net",
+  "projectOwner": "yiyungent",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
