@@ -104,7 +104,14 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
-## 作者
+## Donate
+
+Meting4Net is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing.
+
+We accept donations through these channels:
+- <a href="https://afdian.net/@yiyun" target="_blank">爱发电</a>
+
+## Author
 
 **Meting4Net** © [yiyun](https://github.com/yiyungent), Released under the [MIT](./LICENSE) License.<br>
 Authored and maintained by yiyun with help from contributors ([list](https://github.com/yiyungent/Meting4Net/contributors)).
