@@ -7,6 +7,7 @@
 
 [![repo size](https://img.shields.io/github/repo-size/yiyungent/Meting4Net.svg?style=flat)]()
 [![LICENSE](https://img.shields.io/github/license/yiyungent/Meting4Net.svg?style=flat)](https://github.com/yiyungent/Meting4Net/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyiyungent%2FMeting4Net.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyiyungent%2FMeting4Net?ref=badge_shield)
 [![nuget](https://img.shields.io/nuget/v/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
 [![downloads](https://img.shields.io/nuget/dt/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
 
@@ -91,6 +92,10 @@ return Content(jsonStr, "application/json");
 
 - 本项目由 <a href="https://github.com/metowolf/Meting" target="_blank">Meting</a> 移植而来，感谢原作者 metowolf 的贡献
 - 网易云音乐API加密模块参考自 <a href="https://github.com/IllyaTheHath/Music163Api" target="_blank">Music163Api</a>，感谢作者 IllyaTheHath 的贡献
+
+## 开放源代码许可
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyiyungent%2FMeting4Net.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyiyungent%2FMeting4Net?ref=badge_large)
 
 ## Contributors
 
