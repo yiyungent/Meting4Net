@@ -5,7 +5,8 @@
 
 > :cake: 一个强大的音乐API框架
 
-[![repo size](https://img.shields.io/github/repo-size/yiyungent/Meting4Net.svg?style=flat)]()
+[![repo size](https://img.shields.io/github/repo-size/yiyungent/Meting4Net.svg?style=flat)][![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyiyungent%2FMeting4Net.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyiyungent%2FMeting4Net?ref=badge_shield)
+()
 [![LICENSE](https://img.shields.io/github/license/yiyungent/Meting4Net.svg?style=flat)](https://github.com/yiyungent/Meting4Net/blob/master/LICENSE)
 [![nuget](https://img.shields.io/nuget/v/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
 [![downloads](https://img.shields.io/nuget/dt/Meting4Net.svg?style=flat)](https://www.nuget.org/packages/Meting4Net/)
@@ -118,3 +119,7 @@ Authored and maintained by yiyun with help from contributors ([list](https://git
 
 > GitHub [@yiyungent](https://github.com/yiyungent)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyiyungent%2FMeting4Net.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyiyungent%2FMeting4Net?ref=badge_large)
