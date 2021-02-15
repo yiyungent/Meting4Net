@@ -888,7 +888,7 @@ namespace Meting4Net.Core
                     api = new Music_api
                     {
                         method = "POST",
-                        url = "http://music.163.com/api/v3/playlist/detail",
+                        url = "http://music.163.com/api/v6/playlist/detail",
                         body = Common.Dynamic2JObject(new
                         {
                             s = "0",
