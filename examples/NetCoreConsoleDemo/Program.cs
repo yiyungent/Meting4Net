@@ -21,10 +21,10 @@ namespace NetCoreConsoleDemo
             // 传递通过 .Song("001Nal2N2f0Qr8") 获取的 pic_id 002szRig2zZxtj
             //string jsonStr = api.Pic("002szRig2zZxtj");
 
-            //Meting api = new Meting(ServerProvider.Kugou);
+            Meting api = new Meting(ServerProvider.Kugou);
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
             //string jsonStr = api.FormatMethod(true).Lyric("e64025c53de70ba1d91aec1f8c38f1ae");
-            //string jsonStr = api.FormatMethod(true).Pic("e64025c53de70ba1d91aec1f8c38f1ae");
+            string jsonStr = api.FormatMethod(true).Pic("e64025c53de70ba1d91aec1f8c38f1ae");
 
             //Meting api = new Meting(ServerProvider.Xiami);
             //string jsonStr = api.FormatMethod(true).Search("千里邀月");
@@ -48,7 +48,7 @@ namespace NetCoreConsoleDemo
             //string jsonStr = api.ProxyMethod(new MetingProxy("47.97.169.111", 3128)).FormatMethod(true).Lyric("1774129963");
 
 
-            //Console.WriteLine(jsonStr);
+            Console.WriteLine(jsonStr);
 
             //Music_search_item[] music_Search_Items = api.SearchObj("千里邀月");
             //Music_search_item music_Search_Item = api.SongObj("1808486366");
@@ -59,7 +59,7 @@ namespace NetCoreConsoleDemo
             //Music_lyric music_Lyric = api.LyricObj("1774129963");
             //Music_pic music_Pic = api.PicObj("1772326454");
 
-            Meting api = new Meting(ServerProvider.Baidu);
+            //Meting api = new Meting(ServerProvider.Baidu);
             //Music_search_item[] items = api.SearchObj("洛少爷");
             //Music_search_item song = api.SongObj("73992640");
             // http://music.taihe.com/album/533414191  专辑ID 533414191

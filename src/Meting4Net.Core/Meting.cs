@@ -1261,7 +1261,7 @@ namespace Meting4Net.Core
                     this.Format = tempFormat;
                     dynamic jsonObj = Common.JsonStr2Obj(kugouRawJsonStr);
                     // 发现酷狗的图片大小有限，对于 e64025c53de70ba1d91aec1f8c38f1ae，尝试 100,200,400可行，其它均 404没有，不知道其它歌曲图片情况如何，这里于是暂时写死
-                    picUrl = jsonObj.imgUrl.ToString().Replace("{size}", "400");
+                    picUrl = jsonObj?.imgUrl?.ToString()?.Replace("{size}", "400");
                     break;
                 case ServerProvider.Xiami:
                     tempFormat = this.Format;
