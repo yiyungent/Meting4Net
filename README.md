@@ -110,6 +110,15 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
+## 赞助者
+
+感谢这些来自爱发电的赞助者：
+
+<!-- AFDIAN-ACTION:START -->
+<!-- AFDIAN-ACTION:END -->
+
+本项目使用 [afdian-action](https://github.com/yiyungent/afdian-action) 自动更新赞助者列表
+
 ## Donate
 
 Meting4Net is an MIT licensed open source project and completely free to use. However, the amount of effort needed to maintain and develop new features for the project is not sustainable without proper financial backing.
