@@ -3,9 +3,9 @@
     string meUserId = "e6bacc3e730d11ea857252540025c377";
     string currentRepoPlanId = "cd7b3152731011eabcd452540025c377";
     // 排除自己
-    viewModel.Sponsor.data.list = viewModel.Sponsor.data.list.Where(m.user.user_id != currentRepoPlanId).ToList();
+    viewModel.Sponsor.data.list = viewModel.Sponsor.data.list.Where(m => m.user.user_id != currentRepoPlanId).ToList();
     // 只要 当前仓库 对应的计划
-    viewModel.Order.data.list = viewModel.Order.data.list.Where(m.plan_id == currentRepoPlanId).ToList();
+    viewModel.Order.data.list = viewModel.Order.data.list.Where(m => m.plan_id == currentRepoPlanId).ToList();
 }
 
 @for (int i = 0; i < viewModel.Sponsor.data.list.Count(); i++)
